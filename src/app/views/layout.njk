@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        {% block head %}
+            <title>Página inicial</title>
+        {% endblock head %}
+
+
+        <!-- Style -->
+        <link rel="stylesheet" href="/css/main.css"/>
+        <link rel="shortcut icon" type="image/x-icon" href="/img/logo/foodfy_icon.ico"/>
+    </head>
+    <body>
+        <header>
+            <a href="/" class="logo">
+                <img src="/img/logo/logo.png" alt="logo"/>
+            </a>
+
+            <nav class="menu">
+                <a href="/recipes/about">Sobre</a>
+                <a href="/recipes">Receitas</a>
+                <a href="/chefs">Chefs</a>
+            </nav>
+
+            {% block filter %}{% endblock filter %}
+        </header>
+
+        {% block content %}{% endblock content %}
+
+        <footer>
+            <p>Copyright&copy;2020 - Todos os direitos reservados, receitas Foodfy</p>
+        </footer>
+
+        <script src="/js/script.js"></script>
+    </body>
+</html>

@@ -7,30 +7,46 @@
             <title>Página inicial</title>
         {% endblock head %}
 
-
-        <!-- Style -->
+        <!-- FONTS, STYLES, ICON -->
+        <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="/css/main.css"/>
-        <link rel="shortcut icon" type="image/x-icon" href="/img/logo/foodfy_icon.ico"/>
+        <link rel="shortcut icon" type="image/x-icon" href="/img/logo/"/>
     </head>
     <body>
-        <header>
-            <a href="/" class="logo">
-                <img src="/img/logo/logo.png" alt="logo"/>
-            </a>
+        {% block header %}
+            <header class="public-area">
+                <div class="top">
+                    <div class="container-logo">
+                        <div class="logo">
+                            <a href="/" class="logo">Launchstore</a>
+                        </div>
+                    </div>
 
-            <nav class="menu">
-                <a href="/recipes/about">Sobre</a>
-                <a href="/recipes">Receitas</a>
-                <a href="/chefs">Chefs</a>
-            </nav>
+                    {% block filter %}
+                        <form action="/" method="GET">
+                            <input type="text" name="filter" placeholder="Pesquisar por nome/marca"/>
+                            <button class="button" type="submit">Pesquisar</button>
+                        </form>
+                    {% endblock filter %}
 
-            {% block filter %}{% endblock filter %}
-        </header>
+                    <div class="auth">
+                        <a href="#">Login</a>
+                        <span>|</span>
+                        <a href="#">Cadastro</a>
+                    </div>
+                </div>
+            </header>
+        {% endblock header %}
 
-        {% block content %}{% endblock content %}
+        <section class="container-global">
+            {% block content %}{% endblock content %}
+        </section>
 
         <footer>
-            <p>Copyright&copy;2020 - Todos os direitos reservados, receitas Foodfy</p>
+            <div class="footer">
+                <p>Copyright&copy;2020 - Todos os direitos reservados, Launchstore</p>
+            </div>
         </footer>
 
         <script src="/js/script.js"></script>

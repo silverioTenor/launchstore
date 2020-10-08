@@ -27,6 +27,8 @@ CREATE TABLE "product" (
   "category_id" int UNIQUE,
   "user_id" int UNIQUE,
   "name" text NOT NULL,
+  "brand" text NOT NULL,
+  "model" text NOT NULL,
   "description" text NOT NULL,
   "old_price" int,
   "price" int NOT NULL,

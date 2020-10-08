@@ -288,7 +288,7 @@ footer {
                 a {
                     padding: 6px 0;
                     color: $font-dark-color;
-                    font-size: 16px;
+                    font-size: 14px;
                     @include transition;
 
                     &:hover {
@@ -307,6 +307,10 @@ footer {
                 }
 
                 .signUp-email {
+                    p {
+                        font-size: 14px;
+                    }
+                    
                     form {
                         margin-top: 8px;
                         display: grid;
@@ -321,6 +325,7 @@ footer {
         
                         button {
                             width: 80px;
+                            font-size: 12px;
                             color: $font-color;
                             background-color: $secondary-color;
                             @include transition;

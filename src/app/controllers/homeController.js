@@ -6,5 +6,8 @@ module.exports = {
     },
     exchange(req, res) {
         return res.render("home/exchangeAndReturn");
+    },
+    privacy(req, res) {
+        return res.render("home/privacy");
     }
 }

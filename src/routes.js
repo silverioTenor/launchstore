@@ -8,6 +8,7 @@ routes.get("/", productController.index);
 
 routes.get("/about", homeController.about);
 routes.get("/exchangesAndReturn", homeController.exchange);
+routes.get("/privacy", homeController.privacy);
 
 
 module.exports = routes;

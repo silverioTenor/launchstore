@@ -2,9 +2,14 @@
 
 module.exports = {
     index(req, res) {
-        return res.render("home/index");
+        return res.render("index");
     },
-    about(req, res) {
-        return res.render("home/about");
-    }
+    create(req, res) {},
+    post(req, res) {},
+    show(req, res) {
+        return res.render("products/index");
+    },
+    update(req, res) {},
+    put(req, res) {},
+    delete(req, res) {},
 }

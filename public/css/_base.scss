@@ -50,8 +50,8 @@ body {
     }
 }
 
-@mixin transition {
-    transition: ease-in-out 0.1s;
+@mixin transition($val) {
+    transition: ease-in-out $val;
 }
 
 @mixin area {

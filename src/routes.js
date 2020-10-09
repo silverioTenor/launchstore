@@ -7,6 +7,7 @@ const productController = require('./app/controllers/productController');
 routes.get("/", productController.index);
 
 routes.get("/about", homeController.about);
+routes.get("/exchangesAndReturn", homeController.exchange);
 
 
 module.exports = routes;

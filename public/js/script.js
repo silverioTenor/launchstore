@@ -31,3 +31,17 @@ for (const link of links) {
     });
 
 }
+
+// ==============================================================================
+// ==================================== CARD ====================================
+// ==============================================================================
+
+if (document.querySelector('.cardsAll')) {
+    const cards = document.querySelectorAll('.card');
+
+    for (const card of cards) {
+        card.addEventListener("click" , () => {
+            window.location.href = `/product/show`;
+        });
+    }
+}

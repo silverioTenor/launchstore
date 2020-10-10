@@ -1,1 +1,4 @@
 [1010/151717.685:ERROR:settings.cc(430)] Settings version is not 5
+[1010/152717.713:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\silve\AppData\Local\Microsoft\Edge\User Data\Crashpad\attachments\17846246-a443-4e99-b393-2dca6525a53d: O sistema não pode encontrar o caminho especificado. (0x3)
+[1010/152717.742:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\silve\AppData\Local\Microsoft\Edge\User Data\Crashpad\attachments\8ea21d50-85dd-4869-bb4f-cfa4426e4614: O sistema não pode encontrar o caminho especificado. (0x3)
+[1010/152717.746:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)

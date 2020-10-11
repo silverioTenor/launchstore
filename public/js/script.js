@@ -40,8 +40,40 @@ if (document.querySelector('.cardsAll')) {
     const cards = document.querySelectorAll('.card');
 
     for (const card of cards) {
-        card.addEventListener("click" , () => {
-            window.location.href = `/product/show`;
+        card.addEventListener("click", () => {
+            window.location.href = `/products/show`;
         });
     }
+}
+
+// ==============================================================================
+// =================================== CHECKED ==================================
+// ==============================================================================
+
+if (document.querySelector('.container-checked')) {
+
+    const checkbox = document.querySelectorAll('.box-checked');
+
+    for (const check of checkbox) {
+        
+        check.addEventListener("click", () => {
+            const inputElement = check.querySelector('input');
+            let isChecked = inputElement.attributes.item(2);
+
+            for (const c of checkbox) {
+                c.querySelector('input').attributes.item(2).textContent = "";
+
+                c.classList.remove('hover');
+            }
+
+            if (isChecked.textContent != "checked") {
+                check.classList.add('hover');
+                isChecked.textContent = "checked";
+            }
+        });
+    }
+
+    // ================================== PRICE =================================
+
+    
 }

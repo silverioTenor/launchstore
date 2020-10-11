@@ -1,0 +1,271 @@
+.container-show {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 10px;
+
+    .button-buy {
+        width: 100%;
+        height: 50px;
+        margin-top: 16px;
+        display: block;
+        font-size: 16px;
+        font-weight: 500;
+        color: $font-color;
+        background-color: $secondary-color;
+        cursor: pointer;
+        @include transition(0.1s);
+
+        &:hover {
+            background-color: $primary-color;
+        }
+    }
+
+    .view {
+        width: 300px;
+        display: grid;
+        grid-template-rows: 300px 1fr;
+
+        .big-view {
+            width: 300px;
+            text-align: center;
+
+            img {
+                height: 100%;
+                cursor: zoom-in;
+            }
+        }
+
+        .small-view {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 80px);
+            justify-self: center;
+
+            .small {
+                width: 80px;
+                height: 80px;
+                padding: 10px 0;
+                border: 1px solid $border-color;
+                text-align: center;
+                box-sizing: border-box;
+                cursor: pointer;
+                @include transition(0.1s);
+
+                img {
+                    height: 100%;
+                }
+
+                &:hover {
+                    background-color: $border-color;
+                }
+            }
+        }
+    }
+
+    .content {
+        h1 {
+            color: $font-color;
+            font-size: 30px;
+            font-weight: 500;
+        }
+
+        > p {
+            margin-top: 20px;
+            color: $font-dark-color;
+            font-size: 16px;
+        }
+
+        .container-checked {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            // gap: 5px;
+
+            .box-checked {
+                width: 180px;
+                padding: 16px;
+                border: 1px solid $border-color;
+                @include border-radius(4px);
+                box-sizing: border-box;
+                @include transition(0.1s);
+                cursor: pointer;
+
+                span {
+                    color: $font-dark-color;
+                }
+
+                span:nth-child(odd) {
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 2px;
+                    display: inline-block;
+                    position: relative;
+                    border: 2px solid $font-dark-color;
+                    @include border-radius(50%);
+                    // @include transition(0.2s);
+                    cursor: pointer;
+
+                    input[type="checkbox"] {
+                        opacity: 0;
+                        cursor: pointer;
+                    }
+
+                    .before {
+                        // content: "";
+                        width: 14px;
+                        height: 14px;
+                        display: block;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        margin-top: 3px;
+                        margin-left: 3px;
+                        background-color: $font-dark-color;
+                        opacity: 0;
+                        @include border-radius(50%);
+                    }
+                }
+
+                &:hover {
+                    border: 1px solid $primary-color;
+
+                    span:nth-child(odd) {
+                        border: 2px solid $primary-color;
+
+                        .before {
+                            background-color: $primary-color;
+                            opacity: 1;
+                        }
+                    }
+                }
+
+                &.hover {
+                    border: 1px solid $primary-color;
+
+                    span:nth-child(odd) {
+                        border: 2px solid $primary-color;
+
+                        .before {
+                            background-color: $primary-color;
+                            opacity: 1;
+                        }
+                    }
+                }
+
+                p {
+                    margin-top: 10px;
+                    font-size: 14px;
+                    color: $font-dark-color;
+                }
+            }
+        }
+    }
+
+    .aside {
+        color: $font-color;
+        font-size: 14px;
+
+        .pay {
+            padding: 16px;
+            background-color: $dark-bold-color;
+            border: 1px solid $border-color;
+            @include border-radius(4px);
+
+            strong {
+                margin-bottom: 4px;
+                font-size: 36px;
+                font-weight: 700px;
+                display: block;
+            }
+
+            span {
+                display: inline-block;
+                color: $font-dark-color;
+            }
+
+            p {
+                padding: 16px 0;
+                border-bottom: 1px solid $border-color;
+
+                span {
+                    color: $link-color;
+                }
+            }
+
+            .icon {
+                padding: 16px 0;
+                display: grid;
+                grid-template-columns: 20px 1fr;
+                gap: 16px;
+                border-bottom: 1px solid $border-color;
+
+                i {
+                    font-size: 20px;
+                }
+
+                .icon-content {
+                    span {
+                        display: block;
+                    }
+
+                    a {
+                        margin-top: 4px;
+                        display: block;
+                        color: $primary-color;
+                    }
+                }
+            }
+
+            .buy {
+                @extend .button-buy;
+            }
+        }
+
+        .delivery {
+            margin-top: 20px;
+            padding: 16px;
+            background-color: $dark-bold-color;
+            border: 1px solid $border-color;
+            @include border-radius(4px);
+
+            h4 {
+                font-size: 18px;
+            }
+
+            .icon {
+                padding: 16px 0;
+                display: grid;
+                grid-template-columns: 20px 1fr;
+                gap: 16px;
+                border-bottom: 1px solid $border-color;
+
+                i {
+                    font-size: 20px;
+                }
+
+                .icon-content {
+                    span {
+                        display: block;
+                        font-weight: 700;
+                    }
+
+                    p {
+                        margin-top: 4px;
+                        color: $font-dark-color;
+                    }
+
+                    a {
+                        margin-top: 4px;
+                        display: block;
+                        color: $primary-color;
+                    }
+                }
+            }
+
+            .search-cep {
+                @extend .button-buy;
+            }
+        }
+    }
+}

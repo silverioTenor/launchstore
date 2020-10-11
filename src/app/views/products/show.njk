@@ -1,0 +1,107 @@
+{% extends '../layout.njk' %}
+
+{% block head %}
+    <title>Visualização</title>
+{% endblock head %}
+
+{% block content %}
+    <div class="container-show">
+        <div class="view">
+            <div class="big-view">
+                <img src="/img/products/galaxy-a70.png" alt="Galaxy A70"/>
+            </div>
+            <div class="small-view">
+                <div class="small">
+                    <img src="/img/products/galaxy-a70.png" alt="Galaxy A70"/>
+                </div>
+                <div class="small">
+                    <img src="/img/products/galaxy-a70-right_side.png" alt="Galaxy A70"/>
+                </div>
+                <div class="small">
+                    <img src="/img/products/galaxy-a70-back_end.png" alt="Galaxy A70"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <h1>Samsung Galaxy A70 128GB Azul</h1>
+
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi exercitationem vero eaque reiciendis consectetur, quasi officiis alias sint.
+            </p>
+
+            <div class="container-checked">
+                <div class="box-checked">
+                    <span>
+                        <div class="before"></div>
+                        <input type="checkbox" name="excelent" checked=""/>
+                    </span>
+                    <span>Excelente</span>
+
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    </p>
+                </div>
+                <div class="box-checked">
+                    <span>
+                        <div class="before"></div>
+                        <input type="checkbox" name="very_good" checked=""/>
+                    </span>
+                    <span>Muito Bom</span>
+
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    </p>
+                </div>
+                <div class="box-checked">
+                    <span>
+                        <div class="before"></div>
+                        <input type="checkbox" name="good" checked=""/>
+                    </span>
+                    <span>Bom</span>
+
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="aside">
+            <div class="pay">
+                <strong>R$ 1.599,00</strong>
+                <span>Preço à vista</span>
+
+                <p>R$ 1.519,05 (<span>5% de desconto &nbsp;</span>com cartão de crédito)</p>
+
+                <div class="icon">
+                    <i class="fas fa-credit-card"></i>
+
+                    <div class="icon-content">
+                        <span>Ou até 12x de R$ 133,25 sem juros</span>
+                        <a href="#">Ver parcelas</a>
+                    </div>
+                </div>
+
+                <button class="buy">Comprar</button>
+            </div>
+
+            <div class="delivery">
+                <h4>Entrega</h4>
+
+                <div class="icon">
+                    <i class="fas fa-truck"></i>
+
+                    <div class="icon-content">
+                        <span>Receba na sua casa</span>
+                        <p>Enviamos sua compra para o endereço desejado</p>
+
+                        <a href="#">Saiba mais</a>
+                    </div>
+                </div>
+
+                <button class="search-cep">Consultar</button>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

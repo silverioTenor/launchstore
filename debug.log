@@ -3,3 +3,4 @@
 [1010/152717.742:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\silve\AppData\Local\Microsoft\Edge\User Data\Crashpad\attachments\8ea21d50-85dd-4869-bb4f-cfa4426e4614: O sistema não pode encontrar o caminho especificado. (0x3)
 [1010/152717.746:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
 [1010/162342.294:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
+[1011/104325.196:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)

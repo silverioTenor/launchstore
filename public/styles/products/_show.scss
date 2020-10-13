@@ -17,6 +17,7 @@
         @include transition(0.1s);
 
         &:hover {
+            color: $dark-bold-color;
             background-color: $primary-color;
         }
     }
@@ -265,6 +266,14 @@
 
             .search-cep {
                 @extend .button-buy;
+                color: $link-color;
+                background-color: transparent;
+                border: 1px solid $secondary-color;
+
+                &:hover {
+                    color: $dark-bold-color;
+                    background-color: $secondary-color;
+                }
             }
         }
     }

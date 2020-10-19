@@ -1,107 +1,355 @@
 {% extends '../layout.njk' %}
 
 {% block head %}
-    <title>Visualização</title>
+  <title>Visualização</title>
 {% endblock head %}
 
 {% block content %}
-    <div class="container-show">
-        <div class="view">
-            <div class="big-view">
-                <img src="/img/products/galaxy-a70.png" alt="Galaxy A70"/>
-            </div>
-            <div class="small-view">
-                <div class="small">
-                    <img src="/img/products/galaxy-a70.png" alt="Galaxy A70"/>
-                </div>
-                <div class="small">
-                    <img src="/img/products/galaxy-a70-right_side.png" alt="Galaxy A70"/>
-                </div>
-                <div class="small">
-                    <img src="/img/products/galaxy-a70-back_end.png" alt="Galaxy A70"/>
-                </div>
-            </div>
+  <div class="container-show">
+    <div class="view">
+      <div class="big-view">
+        <img src="/img/products/galaxy-a70.png" alt="Galaxy A70"/>
+      </div>
+      <div class="small-view">
+        <div class="small active">
+          <img src="/img/products/galaxy-a70.png" alt="Galaxy A70"/>
         </div>
-
-        <div class="content">
-            <h1>Samsung Galaxy A70 128GB Azul</h1>
-
-            <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi exercitationem vero eaque reiciendis consectetur, quasi officiis alias sint.
-            </p>
-
-            <div class="container-checked">
-                <div class="box-checked">
-                    <span>
-                        <div class="before"></div>
-                        <input type="checkbox" name="excelent" checked=""/>
-                    </span>
-                    <span>Excelente</span>
-
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    </p>
-                </div>
-                <div class="box-checked">
-                    <span>
-                        <div class="before"></div>
-                        <input type="checkbox" name="very_good" checked=""/>
-                    </span>
-                    <span>Muito Bom</span>
-
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    </p>
-                </div>
-                <div class="box-checked">
-                    <span>
-                        <div class="before"></div>
-                        <input type="checkbox" name="good" checked=""/>
-                    </span>
-                    <span>Bom</span>
-
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    </p>
-                </div>
-            </div>
+        <div class="small">
+          <img src="/img/products/galaxy-a70-right_side.png" alt="Galaxy A70"/>
         </div>
-
-        <div class="aside">
-            <div class="pay">
-                <strong>R$ 1.599,00</strong>
-                <span>Preço à vista</span>
-
-                <p>R$ 1.519,05 (<span>5% de desconto &nbsp;</span>com cartão de crédito)</p>
-
-                <div class="icon">
-                    <i class="fas fa-credit-card"></i>
-
-                    <div class="icon-content">
-                        <span>Ou até 12x de R$ 133,25 sem juros</span>
-                        <a href="#">Ver parcelas</a>
-                    </div>
-                </div>
-
-                <button class="buy">Comprar</button>
-            </div>
-
-            <div class="delivery">
-                <h4>Entrega</h4>
-
-                <div class="icon">
-                    <i class="fas fa-truck"></i>
-
-                    <div class="icon-content">
-                        <span>Receba na sua casa</span>
-                        <p>Enviamos sua compra para o endereço desejado</p>
-
-                        <a href="#">Saiba mais</a>
-                    </div>
-                </div>
-
-                <button class="search-cep">Consultar</button>
-            </div>
+        <div class="small">
+          <img src="/img/products/galaxy-a70-back_end.png" alt="Galaxy A70"/>
         </div>
+      </div>
     </div>
+
+    <div class="content">
+      <h1>Samsung Galaxy A70 128GB Azul</h1>
+
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi exercitationem vero eaque reiciendis consectetur, quasi officiis alias sint.
+      </p>
+
+      <div class="container-checked">
+        <div class="box-checked">
+          <span>
+            <div class="before"></div>
+            <input type="checkbox" name="excelent" checked=""/>
+          </span>
+          <span>Excelente</span>
+
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          </p>
+        </div>
+        <div class="box-checked">
+          <span>
+            <div class="before"></div>
+            <input type="checkbox" name="very_good" checked=""/>
+          </span>
+          <span>Muito Bom</span>
+
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          </p>
+        </div>
+        <div class="box-checked">
+          <span>
+            <div class="before"></div>
+            <input type="checkbox" name="good" checked=""/>
+          </span>
+          <span>Bom</span>
+
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="aside">
+      <div class="pay">
+        <strong>R$ 1.599,00</strong>
+        <span>Preço à vista</span>
+
+        <p>R$ 1.519,05 (<span>5% de desconto &nbsp;</span>com cartão de crédito)</p>
+
+        <div class="icon">
+          <i class="fas fa-credit-card"></i>
+
+          <div class="icon-content">
+            <span>Ou até 12x de R$ 133,25 sem juros</span>
+            <a href="#">Ver parcelas</a>
+          </div>
+        </div>
+
+        <button class="buy">Comprar</button>
+      </div>
+
+      <div class="delivery">
+        <h4>Entrega</h4>
+
+        <div class="icon">
+          <i class="fas fa-truck"></i>
+
+          <div class="icon-content">
+            <span>Receba na sua casa</span>
+            <p>Enviamos sua compra para o endereço desejado</p>
+
+            <a href="#">Saiba mais</a>
+          </div>
+        </div>
+
+        <button class="search-cep">Consultar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="anchor">
+    <a href="#statusCel">
+      <i class="fas fa-gem"></i>
+      <span>Condição do celular</span>
+    </a>
+    <a href="#presentation">
+      <i class="fas fa-info-circle"></i>
+      <span>Apresentação</span>
+    </a>
+    <a href="#character">
+      <i class="fas fa-cog"></i>
+      <span>Características</span>
+    </a>
+  </div>
+
+  <div class="why">
+    <h1>Por que comprá-lo na Launchstore</h1>
+
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis et laboriosam, ad molestiae corrupti quasi eligendi esse quos dolorum dignissimos. Nobis et laboriosam, ad molestiae corrupti quasi eligendi esse quos dolorum dignissimos.
+    </p>
+
+    <div class="items">
+      <div class="item">
+        <img src="/img/icons/unlock.png" alt="Unlock"/>
+
+        <span>Desbloqueado para todas as operadoras</span>
+      </div>
+      <div class="item">
+        <img src="/img/icons/nota-fiscal.png" alt="Fiscal"/>
+
+        <span>Produto original com nota fiscal</span>
+      </div>
+      <div class="item">
+        <img src="/img/icons/okay.png" alt="Okay"/>
+
+        <span>Garantia de 30 dias</span>
+      </div>
+      <div class="item">
+        <img src="/img/icons/Anatel.png" alt="Anatel"/>
+
+        <span>Homologado pela Anatel</span>
+      </div>
+      <div class="item">
+        <img src="/img/icons/factory.png" alt="Factory"/>
+
+        <span>Resetado padrão de fábrica</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="statusCel">
+    <h1>Você tem dúvidas sobre os celulares na condição EXCELENTE</h1>
+    {# Aqui irá mudar o nome pelo estado escolhido #}
+
+    <p>
+      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi dolores explicabo, aliquam quo doloremque maiores adipisci illum pariatur quibusdam hic cupiditate, distinctio nisi ipsum optio beatae exercitationem nulla, deserunt facilis!
+
+      <obj>*Sequi dolores explicabo, aliquam quo doloremque maiores.</obj>
+    </p>
+
+    <div class="appearance">
+      <div class="side">
+        <img src="/img/others/border.png" alt="Border"/>
+
+        <h2>Tela</h2>
+        <span>Pode apresentar algum risco muito pequeno, quase imperceptível</span>
+      </div>
+      <div class="side">
+        <img src="/img/others/side2.png" alt="Side 2"/>
+
+        <h2>Lateral</h2>
+        <span>Pode apresentar algum arranhão leve, porém quase imperceptível.</span>
+      </div>
+      <div class="side">
+        <img src="/img/others/side.png" alt="Back"/>
+
+        <h2>Traseira</h2>
+        <span>Pode apresentar pequeno desgaste, como leve arranhão, no entanto não é perceptível.</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="presentation">
+    <h1>Um celular intermediário com design e jeito de top de linha!</h1>
+
+    <p>
+      A Samsung investiu nos pontos certos para desenvolver a linha intermediária Galaxy A. O modelo A70 tem uma tela grande (6,7 polegadas), em linha com tendências mundiais, com boa resolução e nitidez. O conceito de bordas finas, comum aos aparelhos top de linha, abre mais espaço para o painel. O conjunto de câmeras tripla oferece inúmeras possibilidades em termos de fotografia e o desempenho não deixa a desejar, assim como a capacidade da bateria. O Galaxy A70 tem condições de realizar as tarefas cotidianas sem engasgos ou travamentos.
+    </p>
+  </div>
+
+  <div id="character">
+    <div class="item">
+      <i class="fas fa-camera-retro"></i>
+      <h4>Câmera</h4>
+      <p>
+        <strong>Frontal:</strong>
+        32 MP</p>
+      <p>
+        <strong>Traseira:</strong>
+        32 MP + 8MP ultrawide + 5MP depth sensor</p>
+    </div>
+
+    <div class="item">
+      <i class="fas fa-video"></i>
+      <h4>Vídeo</h4>
+      <p>
+        <strong>Resolução:</strong>
+        4K UHD (3840x2160 pixels) 30 fps</p>
+    </div>
+
+    <div class="item">
+      <i class="fas fa-sd-card"></i>
+      <h4>Memória</h4>
+      <p>
+        <strong>RAM:</strong>
+        6 GB</p>
+      <p>
+        <strong>Expansível:</strong>
+        Até 1 TB</p>
+      <p>
+        <strong>Interna:</strong>
+        128 GB</p>
+    </div>
+
+    <div class="item">
+      <i class="fab fa-android"></i>
+      <h4>Sistema Operacional</h4>
+      <p>
+        <strong>Versão:</strong>
+        9.0</p>
+      <p>
+        <strong>Plataforma:</strong>
+        Android</p>
+    </div>
+
+    <div class="item">
+      <i class="fas fa-broadcast-tower"></i>
+      <h4>Conectividade</h4>
+      <p>
+        <strong>USB:</strong>
+        USB 2.0 Type-C</p>
+      <p>
+        <strong>NFC:</strong>
+        Sim</p>
+      <p>
+        <strong>Bluetooth:</strong>
+        Versão 5.0 com A2DP/LE</p>
+      <p>
+        <strong>Rede:</strong>
+        2G, 3G, 4G e Wi-Fi</p>
+    </div>
+    <div class="item">
+      <span class="material-icons">
+        tv
+      </span>
+      <h4>Tela</h4>
+      <p>
+        <strong>Tipo:</strong>
+        Super AMOLED</p>
+      <p>
+        <strong>Densidade:</strong>
+        393 ppi</p>
+      <p>
+        <strong>Resolução:</strong>
+        1080x2400 pixels</p>
+      <p>
+        <strong>Tamanho:</strong>
+        6.7"</p>
+
+    </div>
+    <div class="item">
+      <i class="fas fa-microchip"></i>
+      <h4>Processador</h4>
+      <p>
+        <strong>Velocidade:</strong>
+        2Ghz Dual-Core + 1.7Ghz Hexa-Core</p>
+      <p>
+        <strong>Chip:</strong>
+        Qualcomm Snapdragon 675 SDM675 (11nm)</p>
+
+    </div>
+
+    <div class="item">
+      <i class="fas fa-ruler-combined"></i>
+      <h4>Dimensões</h4>
+      <p>
+        <strong>Peso (g):</strong>
+        183</p>
+      <p>
+        <strong>Espessura (cm):</strong>
+        0.79</p>
+      <p>
+        <strong>Largura (cm):</strong>
+        7.67</p>
+      <p>
+        <strong>Altura (cm):</strong>
+        16.43</p>
+    </div>
+
+    <div class="item">
+      <i class="fas fa-sim-card"></i>
+      <h4>Chip</h4>
+      <p>
+        <strong>Tipo:</strong>
+        Nano-SIM</p>
+      <p>
+        <strong>Quantidade:</strong>
+        2</p>
+    </div>
+
+    <div class="item">
+      <i class="fas fa-map-marked-alt"></i>
+      <h4>GPS</h4>
+      <p>
+        <strong>Tipo:</strong>
+        A-GPS, GeoTagging, GLONASS, GALILEO, BeiDou</p>
+      <p>
+        <strong>Tem:</strong>
+        Sim</p>
+    </div>
+
+    <div class="item">
+      <span class="material-icons">
+        radio
+      </span>
+      <h4>Rádio</h4>
+      <p>
+        <strong>Tipo:
+        </strong>FM</p>
+      <p>
+        <strong>Tem:
+        </strong>Sim</p>
+    </div>
+
+    <div class="item">
+      <span class="material-icons">
+        live_tv
+      </span>
+      <h4>TV Digital</h4>
+      <p>
+        <strong>Tem:
+        </strong>Não</p>
+
+    </div>
+  </div>
 {% endblock content %}

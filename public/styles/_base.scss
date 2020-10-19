@@ -1,5 +1,5 @@
 $primary-color: #34aeeb;
-$secondary-color: #5e478c;
+$secondary-color: #7152af;
 $dark-color: #282828;
 $dark-bold-color: #121212;
 $font-color: #cacac0;
@@ -9,105 +9,105 @@ $border-color: #4d4d4d;
 
 *,
 body {
-    margin: 0;
-    padding: 0;
-    text-decoration: none;
-    border: none;
-    outline: 0;
-    font-family: "Rubik", sans-serif;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  border: none;
+  outline: 0;
+  font-family: "Rubik", sans-serif;
 }
 
 body {
-    background-color: $dark-color;
+  background-color: $dark-color;
 }
 
 @mixin logo {
-    .container-logo {
-        position: relative;
+  .container-logo {
+    position: relative;
 
-        .logo {
-            padding: 4px 8px;
-            background-color: $primary-color;
+    .logo {
+      padding: 4px 8px;
+      background-color: $primary-color;
 
-            > a {
-                font-size: 36px;
-                font-weight: bold;
-                letter-spacing: 2px;
-                text-transform: capitalize;
-                color: $secondary-color;
-            }
+      > a {
+        font-size: 36px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        text-transform: capitalize;
+        color: $secondary-color;
+      }
 
-            &::before {
-                @include border-logo;
-                top: -10px;
-            }
+      &::before {
+        @include border-logo;
+        top: -10px;
+      }
 
-            &::after {
-                @include border-logo;
-                bottom: -10px;
-            }
-        }
+      &::after {
+        @include border-logo;
+        bottom: -10px;
+      }
     }
+  }
 }
 
 @mixin transition($val) {
-    transition: ease-in-out $val;
+  transition: ease-in-out $val;
 }
 
 @mixin area {
-    width: 100%;
-    height: 40px;
-    line-height: 40px;
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
 }
 
 @mixin border-logo {
-    content: "";
-    width: 100%;
-    height: 5px;
-    position: absolute;
-    left: 0;
-    background-color: $primary-color;
+  content: "";
+  width: 100%;
+  height: 5px;
+  position: absolute;
+  left: 0;
+  background-color: $primary-color;
 }
 
 @mixin border-radius($val) {
-    border-radius: $val;
+  border-radius: $val;
 }
 
 @mixin size-container {
-    max-width: 1200px;
-    min-width: 1060px;
-    margin: 0 auto;
+  max-width: 1200px;
+  min-width: 1060px;
+  margin: 0 auto;
 }
 
 @mixin animation-submenu($name) {
-    animation-name: $name;
-    animation-duration: 0.3s;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: both;
+  animation-name: $name;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
 }
 
 @keyframes popup {
-    from {
-        height: 0px;
-        opacity: 0;
-        visibility: hidden;
-    }
-    to {
-        height: 30px;
-        opacity: 1;
-        visibility: visible;
-    }
+  from {
+    height: 0px;
+    opacity: 0;
+    visibility: hidden;
+  }
+  to {
+    height: 30px;
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 @keyframes popdown {
-    from {
-        height: 30px;
-        opacity: 1;
-        visibility: visible;
-    }
-    to {
-        height: 0px;
-        opacity: 0;
-        visibility: hidden;
-    }
+  from {
+    height: 30px;
+    opacity: 1;
+    visibility: visible;
+  }
+  to {
+    height: 0px;
+    opacity: 0;
+    visibility: hidden;
+  }
 }

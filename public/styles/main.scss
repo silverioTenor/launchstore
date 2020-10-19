@@ -5,36 +5,3 @@
 @import "home/homePrivacy";
 @import "products/show";
 
-#character {
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-
-  .item {
-    padding: 16px;
-    text-align: center;
-    border: 1px solid $border-color;
-    @include border-radius(4px);
-    box-sizing: border-box;
-    color: $font-dark-color;
-
-    span.material-icons,
-    i.fas,
-    i.fab {
-      height: 50px;
-      font-size: 40px;
-      color: $link-color;
-    }
-
-    h4 {
-      margin-bottom: 10px;
-      color: $secondary-color;
-    }
-
-    p {
-      line-height: 18px;
-      font-size: 14px;
-    }
-  }
-}

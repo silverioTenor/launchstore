@@ -1,0 +1,15 @@
+{% extends '../layout.njk' %}
+
+{% block content %}
+  <div id="form-container">
+    <div class="form-title">
+      <h2>Novo Produto</h2>
+    </div>
+
+    <form method="POST" action="/products">
+      <div class="fields">
+        {% include 'products/fields.njk' %}
+      </div>
+    </form>
+  </div>
+{% endblock content %}

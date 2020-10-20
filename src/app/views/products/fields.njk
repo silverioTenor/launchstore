@@ -35,16 +35,25 @@
     <label for="price">Preço</label>
   </div>
   <div>
-    <input type="text" name="price" id="price"/>
+    <input type="text" name="price" id="price" onkeydown="Mask.apply(this, 'formatBRL')"/>
   </div>
 </div>
 
 <div class="field">
   <div>
-    <label for="color">Color</label>
+    <label for="color">Cor</label>
   </div>
   <div>
     <input type="text" name="color" id="color"/>
+  </div>
+</div>
+
+<div class="field">
+  <div>
+    <label for="int">Armazenamento interno</label>
+  </div>
+  <div>
+    <input type="text" name="storage" id="int"/>
   </div>
 </div>
 
@@ -67,7 +76,7 @@
     <label for="desc">Descrição</label>
   </div>
   <div>
-    <textarea name="description" id="desc" maxlength="300"></textarea>
+    <textarea name="description" id="desc" maxlength="2000"></textarea>
   </div>
 </div>
 

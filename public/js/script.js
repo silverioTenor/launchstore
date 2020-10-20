@@ -72,14 +72,34 @@ if (document.querySelector('.small-view')) {
   const containersImages = document.querySelectorAll('.small');
 
   for (const container of containersImages) {
-    
+
     container.addEventListener("click", (event) => {
       const { target } = event;
-      
+
       containersImages.forEach(small => small.classList.remove('active'));
 
       bigImage.src = target.src;
       container.classList.add('active');
     });
+  }
+}
+
+// ==============================================================================
+// ============================ FORMAT FIELD NUMERIC ============================
+// ==============================================================================
+
+const Mask = {
+  apply(input, func) {
+    setTimeout(() => {
+      input.value = Mask[func](input.value);
+    }, 1);
+  },
+  formatBRL(value) {
+    value = value.replace(/\D/g, "");
+
+    return new Intl.NumberFormat("pt-br", {
+      style: 'currency', 
+      currency: 'BRL'
+    }).format(value / 100);
   }
 }

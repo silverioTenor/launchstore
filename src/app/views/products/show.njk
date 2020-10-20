@@ -8,23 +8,19 @@
   <div class="container-show">
     <div class="view">
       <div class="big-view">
-        <img src="/img/products/galaxy-a70.png" alt="Galaxy A70"/>
+        <img src="{{ product.files[0].path }}" alt="{{ product.model }}"/>
       </div>
       <div class="small-view">
-        <div class="small active">
-          <img src="/img/products/galaxy-a70.png" alt="Galaxy A70"/>
-        </div>
-        <div class="small">
-          <img src="/img/products/galaxy-a70-right_side.png" alt="Galaxy A70"/>
-        </div>
-        <div class="small">
-          <img src="/img/products/galaxy-a70-back_end.png" alt="Galaxy A70"/>
-        </div>
+        {% for file in product.files %}
+          <div class="small active">
+            <img src="{{ file.path }}" alt="{{ product.model }}"/>
+          </div>
+        {% endfor %}
       </div>
     </div>
 
     <div class="content">
-      <h1>Samsung Galaxy A70 128GB Azul</h1>
+      <h1>{{ product.brand }} {{ product.model }} {{ product.storage }} {{ product.color }}</h1>
 
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi exercitationem vero eaque reiciendis consectetur, quasi officiis alias sint.
@@ -34,7 +30,11 @@
         <div class="box-checked">
           <span>
             <div class="before"></div>
-            <input type="checkbox" name="excelent" checked=""/>
+            <input 
+              type="checkbox" 
+              name="excelent" 
+              checked=""
+            />
           </span>
           <span>Excelente</span>
 
@@ -45,7 +45,11 @@
         <div class="box-checked">
           <span>
             <div class="before"></div>
-            <input type="checkbox" name="very_good" checked=""/>
+            <input 
+              type="checkbox" 
+              name="very_good" 
+              checked=""
+            />
           </span>
           <span>Muito Bom</span>
 
@@ -56,7 +60,11 @@
         <div class="box-checked">
           <span>
             <div class="before"></div>
-            <input type="checkbox" name="good" checked=""/>
+            <input 
+              type="checkbox" 
+              name="good" 
+              checked=""
+            />
           </span>
           <span>Bom</span>
 
@@ -69,16 +77,16 @@
 
     <div class="aside">
       <div class="pay">
-        <strong>R$ 1.599,00</strong>
+        <strong>{{ product.price }}</strong>
         <span>Preço à vista</span>
 
-        <p>R$ 1.519,05 (<span>5% de desconto &nbsp;</span>com cartão de crédito)</p>
+        <p>{{ product.off }} (<span>5% de desconto &nbsp;</span>com cartão de crédito)</p>
 
         <div class="icon">
           <i class="fas fa-credit-card"></i>
 
           <div class="icon-content">
-            <span>Ou até 12x de R$ 133,25 sem juros</span>
+            <span>Ou até 12x de {{ product.priceParcel }} sem juros</span>
             <a href="#">Ver parcelas</a>
           </div>
         </div>
@@ -158,8 +166,7 @@
   </div>
 
   <div id="statusCel">
-    <h1>Você tem dúvidas sobre os celulares na condição EXCELENTE</h1>
-    {# Aqui irá mudar o nome pelo estado escolhido #}
+    <h1>Você tem dúvidas sobre os celulares na condição <span>{{ product.status }}</span></h1>
 
     <p>
       Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi dolores explicabo, aliquam quo doloremque maiores adipisci illum pariatur quibusdam hic cupiditate, distinctio nisi ipsum optio beatae exercitationem nulla, deserunt facilis!
@@ -192,9 +199,7 @@
   <div id="presentation">
     <h1>Um celular intermediário com design e jeito de top de linha!</h1>
 
-    <p>
-      A Samsung investiu nos pontos certos para desenvolver a linha intermediária Galaxy A. O modelo A70 tem uma tela grande (6,7 polegadas), em linha com tendências mundiais, com boa resolução e nitidez. O conceito de bordas finas, comum aos aparelhos top de linha, abre mais espaço para o painel. O conjunto de câmeras tripla oferece inúmeras possibilidades em termos de fotografia e o desempenho não deixa a desejar, assim como a capacidade da bateria. O Galaxy A70 tem condições de realizar as tarefas cotidianas sem engasgos ou travamentos.
-    </p>
+    <p>{{ product.description }}</p>
   </div>
 
   <div id="character">

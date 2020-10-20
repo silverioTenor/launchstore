@@ -1,27 +1,21 @@
-CREATE TABLE "product" (
+CREATE TABLE "products" (
   "id" SERIAL PRIMARY KEY,
+  "color" text NOT NULL,
   "brand" text NOT NULL,
   "model" text NOT NULL,
-  "cor" text NOT NULL,
+  "condition" text NOT NULL,
   "description" text NOT NULL,
-  "old_price" int,
   "price" int NOT NULL,
+  "old_price" int,
   "created_at" timestamp,
   "updated_at" timestamp
 );
 
-CREATE TABLE "storage" (
-  "id" SERIAL PRIMARY KEY,
-  "product_id" int UNIQUE,
-  "quantity" int DEFAULT 0
-);
-
-CREATE TABLE "file" (
+CREATE TABLE "files" (
   "id" SERIAL PRIMARY KEY,
   "path" text NOT NULL,
-  "product_id" int UNIQUE
+  "product_id" int UNIQUE,
+  "user_id" int UNIQUE
 );
 
-ALTER TABLE "product" ADD FOREIGN KEY ("id") REFERENCES "storage" ("product_id");
-
-ALTER TABLE "product" ADD FOREIGN KEY ("id") REFERENCES "file" ("product_id");
+ALTER TABLE "files" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");

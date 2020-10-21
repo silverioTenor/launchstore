@@ -168,5 +168,13 @@ module.exports = {
 
     return res.redirect(`/products/show/${id}`);
   },
-  delete(req, res) { },
+  async delete(req, res) {
+    let { id } = req.body;
+    id = Number(id);
+
+    await File.remove(id);
+    await Product.remove(id);
+
+    return res.redirect("/");
+  },
 }

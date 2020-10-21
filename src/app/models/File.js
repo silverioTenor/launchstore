@@ -22,5 +22,11 @@ module.exports = {
       throw new Error(error);
     }
   },
-  remove() { }
+  remove(id) {
+    try {
+      return db.query("DELETE FROM files WHERE product_id = $1", [id]);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }

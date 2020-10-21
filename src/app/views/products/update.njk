@@ -1,0 +1,31 @@
+{% extends '../layout.njk' %}
+
+{% block head %}
+  <title>Página de Edição</title>
+{% endblock head %}
+
+{% block content %}
+  <div id="form-container">
+    <div class="form-title">
+      <h2>Editando Produto</h2>
+    </div>
+
+    <form method="POST" action="/products?_method=PUT">
+      <div class="fields">
+        <input type="hidden" name="id" value="{{ product.id }}">
+        
+        {% include 'products/fields.njk' %}
+
+        <button type="submit">Atualizar</button>
+      </div>
+    </form>
+    
+    <form method="POST" action="/products?_method=DELETE">
+      <div class="fields">
+        <input type="hidden" name="id" value="{{ product.id }}">
+
+        <button id="delete" type="submit">Excluir</button>
+      </div>
+    </form>
+  </div>
+{% endblock content %}

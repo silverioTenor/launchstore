@@ -4,4 +4,10 @@ module.exports = {
     else if (value == "very_good") return "Muito Bom";
     else if (value == "good") return "Bom";
   },
+  formatPrice(price) {
+    return new Intl.NumberFormat("pt-br", {
+      style: 'currency', 
+      currency: 'BRL'
+    }).format(price / 100);
+  }
 }

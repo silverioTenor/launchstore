@@ -1,5 +1,9 @@
 {% extends '../layout.njk' %}
 
+{% block head %}
+  <title>Página de Cadastro</title>
+{% endblock head %}
+
 {% block content %}
   <div id="form-container">
     <div class="form-title">
@@ -9,6 +13,8 @@
     <form method="POST" action="/products">
       <div class="fields">
         {% include 'products/fields.njk' %}
+
+        <button type="submit">Vender</button>
       </div>
     </form>
   </div>

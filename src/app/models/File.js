@@ -13,6 +13,14 @@ module.exports = {
       throw new Error(error);
     }
   },
-  edit() { },
+  edit(values) {
+    try {
+      const sql = `UPDATE files SET path =  $2 WHERE product_id = $1;`;
+
+      return db.query(sql, values);
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
   remove() { }
 }

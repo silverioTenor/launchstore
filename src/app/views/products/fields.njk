@@ -3,7 +3,12 @@
     <label for="image">Link da imagem</label>
   </div>
   <div>
-    <input type="url" name="avatar_url" id="image"/>
+    <input 
+      type="url" 
+      name="avatar_url" 
+      id="image" 
+      value="{{ product.avatar_url }}" 
+    />
   </div>
 </div>
 
@@ -14,9 +19,21 @@
   <div>
     <select name="brand">
       <option value="">Selecione...</option>
-      <option value="samsung">Samsung</option>
-      <option value="iphone">iPhone</option>
-      <option value="motorola">Motorola</option>
+      <option value="Samsung"
+        {% if product.brand == "Samsung" %}
+          selected
+        {% endif %}
+      >Samsung</option>
+      <option value="iPhone"
+        {% if product.brand == "iPhone" %}
+          selected
+        {% endif %}
+      >iPhone</option>
+      <option value="Motorola"
+        {% if product.brand == "Motorola" %}
+          selected
+        {% endif %}
+      >Motorola</option>
     </select>
   </div>
 </div>
@@ -26,7 +43,12 @@
     <label for="model">Modelo</label>
   </div>
   <div>
-    <input type="text" name="model" id="model"/>
+    <input 
+      type="text" 
+      name="model" 
+      id="model" 
+      value="{{ product.model }}"
+    />
   </div>
 </div>
 
@@ -35,7 +57,13 @@
     <label for="price">Preço</label>
   </div>
   <div>
-    <input type="text" name="price" id="price" onkeydown="Mask.apply(this, 'formatBRL')"/>
+    <input 
+      type="text" 
+      name="price" 
+      id="price"
+      value="{{ product.price }}"
+      onkeydown="Mask.apply(this, 'formatBRL')"
+    />
   </div>
 </div>
 
@@ -44,7 +72,12 @@
     <label for="color">Cor</label>
   </div>
   <div>
-    <input type="text" name="color" id="color"/>
+    <input 
+      type="text" 
+      name="color" 
+      id="color"
+      value="{{ product.color }}"
+    />
   </div>
 </div>
 
@@ -53,7 +86,12 @@
     <label for="int">Armazenamento interno</label>
   </div>
   <div>
-    <input type="text" name="storage" id="int"/>
+    <input 
+      type="text" 
+      name="storage" 
+      id="int"
+      value="{{ product.storage }}"
+    />
   </div>
 </div>
 
@@ -64,9 +102,21 @@
   <div>
     <select name="status">
       <option value="">Selecione...</option>
-      <option value="good">Bom</option>
-      <option value="very_good">Muito bom</option>
-      <option value="excelent">Excelente</option>
+      <option value="good"
+        {% if product.status == "good" %}
+          selected
+        {% endif %}
+      >Bom</option>
+      <option value="very_good"
+        {% if product.status == "very_good" %}
+          selected
+        {% endif %}
+      >Muito bom</option>
+      <option value="excelent"
+        {% if product.status == "excelent" %}
+          selected
+        {% endif %}
+      >Excelente</option>
     </select>
   </div>
 </div>
@@ -76,8 +126,6 @@
     <label for="desc">Descrição</label>
   </div>
   <div>
-    <textarea name="description" id="desc" maxlength="2000"></textarea>
+    <textarea name="description" id="desc" maxlength="2000">{{ product.description }}</textarea>
   </div>
 </div>
-
-<button type="submit">Vender</button>

@@ -29,6 +29,25 @@ module.exports = {
       throw new Error(error);
     }
   },
-  edit() { },
+  edit(values) {
+    try {
+      const sql = `
+      UPDATE products SET
+        color = $2,
+        brand = $3,
+        model = $4,
+        status = $5,
+        description = $6,
+        price = $7,
+        old_price = $8,
+        storage = $9
+      WHERE id = $1
+    `;
+
+      return db.query(sql, values);
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
   remove() { }
 }

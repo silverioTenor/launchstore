@@ -1,7 +1,7 @@
 const Product = require('../models/Product');
 const File = require('../models/File');
 
-const { status } = require('../../lib/utils');
+const { formatPrice, status } = require('../../lib/utils');
 
 module.exports = {
   index(req, res) {
@@ -17,7 +17,7 @@ module.exports = {
       if (req.body[key] == "") return res.json({ message: "Please! Fill all fields." });
     }
 
-    const {
+    let {
       avatar_url,
       brand,
       model,
@@ -64,20 +64,11 @@ module.exports = {
     results = await File.get(id);
     let files = results.rows;
 
-    data.priceParcel = new Intl.NumberFormat("pt-br", {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(data.price / 12);
+    data.priceParcel = formatPrice(data.price / 12);
 
-    data.off = new Intl.NumberFormat("pt-br", {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(data.price - (data.price * 5 / 100));
+    data.off = formatPrice(data.price - (data.price * 5 / 100));
 
-    data.price = new Intl.NumberFormat("pt-br", {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(data.price);
+    data.price = formatPrice(data.price);
 
     data.status = status(data.status);
 
@@ -88,7 +79,74 @@ module.exports = {
 
     return res.render("products/show", { product });
   },
-  update(req, res) { },
-  put(req, res) { },
+  async update(req, res) {
+    const { id } = req.params;
+
+    let results = await Product.get(id);
+    const data = results.rows[0];
+
+    results = await File.get(id);
+    const avatar_url = results.rows[0].path;
+
+    data.price = formatPrice(data.price);
+
+    const product = {
+      id,
+      ...data,
+      avatar_url
+    }
+
+    return res.render("products/update", { product });
+  },
+  async put(req, res) {
+    const keys = Object.keys(req.body);
+
+    for (const key of keys) {
+      if (req.body[key] == "") return res.json({ message: "Please! Fill all fields." });
+    }
+
+    let {
+      id,
+      avatar_url,
+      brand,
+      model,
+      color,
+      status,
+      price,
+      old_price,
+      storage,
+      description
+    } = req.body;
+
+    price = price.replace(/\D/g, "");
+
+    if (old_price != price) {
+      const results = await Product.get(id);
+      old_price = results.rows[0].price;
+    }
+
+    let values = [
+      id = Number(id),
+      color,
+      brand,
+      model,
+      status,
+      description,
+      price = Number(price),
+      old_price = Number(old_price),
+      storage
+    ];
+
+    console.log(values);
+
+    // Saving product
+    await Product.edit(values);
+
+    // Saving files
+    values = [id, avatar_url];
+    await File.edit(values);
+
+    return res.redirect(`/products/show/${id}`);
+  },
   delete(req, res) { },
 }

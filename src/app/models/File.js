@@ -2,7 +2,7 @@ const db = require('../../database/config');
 
 module.exports = {
   get(id) {
-    return db.query("SELECT path FROM files WHERE product_id = $1", [id]);
+    return db.query("SELECT path, product_id FROM files WHERE product_id = $1", [id]);
   },
   save(values) {
     try {

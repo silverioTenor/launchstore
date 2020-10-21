@@ -98,8 +98,32 @@ const Mask = {
     value = value.replace(/\D/g, "");
 
     return new Intl.NumberFormat("pt-br", {
-      style: 'currency', 
+      style: 'currency',
       currency: 'BRL'
     }).format(value / 100);
+  }
+}
+
+// ================================= ADD FIELDS =================================
+
+const AddFields = {
+  fieldConstructor() {
+    const images = document.querySelector('#images');
+    const imageContainer = document.querySelectorAll('.image');
+
+    // Relaiza um clone do último ingrediente adicionado
+    const newField = imageContainer[imageContainer.length - 1].cloneNode(true);
+
+    // Não adiciona um novo input se o último tem um valor vazio
+    if (newField.children[0].value == "") return false;
+
+    // Deixa o valor do input vazio
+    newField.children[0].value = "";
+
+    images.appendChild(newField);
+
+  },
+  newField() {
+    AddFields.fieldConstructor();    
   }
 }

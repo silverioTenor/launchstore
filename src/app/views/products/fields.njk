@@ -2,14 +2,29 @@
   <div>
     <label for="image">Link da imagem</label>
   </div>
-  <div>
-    <input 
-      type="url" 
-      name="avatar_url" 
-      id="image" 
-      value="{{ product.avatar_url }}" 
-    />
+  <div id="images">
+    {% if product.avatar_url %}
+      {% for image in product.avatar_url %}
+        <div class="image">
+          <input 
+            type="url" 
+            name="avatar_url[]" 
+            id="image" 
+            value="{{ image }}"
+          />
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="image">
+        <input 
+          type="url" 
+          name="avatar_url[]" 
+          id="image"
+        />
+      </div>
+    {% endif %}
   </div>
+  <span class="add-field" onclick="AddFields.newField()">Adicionar nova imagem</span>
 </div>
 
 <div class="field">

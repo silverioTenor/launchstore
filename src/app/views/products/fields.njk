@@ -115,20 +115,20 @@
     <label for="status">Condição do aparelho</label>
   </div>
   <div>
-    <select name="status">
+    <select name="condition">
       <option value="">Selecione...</option>
       <option value="good"
-        {% if product.status == "good" %}
+        {% if product.condition == "good" %}
           selected
         {% endif %}
       >Bom</option>
       <option value="very_good"
-        {% if product.status == "very_good" %}
+        {% if product.condition == "very_good" %}
           selected
         {% endif %}
       >Muito bom</option>
       <option value="excelent"
-        {% if product.status == "excelent" %}
+        {% if product.condition == "excelent" %}
           selected
         {% endif %}
       >Excelente</option>

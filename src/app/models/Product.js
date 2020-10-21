@@ -5,7 +5,7 @@ module.exports = {
     return db.query("SELECT * FROM products WHERE id = $1", [id]);
   },
   getAll() {
-    return db.query("SELECT * FROM products");
+    return db.query("SELECT id, brand, model, storage, color, price FROM products");
   },
   save(values) {
     try {
@@ -14,13 +14,12 @@ module.exports = {
         color,
         brand,
         model,
-        status,
+        condition,
         description,
         price,
         old_price,
-        storage,
-        created_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        storage
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING id;
     `;
 

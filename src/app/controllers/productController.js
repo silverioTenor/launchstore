@@ -12,13 +12,13 @@ module.exports = {
     let files = [];
     let products = [];
 
-    
+
     for (let i = 0; i < data.length; i++) {
       results = await File.get(data[i].id);
-      files[i] = results.rows[i];
+      files[i] = results.rows[0];
 
       if (data[i].id === files[i].product_id) {
-        const avatar_url = files[i].path;
+        const avatar_url = files[i].path[0];
 
         data[i].priceParcel = formatPrice(data[i].price / 12);
         data[i].price = formatPrice(data[i].price);
@@ -46,7 +46,7 @@ module.exports = {
       brand,
       model,
       color,
-      status,
+      condition,
       price,
       old_price,
       storage,
@@ -54,18 +54,16 @@ module.exports = {
     } = req.body;
 
     price = price.replace(/\D/g, "");
-    const created_at = new Date(Date.now());
 
     let values = [
       color,
       brand,
       model,
-      status,
+      condition,
       description,
       price,
       old_price || price,
-      storage,
-      created_at
+      storage
     ];
 
     // Saving product
@@ -86,7 +84,7 @@ module.exports = {
     const data = results.rows[0];
 
     results = await File.get(id);
-    let files = results.rows;
+    let files = results.rows[0].path;
 
     data.priceParcel = formatPrice(data.price / 12);
 
@@ -94,7 +92,7 @@ module.exports = {
 
     data.price = formatPrice(data.price);
 
-    data.status = status(data.status);
+    data.condition = status(data.condition);
 
     const product = {
       ...data,

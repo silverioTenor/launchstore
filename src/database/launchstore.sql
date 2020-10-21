@@ -7,13 +7,14 @@ CREATE TABLE "products" (
   "description" text NOT NULL,
   "price" int NOT NULL,
   "old_price" int,
-  "created_at" timestamp,
-  "updated_at" timestamp
+  "storage" text NOT NULL,
+  "created_at" timestamp DEFAULT now(),
+  "updated_at" timestamp DEFAULT now()
 );
 
 CREATE TABLE "files" (
   "id" SERIAL PRIMARY KEY,
-  "path" text NOT NULL,
+  "path" text[] NOT NULL,
   "product_id" int UNIQUE,
   "user_id" int UNIQUE
 );

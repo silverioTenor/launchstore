@@ -8,12 +8,12 @@
   <div class="container-show">
     <div class="view">
       <div class="big-view">
-        <img src="{{ product.files[0].path }}" alt="{{ product.model }}"/>
+        <img src="{{ product.files[0] }}" alt="{{ product.model }}"/>
       </div>
       <div class="small-view">
         {% for file in product.files %}
-          <div class="small active">
-            <img src="{{ file.path }}" alt="{{ product.model }}"/>
+          <div class="small">
+            <img src="{{ file }}" alt="{{ product.model }}"/>
           </div>
         {% endfor %}
       </div>
@@ -166,7 +166,7 @@
   </div>
 
   <div id="statusCel">
-    <h1>Você tem dúvidas sobre os celulares na condição <span>{{ product.status }}</span></h1>
+    <h1>Você tem dúvidas sobre os celulares na condição <span>{{ product.condition }}</span></h1>
 
     <p>
       Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi dolores explicabo, aliquam quo doloremque maiores adipisci illum pariatur quibusdam hic cupiditate, distinctio nisi ipsum optio beatae exercitationem nulla, deserunt facilis!

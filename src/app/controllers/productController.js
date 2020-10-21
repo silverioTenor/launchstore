@@ -133,7 +133,7 @@ module.exports = {
       brand,
       model,
       color,
-      status,
+      condition,
       price,
       old_price,
       storage,
@@ -152,14 +152,12 @@ module.exports = {
       color,
       brand,
       model,
-      status,
+      condition,
       description,
       price = Number(price),
       old_price = Number(old_price),
       storage
     ];
-
-    console.log(values);
 
     // Saving product
     await Product.edit(values);

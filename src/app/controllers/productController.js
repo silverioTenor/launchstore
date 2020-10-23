@@ -42,7 +42,7 @@ module.exports = {
     }
 
     let {
-      avatar_url,
+      photos,
       brand,
       model,
       color,
@@ -71,7 +71,7 @@ module.exports = {
     const productID = results.rows[0].id;
 
     // Saving files
-    values = [avatar_url, productID];
+    values = [photos, productID];
 
     results = await File.save(values);
 
@@ -129,7 +129,7 @@ module.exports = {
 
     let {
       id,
-      avatar_url,
+      photos,
       brand,
       model,
       color,
@@ -163,7 +163,7 @@ module.exports = {
     await Product.edit(values);
 
     // Saving files
-    values = [id, avatar_url];
+    values = [id, photos];
     await File.edit(values);
 
     return res.redirect(`/products/show/${id}`);

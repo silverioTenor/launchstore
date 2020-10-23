@@ -87,8 +87,6 @@ if (document.querySelector('.small-view')) {
 // ==============================================================================
 // ==============================================================================
 
-// ============================ FORMAT FIELD NUMERIC ============================
-
 const Mask = {
   apply(input, func) {
     setTimeout(() => {
@@ -104,8 +102,6 @@ const Mask = {
     }).format(value / 100);
   }
 }
-
-// ================================= ADD FIELDS =================================
 
 const AddFields = {
   fieldConstructor() {
@@ -125,6 +121,68 @@ const AddFields = {
 
   },
   newField() {
-    AddFields.fieldConstructor();    
+    AddFields.fieldConstructor();
+  }
+}
+
+const PhotosUpload = {
+  uploadLimit: 8,
+  preview: document.querySelector('#photos-preview'),
+  handleFileInput(event) {
+    const { files: fileList } = event.target;
+
+    if (PhotosUpload.hasLimit(event)) return
+
+    Array.from(fileList).forEach(file => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        const image = new Image();
+        image.src = String(reader.result);
+
+        const divContainer = PhotosUpload.divConstructor(image);
+        PhotosUpload.preview.appendChild(divContainer);
+      };
+
+      reader.readAsDataURL(file);
+    });
+  },
+  hasLimit(event) {
+    const { files: fileList } = event.target;
+    const { uploadLimit } = PhotosUpload;
+
+    if (fileList.length > uploadLimit) {
+      alert(`Envie no máximo ${uploadLimit} fotos`);
+
+      event.preventDefault();
+      return true;
+    }
+
+    return false;
+  },
+  divConstructor(image) {
+    const divContainer = document.createElement('div');
+
+    divContainer.classList.add('photo');
+    divContainer.onclick = PhotosUpload.removePhoto;
+    divContainer.appendChild(image);
+    divContainer.appendChild(PhotosUpload.createRemoveButton());
+
+    return divContainer;
+  },
+  createRemoveButton() {
+    const button = document.createElement('i');
+
+    button.classList.add('material-icons');
+    button.innerHTML = "close";
+
+    return button;
+  },
+  removePhoto(event) {
+    const photoDiv = event.target.parentNode;
+    const photosArray = Array.from(PhotosUpload.preview.children);
+    const index = photosArray.indexOf(photoDiv);
+
+    photoDiv.remove();
   }
 }

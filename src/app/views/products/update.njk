@@ -10,7 +10,7 @@
       <h2>Editando Produto</h2>
     </div>
 
-    <form method="POST" action="/products?_method=PUT">
+    <form method="POST" action="/products?_method=PUT" enctype="multipart/form-data">
       <div class="fields">
         <input type="hidden" name="id" value="{{ product.id }}">
         

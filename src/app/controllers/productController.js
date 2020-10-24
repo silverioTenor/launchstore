@@ -1,5 +1,6 @@
 const Product = require('../models/Product');
 const File = require('../models/File');
+const fs = require('fs');
 
 const { formatPrice, status } = require('../../lib/utils');
 
@@ -41,8 +42,9 @@ module.exports = {
       if (req.body[key] == "") return res.json({ message: "Please! Fill all fields." });
     }
 
+    if (req.files.length == 0) return res.json({ message: "Upload at least one image!" });
+
     let {
-      photos,
       brand,
       model,
       color,
@@ -71,9 +73,14 @@ module.exports = {
     const productID = results.rows[0].id;
 
     // Saving files
-    values = [photos, productID];
+    const photos = [];
 
-    results = await File.save(values);
+    for (const f in req.files) {
+      photos[f] = req.files[f].path;
+    }
+
+    values = [photos, productID];
+    await File.save(values);
 
     return res.redirect(`/products/show/${productID}`);
   },
@@ -86,13 +93,19 @@ module.exports = {
     results = await File.get(id);
     let files = results.rows[0].path;
 
-    data.priceParcel = formatPrice(data.price / 12);
+    files = files.map(file => `${req.protocol}://${req.headers.host}${file}`.replace("public", ""));
 
-    data.off = formatPrice(data.price - (data.price * 5 / 100));
+    function formatPriceNow() {
+      data.priceParcel = formatPrice(data.price / 12);
 
-    data.price = formatPrice(data.price);
+      data.off = formatPrice(data.price - (data.price * 5 / 100));
 
-    data.condition = status(data.condition);
+      data.price = formatPrice(data.price);
+
+      data.condition = status(data.condition);
+    }
+
+    formatPriceNow();
 
     const product = {
       ...data,
@@ -107,15 +120,22 @@ module.exports = {
     let results = await Product.get(id);
     const data = results.rows[0];
 
-    results = await File.get(id);
-    const avatar_url = results.rows[0].path;
-
     data.price = formatPrice(data.price);
+
+    results = await File.get(id);
+    let photos = results.rows[0].path;
+
+    for (let i = 0; i < photos.length; i++) {
+      photos[i] = {
+        id: i,
+        path: `${req.protocol}://${req.headers.host}${photos[i]}`.replace("public", "")
+      }
+    }
 
     const product = {
       id,
       ...data,
-      avatar_url
+      photos
     }
 
     return res.render("products/update", { product });
@@ -124,12 +144,11 @@ module.exports = {
     const keys = Object.keys(req.body);
 
     for (const key of keys) {
-      if (req.body[key] == "") return res.json({ message: "Please! Fill all fields." });
+      if (req.body[key] == "" && key != "removedPhotos") return res.json({ message: "Please! Fill all fields." });
     }
 
     let {
       id,
-      photos,
       brand,
       model,
       color,
@@ -162,9 +181,51 @@ module.exports = {
     // Saving product
     await Product.edit(values);
 
+    if (req.body.removedPhotos) {
+      let removedPhotos = req.body.removedPhotos.split(",");
+      const lastIndex = removedPhotos.length - 1;
+
+      removedPhotos.splice(lastIndex, 1);
+
+      removedPhotos = removedPhotos.map(photo => Number(photo));
+
+      // Remove old photos
+      if (removedPhotos.length > 0) {
+        const results = await File.get(id);
+        let oldPhotos = results.rows[0].path;
+
+        let filteredPhotos = [];
+
+        for (let i = 0; i < removedPhotos.length; i++) {
+          filteredPhotos[i] = oldPhotos[removedPhotos[i]];
+        }
+
+        filteredPhotos.forEach(photo => {
+          fs.unlinkSync(photo);
+        });
+
+        removedPhotos.forEach(photo => {
+          oldPhotos.splice(photo, 1);
+        });
+
+        if (req.files.length <= 0) {
+          values = [id, oldPhotos];
+          await File.edit(values);
+        }
+      }
+    }
+
     // Saving files
-    values = [id, photos];
-    await File.edit(values);
+    if (req.files.length > 0) {
+      const photos = [];
+
+      for (const f in req.files) {
+        photos[f] = req.files[f].path;
+      }
+
+      values = [id, photos];
+      await File.edit(values);
+    }
 
     return res.redirect(`/products/show/${id}`);
   },

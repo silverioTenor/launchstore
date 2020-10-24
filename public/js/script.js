@@ -127,7 +127,7 @@ const AddFields = {
 
 const PhotosUpload = {
   input: "",
-  uploadLimit: 8,
+  uploadLimit: 4,
   preview: document.querySelector('#photos-preview'),
   files: [],
   handleFileInput(event) {
@@ -219,5 +219,11 @@ const PhotosUpload = {
     PhotosUpload.input.files = PhotosUpload.getAllFiles();
 
     photoDiv.remove();
+  },
+  countRemovedPhotos(event) {
+    const photoContainer = event.target.parentNode;
+    const removedPhoto = document.querySelector('input[name="removedPhotos"]');
+
+    if (removedPhoto) removedPhoto.value += `${photoContainer.id},`;
   }
 }

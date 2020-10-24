@@ -15,7 +15,7 @@ module.exports = {
   },
   edit(values) {
     try {
-      const sql = `UPDATE files SET path =  $2 WHERE product_id = $1;`;
+      const sql = `UPDATE files SET path = $2 WHERE product_id = $1;`;
 
       return db.query(sql, values);
     } catch (error) {

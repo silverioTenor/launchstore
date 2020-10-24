@@ -112,7 +112,7 @@
       <div id="photos-upload">
         <input 
           type="file" 
-          name="photos[]" 
+          name="photos" 
           id="photos-input"
           multiple 
           accept="image/*"
@@ -121,7 +121,23 @@
         />
         <span class="choose">Escolher imagens</span>
       </div>
-      <div id="photos-preview"></div>
+
+      {% if product.photos %}
+        <div id="photos-preview">
+          {% for photo in product.photos %}
+            <div id="{{ photo.id }}" class="photo" onclick="PhotosUpload.removePhoto(event)">
+              <img src="{{ photo.path }}" alt="{{ product.brand}} {{ product.model }}">
+              <i 
+                class="material-icons"
+                 onclick="PhotosUpload.countRemovedPhotos(event)"
+              >close</i>
+            </div>
+          {% endfor %}
+          <input type="hidden" name="removedPhotos">
+        </div>
+      {% else%}
+        <div id="photos-preview"></div>
+      {% endif %}
     </div>
 </div>
 

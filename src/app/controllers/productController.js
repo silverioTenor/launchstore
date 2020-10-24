@@ -13,19 +13,20 @@ module.exports = {
     let files = [];
     let products = [];
 
-
     for (let i = 0; i < data.length; i++) {
       results = await File.get(data[i].id);
       files[i] = results.rows[0];
 
       if (data[i].id === files[i].product_id) {
-        const avatar_url = files[i].path[0];
+        let image = files[i].path[0];
+
+        image = `${req.protocol}://${req.headers.host}${image}`.replace("public", "");
 
         data[i].priceParcel = formatPrice(data[i].price / 12);
         data[i].price = formatPrice(data[i].price);
         products[i] = {
           ...data[i],
-          avatar_url
+          image
         }
       }
     }
@@ -201,7 +202,9 @@ module.exports = {
         }
 
         filteredPhotos.forEach(photo => {
-          fs.unlinkSync(photo);
+          if (fs.existsSync(photo)) {
+            fs.unlinkSync(photo);
+          }
         });
 
         removedPhotos.forEach(photo => {
@@ -233,7 +236,21 @@ module.exports = {
     let { id } = req.body;
     id = Number(id);
 
+    // Primeiro buscamos o path das imagens no DB para então sabermos quais excluir do diretório físico.
+    const results = await File.get(id);
+    let oldPhotos = results.rows[0].path;
+
+    // Aqui, de fato excluímos as imagens do diretório.
+    oldPhotos.forEach(photo => {
+      if (fs.existsSync(photo)) {
+        fs.unlinkSync(photo);
+      }
+    });
+
+    // Aqui excluímos os registros referentes ao produto a em questão.
     await File.remove(id);
+
+    // Por fim, excluímos o produto
     await Product.remove(id);
 
     return res.redirect("/");

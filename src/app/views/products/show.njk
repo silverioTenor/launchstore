@@ -12,8 +12,12 @@
       </div>
       <div class="small-view">
         {% for file in product.files %}
-          <div class="small">
-            <img src="{{ file }}" alt="{{ product.model }}"/>
+          <div class="small {{ 'active' if loop.index0 == 0 }}">
+            <img 
+              src="{{ file }}" 
+              alt="{{ product.model }}"
+              onclick="ImageGallery.setImage(event)"
+            />
           </div>
         {% endfor %}
       </div>

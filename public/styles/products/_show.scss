@@ -47,23 +47,28 @@
 				width: 80px;
 				height: 80px;
 				padding: 10px 0;
-				border: 1px solid $border-color;
 				text-align: center;
+
 				box-sizing: border-box;
+				border: 1px solid $border-color;
+
 				cursor: pointer;
-				@include transition(0.1s);
-				opacity: 0.5;
+				@include transition(0.2s);
+				opacity: 0.4;
 
 				&.active {
+					background-color: $dark-bold-color;
 					opacity: 1;
 				}
 
 				img {
 					height: 100%;
+					object-fit: contain;
 				}
 
 				&:hover {
-					background-color: $border-color;
+					background-color: $dark-bold-color;
+					opacity: 1;
 				}
 			}
 		}

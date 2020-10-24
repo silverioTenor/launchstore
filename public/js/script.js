@@ -58,34 +58,8 @@ if (document.querySelector('.container-checked')) {
     });
   }
 
-  // ================================== PRICE =================================
-
 
 }
-
-// ==============================================================================
-// ================================ CHANGE IMAGE ================================
-// ==============================================================================
-
-if (document.querySelector('.small-view')) {
-  const bigImage = document.querySelector('.big-view > img');
-  const containersImages = document.querySelectorAll('.small');
-
-  for (const container of containersImages) {
-
-    container.addEventListener("click", (event) => {
-      const { target } = event;
-
-      containersImages.forEach(small => small.classList.remove('active'));
-
-      bigImage.src = target.src;
-      container.classList.add('active');
-    });
-  }
-}
-
-// ==============================================================================
-// ==============================================================================
 
 const Mask = {
   apply(input, func) {
@@ -152,7 +126,7 @@ const PhotosUpload = {
 
       reader.readAsDataURL(file);
     });
-    
+
     PhotosUpload.input.files = PhotosUpload.getAllFiles();
   },
   hasLimit(event) {
@@ -169,7 +143,7 @@ const PhotosUpload = {
     const photosDiv = [];
 
     preview.childNodes.forEach(item => {
-      if (item.classList && item.classList.value ==  "photo") {
+      if (item.classList && item.classList.value == "photo") {
         photosDiv.push(item);
       }
     });
@@ -225,5 +199,18 @@ const PhotosUpload = {
     const removedPhoto = document.querySelector('input[name="removedPhotos"]');
 
     if (removedPhoto) removedPhoto.value += `${photoContainer.id},`;
+  }
+}
+
+const ImageGallery = {
+  bigView: document.querySelector('.big-view > img'),
+  previews: document.querySelectorAll('.small'),
+  setImage(event) {
+    const { target } = event;
+
+    ImageGallery.previews.forEach(preview => preview.classList.remove('active'));
+    target.parentNode.classList.add('active');
+
+    ImageGallery.bigView.src = target.src;
   }
 }

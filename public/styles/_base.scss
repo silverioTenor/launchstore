@@ -78,36 +78,3 @@ body {
   min-width: 1060px;
   margin: 0 auto;
 }
-
-@mixin animation-submenu($name) {
-  animation-name: $name;
-  animation-duration: 0.3s;
-  animation-timing-function: ease-in-out;
-  animation-fill-mode: both;
-}
-
-@keyframes popup {
-  from {
-    height: 0px;
-    opacity: 0;
-    visibility: hidden;
-  }
-  to {
-    height: 30px;
-    opacity: 1;
-    visibility: visible;
-  }
-}
-
-@keyframes popdown {
-  from {
-    height: 30px;
-    opacity: 1;
-    visibility: visible;
-  }
-  to {
-    height: 0px;
-    opacity: 0;
-    visibility: hidden;
-  }
-}

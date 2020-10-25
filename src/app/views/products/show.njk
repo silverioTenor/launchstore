@@ -8,8 +8,13 @@
   <div class="container-show">
     <div class="view">
       <div class="big-view">
-        <img src="{{ product.files[0] }}" alt="{{ product.model }}"/>
+        <img 
+          src="{{ product.files[0] }}" 
+          alt="{{ product.model }}"
+          onclick="Lightbox.open(event)"
+        />
       </div>
+
       <div class="small-view">
         {% for file in product.files %}
           <div class="small {{ 'active' if loop.index0 == 0 }}">
@@ -20,6 +25,15 @@
             />
           </div>
         {% endfor %}
+      </div>
+
+      <div class="lightbox-modal">
+        <div class="lightbox-content">
+          <img src="{{ product.files[0] }}" alt="{{ product.model }}"/>
+          <a class="lightbox-close">
+            <i class="material-icons" onclick="Lightbox.close()">close</i>
+          </a>
+        </div>
       </div>
     </div>
 

@@ -1,6 +1,4 @@
-// ==============================================================================
 // ================================= ARROW MENU =================================
-// ==============================================================================
 
 const links = document.querySelectorAll('.menu .sub');
 
@@ -31,9 +29,7 @@ for (const link of links) {
 
 }
 
-// ==============================================================================
 // =================================== CHECKED ==================================
-// ==============================================================================
 
 if (document.querySelector('.container-checked')) {
 
@@ -212,5 +208,18 @@ const ImageGallery = {
     target.parentNode.classList.add('active');
 
     ImageGallery.bigView.src = target.src;
+  }
+}
+
+const Lightbox = {
+  modal: document.querySelector('.lightbox-modal'),
+  open(event) {
+    const { target } = event;
+
+    Lightbox.modal.classList.add('active-modal');
+    Lightbox.modal.querySelector('img').src = target.src;
+  },
+  close() {
+    Lightbox.modal.classList.remove('active-modal');
   }
 }

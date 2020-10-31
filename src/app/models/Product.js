@@ -54,7 +54,8 @@ module.exports = {
     } catch (error) {
       throw new Error(error);
     }
-  }, search(params) {
+  }, 
+  search(params) {
     const { filter, brand } = params;
 
     let sql = "",

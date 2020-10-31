@@ -1,5 +1,7 @@
 {% extends '../layout.njk' %}
 
+{% import "../utils/product-list.njk" as section %}
+
 {% block content %}
   {% if filter %}
     <div class="title">
@@ -25,57 +27,9 @@
       </div>
     </div>
 
-    <div class="title">
-      <h2>Celulares em Destaque</h2>
-    </div>
-
-    <div class="cardsAll shop">
-      {% for product in lastAdded %}
-        <a href="/products/show/{{ product.id }}">
-          <div class="card">
-            <img src="{{ product.image }}" alt="{{ product.model }}"/>
-            <div class="content">
-              <p>{{ product.brand }}</p>
-
-              <h2>{{ product.brand }} {{ product.model }} {{ product.storage }} - {{ product.color }}</h2>
-
-              <div class="price">
-                <span>A partir de</span>
-                <span>{{ product.price }}</span>
-
-                <p>12x de {{ product.priceParcel }} sem juros</p>
-              </div>
-            </div>
-          </div>
-        </a>
-      {% endfor %}
-    </div>
-
-    <div class="title">
-      <h2>Celulares em Oferta</h2>
-    </div>
+    {{ section.products('Celulares em destaque', 'shop', lastAdded) }}
     
-    <div class="cardsAll">
-      {% for product in products %}
-        <a href="/products/show/{{ product.id }}">
-          <div class="card">
-            <img src="{{ product.image }}" alt="{{ product.model }}"/>
-            <div class="content">
-              <p>{{ product.brand }}</p>
-
-              <h2>{{ product.brand }} {{ product.model }} {{ product.storage }} - {{ product.color }}</h2>
-
-              <div class="price">
-                <span>A partir de</span>
-                <span>{{ product.price }}</span>
-
-                <p>12x de {{ product.priceParcel }} sem juros</p>
-              </div>
-            </div>
-          </div>
-        </a>
-      {% endfor %}
-    </div>
+    {{ section.products('Celulares em oferta', '', products) }}
 
     <div class="container-inf">
       <div class="logo-inf">

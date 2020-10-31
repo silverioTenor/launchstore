@@ -1,0 +1,25 @@
+{% extends '../layout.njk' %}
+
+{% import "../utils/product-list.njk" as section %}
+
+{% block content %}
+  <div class="search-products">
+    <aside>
+      <div class="header">
+        <h2>Pizza 4 queijos</h2>
+        <p>12 encontrados</p>
+      </div>
+
+      <nav class="categories">
+        <h4>Categorias</h4>
+
+        <ul>
+          <li><a href="#">Doces</a></li>
+          <li><a href="#">Salgados</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    {{ section.products('', '', products) }}
+  </div>
+{% endblock content %}

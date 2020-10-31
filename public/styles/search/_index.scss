@@ -1,0 +1,63 @@
+.search-products {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+
+  aside {
+    margin: 30px 24px 0 0;
+    box-sizing: border-box;
+
+    .aside-model {
+      padding: 20px 40px;
+      border: 1px solid $border-color;
+      @include border-radius(4px);
+      background-color: rgba($color: $dark-bold-color, $alpha: 0.4);
+    }
+
+    .header {
+      @extend .aside-model;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: $font-color;
+
+      h2 {
+        margin-bottom: 8px;
+        font-size: 28px;
+        text-transform: capitalize;
+      }
+    }
+
+    nav {
+      @extend .aside-model;
+      
+      h4 {
+        margin-bottom: 16px;
+        color: $font-color;
+        font-size: 14px;
+        text-transform: uppercase;
+      }
+
+      ul {
+        list-style: none;
+
+        li {
+          margin: 4px 0;
+
+          a {
+            color: $font-dark-color;
+            @include transition(0.1s);
+
+            &:hover {
+              color: $primary-color;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  #products .cardsAll {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

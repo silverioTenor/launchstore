@@ -6,20 +6,23 @@
   <div class="search-products">
     <aside>
       <div class="header">
-        <h2>Pizza 4 queijos</h2>
+        <h2>Galaxy A70</h2>
         <p>12 encontrados</p>
       </div>
 
       <nav class="categories">
-        <h4>Categorias</h4>
+        <h4>Marcas</h4>
 
         <ul>
-          <li><a href="#">Doces</a></li>
-          <li><a href="#">Salgados</a></li>
+          <li><a href="#">Samsung</a></li>
+          <li><a href="#">iPhone</a></li>
+          <li><a href="#">Motorola</a></li>
         </ul>
       </nav>
     </aside>
 
-    {{ section.products('', '', products) }}
+    <section id="products">
+      {{ section.products('', '', products) }}
+    </section>
   </div>
 {% endblock content %}

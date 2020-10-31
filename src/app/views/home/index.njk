@@ -25,77 +25,36 @@
       </div>
     </div>
 
-    {# <div class="title">
-      <h2>Lançamentos</h2>
+    <div class="title">
+      <h2>Celulares em Destaque</h2>
     </div>
 
-    <div class="cardsAll">
-      <a href="/products/show">
-        <div class="card">
-          <img src="https://imagens.trocafone.com/images/phones/dt-galaxy-a70-preto-front.png" alt=""/>
-          <div class="content">
-            <p>Samsung</p>
-            <h2>Galaxy A70 4GB 128GB 32MP - Azul</h2>
-            <div class="price">
-              <span>A partir de</span>
-              <span>R$1046,50</span>
+    <div class="cardsAll shop">
+      {% for product in lastAdded %}
+        <a href="/products/show/{{ product.id }}">
+          <div class="card">
+            <img src="{{ product.image }}" alt="{{ product.model }}"/>
+            <div class="content">
+              <p>{{ product.brand }}</p>
 
-              <p>10x de R$104,65 sem juros</p>
+              <h2>{{ product.brand }} {{ product.model }} {{ product.storage }} - {{ product.color }}</h2>
+
+              <div class="price">
+                <span>A partir de</span>
+                <span>{{ product.price }}</span>
+
+                <p>12x de {{ product.priceParcel }} sem juros</p>
+              </div>
             </div>
           </div>
-        </div>
-      </a>
-      <a href="/products/show">
-        <div class="card">
-          <img src="https://imagens.trocafone.com/images/phones/dt-galaxy-a70-preto-front.png" alt=""/>
-          <div class="content">
-            <p>Samsung</p>
-            <h2>Galaxy A70 4GB 128GB 32MP - Azul</h2>
-            <div class="price">
-              <span>A partir de</span>
-              <span>R$1046,50</span>
-
-              <p>10x de R$104,65 sem juros</p>
-            </div>
-          </div>
-        </div>
-      </a>
-      <a href="/products/show">
-        <div class="card">
-          <img src="https://imagens.trocafone.com/images/phones/dt-galaxy-a70-preto-front.png" alt=""/>
-          <div class="content">
-            <p>Samsung</p>
-            <h2>Galaxy A70 4GB 128GB 32MP - Azul</h2>
-            <div class="price">
-              <span>A partir de</span>
-              <span>R$1046,50</span>
-
-              <p>10x de R$104,65 sem juros</p>
-            </div>
-          </div>
-        </div>
-      </a>
-      <a href="/products/show">
-        <div class="card">
-          <img src="https://imagens.trocafone.com/images/phones/dt-galaxy-a70-preto-front.png" alt=""/>
-          <div class="content">
-            <p>Samsung</p>
-            <h2>Galaxy A70 4GB 128GB 32MP - Azul</h2>
-            <div class="price">
-              <span>A partir de</span>
-              <span>R$1046,50</span>
-
-              <p>10x de R$104,65 sem juros</p>
-            </div>
-          </div>
-        </div>
-      </a>
-    </div> #}
+        </a>
+      {% endfor %}
+    </div>
 
     <div class="title">
       <h2>Celulares em Oferta</h2>
     </div>
-
+    
     <div class="cardsAll">
       {% for product in products %}
         <a href="/products/show/{{ product.id }}">

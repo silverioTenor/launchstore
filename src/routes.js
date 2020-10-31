@@ -1,10 +1,10 @@
-const express = require('express');
-const routes = express.Router();
-const multer = require('./middlewares/multer');
+import multer from './middlewares/multer';
+import { Router } from 'express';
 
-const homeController = require('./app/controllers/homeController');
-const productController = require('./app/controllers/productController');
+const routes = Router();
 
+import homeController from './app/controllers/homeController';
+import productController from './app/controllers/productController';
 
 // ================================ HOME ================================
 routes.get("/", homeController.index);
@@ -21,4 +21,4 @@ routes.post("/products", multer.array("photos", 4), productController.post);
 routes.put("/products", multer.array("photos", 4), productController.put);
 routes.delete("/products", productController.delete);
 
-module.exports = routes;
+export default routes;

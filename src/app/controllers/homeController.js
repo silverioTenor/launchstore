@@ -1,36 +1,34 @@
-const Product = require('../models/Product');
-const File = require('../models/File');
+import Product from '../models/Product';
+import File from '../models/File';
 
-const { formatPrice, status } = require('../../lib/utils');
+import { formatPrice, getProducts } from '../../lib/utils';
 
 module.exports = {
-  async index(req, res) {
+  async index(request, resolve) {
     // Buscar todos os produtos
     let results = await Product.getAll();
     const data = results.rows;
 
-    let files = [];
-    let products = [];
+    if (!data) return resolve.json({ message: "Data not found!" });
 
-    for (let i = 0; i < data.length; i++) {
-      results = await File.get(data[i].id);
-      files[i] = results.rows[0];
+    async function getImage(productID) {
+      results = await File.get(productID);
+      const files = results.rows.map(file => {
+        return `${request.protocol}://${request.headers.host}${file.path[0]}`.replace("public", "");
+      });
 
-      if (data[i].id === files[i].product_id) {
-        let image = files[i].path[0];
-
-        image = `${req.protocol}://${req.headers.host}${image}`.replace("public", "");
-
-        data[i].priceParcel = formatPrice(data[i].price / 12);
-        data[i].price = formatPrice(data[i].price);
-        products[i] = {
-          ...data[i],
-          image
-        }
-      }
+      return files[0];
     }
 
-    return res.render("home/index", { products });
+    const inf = {
+      object: data,
+      func: { getImage, formatPrice }
+    };
+
+    const lastAdded = await getProducts(inf, 3);
+    // const products = await getProducts(inf, 11);
+
+    return resolve.render("home/index", { lastAdded });
   },
   about(req, res) {
     return res.render("home/about");

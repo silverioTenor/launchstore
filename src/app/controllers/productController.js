@@ -1,8 +1,9 @@
-const Product = require('../models/Product');
-const File = require('../models/File');
-const fs = require('fs');
+import Product from '../models/Product';
+import File from '../models/File';
 
-const { formatPrice, status } = require('../../lib/utils');
+import fs from 'fs';
+
+import { formatPrice, status } from '../../lib/utils';
 
 module.exports = {
   create(req, res) {

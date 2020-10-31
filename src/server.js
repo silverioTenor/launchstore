@@ -1,13 +1,14 @@
-const express = require('express');
-const nunjucks = require('nunjucks');
-const methodOverride = require('method-override');
+import express from 'express';
+import { urlencoded, static } from 'express';
+import nunjucks from 'nunjucks';
+import methodOverride from 'method-override';
 
-const routes = require('./routes');
+import routes from './routes';
 
 const server = express();
 
-server.use(express.urlencoded({ extended: true }));
-server.use(express.static('public'));
+server.use(urlencoded({ extended: true }));
+server.use(static('public'));
 server.use(methodOverride('_method'));
 server.use(routes);
 

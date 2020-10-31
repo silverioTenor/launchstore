@@ -192,6 +192,8 @@
   }
 }
 
+// =================================== CARDS ===================================
+
 .title {
   width: 100%;
   margin-top: 50px;
@@ -207,7 +209,7 @@
   gap: 20px;
 
   .card {
-    padding: 20px 40px;
+    padding: 20px;
     display: grid;
     background-color: $dark-bold-color;
     border: 1px solid $border-color;
@@ -217,15 +219,20 @@
     cursor: pointer;
 
     img {
-      width: 60%;
+      width: 140px;
       justify-self: center;
     }
 
     .content {
+      height: 140px;
       margin-top: 20px;
+      display: grid;
+      justify-content: center;
 
       > p {
         width: 100px;
+        height: 24px;
+        line-height: 24px;
         margin: 0 auto;
         margin-bottom: 10px;
         display: block;
@@ -237,10 +244,13 @@
       h2 {
         margin-bottom: 10px;
         font-size: 18px;
+        text-align: center;
         @include transition(0.1s);
       }
 
       .price {
+        text-align: center;
+
         > span {
           font-size: 14px;
         }
@@ -257,6 +267,18 @@
         }
       }
     }
+  }
+}
+
+.shop {
+  padding: 40px;
+  background-color: $dark-bold-color;
+  box-sizing: border-box;
+  border: 1px solid $border-color;
+  @include border-radius(4px);
+
+  .card {
+    background-color: $dark-color;
   }
 }
 

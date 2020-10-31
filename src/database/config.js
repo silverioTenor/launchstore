@@ -1,4 +1,4 @@
-const { Pool } = require('pg');
+import { Pool } from 'pg';
 
 module.exports = new Pool({
     user: 'postgres',

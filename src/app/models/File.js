@@ -1,4 +1,4 @@
-const db = require('../../database/config');
+import db from '../../database/config';
 
 module.exports = {
   get(id) {

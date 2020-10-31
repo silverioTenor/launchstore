@@ -5,9 +5,9 @@ const multer = require('./middlewares/multer');
 const homeController = require('./app/controllers/homeController');
 const productController = require('./app/controllers/productController');
 
-routes.get("/", productController.index);
 
 // ================================ HOME ================================
+routes.get("/", homeController.index);
 routes.get("/about", homeController.about);
 routes.get("/exchangesAndReturn", homeController.exchange);
 routes.get("/privacy", homeController.privacy);

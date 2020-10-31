@@ -25,9 +25,9 @@ module.exports = {
       func: { getImage, formatPrice }
     };
 
-    const lastAdded = await getProducts(inf, 3);
     const products = await getProducts(inf, 11);
-
+    const lastAdded = products.filter((product, index) => index > 3 ? false : true);
+    
     return resolve.render("home/index", { products, lastAdded });
   },
   about(req, res) {

@@ -13,7 +13,7 @@ module.exports = {
   async getProducts(data, limit) {
     const { object, func } = data;
     const { getImage, formatPrice } = func;
-
+    
     const productsPromise = object.map(async product => {
       product.image = await getImage(product.id);
       product.priceParcel = formatPrice(product.price / 12);

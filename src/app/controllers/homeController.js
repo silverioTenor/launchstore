@@ -26,9 +26,9 @@ module.exports = {
     };
 
     const lastAdded = await getProducts(inf, 3);
-    // const products = await getProducts(inf, 11);
+    const products = await getProducts(inf, 11);
 
-    return resolve.render("home/index", { lastAdded });
+    return resolve.render("home/index", { products, lastAdded });
   },
   about(req, res) {
     return res.render("home/about");

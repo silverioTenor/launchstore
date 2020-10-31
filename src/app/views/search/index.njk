@@ -6,17 +6,19 @@
   <div class="search-products">
     <aside>
       <div class="header">
-        <h2>Galaxy A70</h2>
-        <p>12 encontrados</p>
+        <h2>{{ search.term }}</h2>
+        <p>{{ search.total }} {{ 'resultados' if search.total > 1 else 'resultado' }}</p>
       </div>
 
-      <nav class="categories">
+      <nav class="brand">
         <h4>Marcas</h4>
 
         <ul>
-          <li><a href="#">Samsung</a></li>
-          <li><a href="#">iPhone</a></li>
-          <li><a href="#">Motorola</a></li>
+          {% for brand in brands %}
+            <li>
+              <a href="/products/search?filter={{search.term}}&brand={{brand.name}}">{{ brand.name }}</a>
+            </li>
+          {% endfor %}
         </ul>
       </nav>
     </aside>

@@ -54,5 +54,32 @@ module.exports = {
     } catch (error) {
       throw new Error(error);
     }
+  }, search(params) {
+    const { filter, brand } = params;
+
+    let sql = "",
+      filterQuery = "WHERE";
+
+    if (brand) {
+      filterQuery = `
+          ${filterQuery}
+          products.brand ILIKE '%${brand}%'
+          OR
+        `;
+    }
+
+    filterQuery = `
+        ${filterQuery}
+        products.model ILIKE '%${filter}%'
+      `;
+
+    sql = `SELECT * FROM products ${filterQuery}`;
+
+    try {
+      return db.query(sql);
+
+    } catch (error) {
+      console.error(error);
+    }
   }
 }

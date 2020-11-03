@@ -1,13 +1,15 @@
 import db from '../../database/config';
 
-module.exports = {
-  get(id) {
+export default class Product{
+  static get(id) {
     return db.query("SELECT * FROM products WHERE id = $1", [id]);
-  },
-  getAll() {
+  }
+
+  static getAll() {
     return db.query("SELECT id, brand, model, storage, color, price FROM products");
-  },
-  save(values) {
+  }
+
+  static save(values) {
     try {
       const sql = `
       INSERT INTO products (
@@ -27,8 +29,9 @@ module.exports = {
     } catch (error) {
       throw new Error(error);
     }
-  },
-  edit(values) {
+  }
+
+  static edit(values) {
     try {
       const sql = `
       UPDATE products SET
@@ -47,15 +50,17 @@ module.exports = {
     } catch (error) {
       throw new Error(error);
     }
-  },
-  remove(id) {
+  }
+
+  static remove(id) {
     try {
       return db.query("DELETE FROM products WHERE id = $1", [id]);
     } catch (error) {
       throw new Error(error);
     }
-  }, 
-  search(params) {
+  }
+
+  static search(params) {
     const { filter, brand } = params;
 
     let sql = "",

@@ -1,18 +1,19 @@
 import Product from '../models/Product';
-import File from '../models/File';
+import FilesManager from '../models/FilesManager';
 
-import { formatPrice, getProducts } from '../../lib/utils';
+import utils from '../../lib/utils';
 
-module.exports = {
+const { formatPrice, getProducts } = utils;
+
+const HomeController = {
   async index(request, resolve) {
-    // Buscar todos os produtos
     let results = await Product.getAll();
     const data = results.rows;
 
     if (!data) return resolve.json({ message: "Data not found!" });
 
-    async function getImage(productID) {
-      results = await File.get(productID);
+    async function getImage(values) {
+      results = await FilesManager.get(values);
       const files = results.rows.map(file => {
         return `${request.protocol}://${request.headers.host}${file.path[0]}`.replace("public", "");
       });
@@ -40,3 +41,5 @@ module.exports = {
     return res.render("home/privacy");
   }
 }
+
+export default HomeController;

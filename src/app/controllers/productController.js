@@ -1,11 +1,12 @@
 import Product from '../models/Product';
-import File from '../models/File';
+import FilesManager from '../models/FilesManager';
 
 import fs from 'fs';
+import utils from '../../lib/utils';
 
-import { formatPrice, status } from '../../lib/utils';
+const { formatPrice, status } = utils;
 
-module.exports = {
+const ProductController = {
   create(req, res) {
     return res.render("products/create");
   },
@@ -20,8 +21,8 @@ module.exports = {
 
     let {
       brand,
-      model,
       color,
+      model,
       condition,
       price,
       old_price,
@@ -49,12 +50,18 @@ module.exports = {
     // Saving files
     const photos = [];
 
-    for (const f in req.files) {
-      photos[f] = req.files[f].path;
+    for (const f of req.files) {
+      photos.push(f.path);
     }
 
-    values = [photos, productID];
-    await File.save(values);
+    const column = "product_id";
+    values = { id: productID, column };
+
+    results = await FilesManager.save(values);
+    const fileID = results.rows[0].id;
+
+    values = [photos, fileID];
+    await FilesManager.saveInFiles(values);
 
     return res.redirect(`/products/show/${productID}`);
   },
@@ -64,7 +71,10 @@ module.exports = {
     let results = await Product.get(id);
     const data = results.rows[0];
 
-    results = await File.get(id);
+    const column = "product_id";
+    const values = { id, column };
+
+    results = await FilesManager.get(values);
     let files = results.rows[0].path;
 
     files = files.map(file => `${req.protocol}://${req.headers.host}${file}`.replace("public", ""));
@@ -96,15 +106,27 @@ module.exports = {
 
     data.price = formatPrice(data.price);
 
-    results = await File.get(id);
-    let photos = results.rows[0].path;
+    const column = "product_id";
+    const values = { id, column };
 
-    for (let i = 0; i < photos.length; i++) {
-      photos[i] = {
-        id: i,
-        path: `${req.protocol}://${req.headers.host}${photos[i]}`.replace("public", "")
-      }
+    async function getImage(values) {
+      results = await FilesManager.get(values);
+      let count = 0;
+
+      const files = results.rows[0].path.map(file => {
+        const photo = {
+          id: count,
+          path: `${req.protocol}://${req.headers.host}${file}`.replace("public", "")
+        }
+        count++
+
+        return photo;
+      });
+
+      return files;
     }
+
+    const photos = await getImage(values);
 
     const product = {
       id,
@@ -155,6 +177,8 @@ module.exports = {
     // Saving product
     await Product.edit(values);
 
+    let fm_id = 0;
+
     if (req.body.removedPhotos) {
       let removedPhotos = req.body.removedPhotos.split(",");
       const lastIndex = removedPhotos.length - 1;
@@ -165,7 +189,11 @@ module.exports = {
 
       // Remove old photos
       if (removedPhotos.length > 0) {
-        const results = await File.get(id);
+        const column = "product_id";
+        let values = { id, column };
+
+        const results = await FilesManager.get(values);
+        fm_id = results.rows[0].id;
         let oldPhotos = results.rows[0].path;
 
         let filteredPhotos = [];
@@ -184,10 +212,8 @@ module.exports = {
           oldPhotos.splice(photo, 1);
         });
 
-        if (req.files.length <= 0) {
-          values = [id, oldPhotos];
-          await File.edit(values);
-        }
+        values = [fm_id, oldPhotos];
+        await FilesManager.edit(values);
       }
     }
 
@@ -199,8 +225,8 @@ module.exports = {
         photos[f] = req.files[f].path;
       }
 
-      values = [id, photos];
-      await File.edit(values);
+      values = [fm_id, photos];
+      await FilesManager.edit(values);
     }
 
     return res.redirect(`/products/show/${id}`);
@@ -210,7 +236,11 @@ module.exports = {
     id = Number(id);
 
     // Primeiro buscamos o path das imagens no DB para então sabermos quais excluir do diretório físico.
-    const results = await File.get(id);
+    const column = "product_id";
+    const values = { id, column };
+
+    const results = await FilesManager.get(values);
+    const fm_id = results.rows[0].id;
     let oldPhotos = results.rows[0].path;
 
     // Aqui, de fato excluímos as imagens do diretório.
@@ -221,7 +251,8 @@ module.exports = {
     });
 
     // Aqui excluímos os registros referentes ao produto a em questão.
-    await File.remove(id);
+    await FilesManager.removeInFiles(fm_id);
+    await FilesManager.remove(values);
 
     // Por fim, excluímos o produto
     await Product.remove(id);
@@ -229,3 +260,5 @@ module.exports = {
     return res.redirect("/");
   },
 }
+
+export default ProductController;

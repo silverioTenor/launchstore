@@ -1,9 +1,11 @@
 import Product from '../models/Product';
-import File from '../models/File';
+import FilesManager from '../models/FilesManager';
 
-import { formatPrice, getProducts } from '../../lib/utils';
+import utils from '../../lib/utils';
 
-module.exports = {
+const { formatPrice, getProducts } = utils;
+
+const SearchController = {
   async index(request, resolve) {
     try {
       let results, params = {};
@@ -19,8 +21,8 @@ module.exports = {
       results = await Product.search(params);
       const data = results.rows;
 
-      async function getImage(productID) {
-        results = await File.get(productID);
+      async function getImage(values) {
+        results = await FilesManager.get(values);
         const files = results.rows.map(file => {
           return `${request.protocol}://${request.headers.host}${file.path[0]}`.replace("public", "");
         });
@@ -59,3 +61,5 @@ module.exports = {
     }
   }
 }
+
+export default SearchController;

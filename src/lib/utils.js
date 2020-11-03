@@ -1,4 +1,4 @@
-module.exports = {
+const utils = {
   status(value) {
     if (value == "excelent") return "Excelente";
     else if (value == "very_good") return "Muito Bom";
@@ -13,9 +13,13 @@ module.exports = {
   async getProducts(data, limit) {
     const { object, func } = data;
     const { getImage, formatPrice } = func;
+
+    const column = "product_id";
     
     const productsPromise = object.map(async product => {
-      product.image = await getImage(product.id);
+      const values = { id: product.id, column };
+
+      product.image = await getImage(values);
       product.priceParcel = formatPrice(product.price / 12);
       product.price = formatPrice(product.price);
 
@@ -25,3 +29,5 @@ module.exports = {
     return await Promise.all(productsPromise);
   }
 }
+
+export default utils;

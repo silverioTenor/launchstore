@@ -1,4 +1,3 @@
-import multer from '../middlewares/multer';
 import { Router } from 'express';
 
 const routes = Router();

@@ -6,16 +6,16 @@ import utils from '../../lib/utils';
 const { formatPrice, getProducts } = utils;
 
 const HomeController = {
-  async index(request, resolve) {
+  async index(req, res) {
     let results = await Product.getAll();
     const data = results.rows;
 
-    if (!data) return resolve.json({ message: "Data not found!" });
+    if (!data) return res.json({ message: "Data not found!" });
 
     async function getImage(values) {
       results = await FilesManager.get(values);
       const files = results.rows.map(file => {
-        return `${request.protocol}://${request.headers.host}${file.path[0]}`.replace("public", "");
+        return `${req.protocol}://${req.headers.host}${file.path[0]}`.replace("public", "");
       });
 
       return files[0];
@@ -29,7 +29,7 @@ const HomeController = {
     const products = await getProducts(inf, 11);
     const lastAdded = products.filter((product, index) => index > 3 ? false : true);
     
-    return resolve.render("home/index", { products, lastAdded });
+    return res.render("home/index", { products, lastAdded });
   },
   about(req, res) {
     return res.render("home/about");

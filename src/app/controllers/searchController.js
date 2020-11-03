@@ -6,13 +6,13 @@ import utils from '../../lib/utils';
 const { formatPrice, getProducts } = utils;
 
 const SearchController = {
-  async index(request, resolve) {
+  async index(req, res) {
     try {
       let results, params = {};
 
-      const { filter, brand } = request.query;
+      const { filter, brand } = req.query;
 
-      if (!filter) resolve.redirect("/");
+      if (!filter) res.redirect("/");
 
       params.filter = filter;
 
@@ -24,7 +24,7 @@ const SearchController = {
       async function getImage(values) {
         results = await FilesManager.get(values);
         const files = results.rows.map(file => {
-          return `${request.protocol}://${request.headers.host}${file.path[0]}`.replace("public", "");
+          return `${req.protocol}://${req.headers.host}${file.path[0]}`.replace("public", "");
         });
 
         return files[0];
@@ -38,7 +38,7 @@ const SearchController = {
       const products = await getProducts(inf, 15);
 
       const search = {
-        term: request.query.filter,
+        term: req.query.filter,
         total: products.length
       }
 
@@ -54,7 +54,7 @@ const SearchController = {
         return brandsFiltered;
       }, []);
 
-      return resolve.render("search/index", { products, search, brands });
+      return res.render("search/index", { products, search, brands });
 
     } catch (error) {
       console.error(error);

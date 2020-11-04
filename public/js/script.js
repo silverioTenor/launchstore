@@ -69,6 +69,40 @@ const Mask = {
       style: 'currency',
       currency: 'BRL'
     }).format(value / 100);
+  },
+  cpfCnpj(value) {
+    value = value.replace(/\D/g, "");
+
+    if (value.length > 14) {
+      value = value.slice(0, -1);
+    }
+
+    if (value.length < 12) {
+      value = value.replace(/(\d{3})(\d)/, "$1.$2");
+      value = value.replace(/(\d{3})(\d)/, "$1.$2");
+      value = value.replace(/(\d{3})(\d)/, "$1-$2");
+
+    } else {
+      value = value.replace(/(\d{2})(\d)/, "$1.$2");
+      value = value.replace(/(\d{3})(\d)/, "$1.$2");
+      value = value.replace(/(\d{3})(\d)/, "$1/$2");
+      value = value.replace(/(\d{4})(\d)/, "$1-$2");
+    }
+
+    return value;
+  },
+  cepFormat(value) {
+    value = value.replace(/\D/g, "");
+
+    if (value.length > 8) {
+      value = value.slice(0, -1);
+    }
+
+    if (value.length < 9) {
+      value = value.replace(/(\d{5})(\d)/, "$1-$2");
+    }
+
+    return value;
   }
 }
 
@@ -240,7 +274,7 @@ const Address = {
       Address.fillFields(data);
       
     } catch (error) {
-      alert(`Unexpected error: ${error}`);
+      console.log(`Unexpected error: ${error}`);
     }
   },
   fillFields(data) {
@@ -258,5 +292,24 @@ const Address = {
 
     const uf = document.querySelector('#uf');
     uf.value = data.uf;
+  }
+}
+
+const Validate = {
+  apply(input, func) {
+    let results = Validate[func](input.value);
+    input.value = results.value;
+
+    if (results.error) {
+      alert("Oooops! Algo deu errado.");
+    }
+  },
+  isEmail(value) {
+    let error = null;
+
+    return {
+      error,
+      value
+    }
   }
 }

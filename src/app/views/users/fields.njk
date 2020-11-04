@@ -82,6 +82,7 @@
           {% if user.cpf_cnpj %}
               value="{{ user.cpf_cnpj }}"
           {% endif %}
+          onkeydown="Mask.apply(this, 'cpfCnpj')"
         />
       </div>
     </fieldset>
@@ -99,6 +100,7 @@
               value="{{ user.cep }}"
           {% endif %}
           onblur="Address.get()"
+          onkeydown="Mask.apply(this, 'cepFormat')"
         />
       </div>
 

@@ -67,8 +67,8 @@
           <label for="pass">Confirme sua senha</label>
           <input 
             type="password" 
-            name="password" 
-            id="pass"
+            name="passwordRepeat" 
+            id="passRepeat"
           />
         </div>
       {% endif %}
@@ -98,6 +98,7 @@
           {% if user.cep %}
               value="{{ user.cep }}"
           {% endif %}
+          onblur="Address.get()"
         />
       </div>
 
@@ -133,6 +134,18 @@
           id="district"
           {% if user.district %}
               value="{{ user.district }}"
+          {% endif %}
+        />
+      </div>
+
+      <div class="field">
+        <label for="locale">Município</label>
+        <input 
+          type="text" 
+          name="locale" 
+          id="locale"
+          {% if user.locale %}
+              value="{{ user.locale }}"
           {% endif %}
         />
       </div>

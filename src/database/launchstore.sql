@@ -8,6 +8,7 @@ CREATE TABLE "address" (
   "street" text NOT NULL,
   "complement" text NOT NULL,
   "district" text NOT NULL,
+  "state" text NOT NULL,
   "uf" text NOT NULL
 );
 

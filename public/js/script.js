@@ -1,5 +1,4 @@
 // ================================= ARROW MENU =================================
-
 const links = document.querySelectorAll('.menu .sub');
 
 for (const link of links) {
@@ -220,5 +219,44 @@ const Lightbox = {
   },
   close() {
     Lightbox.modal.classList.remove('active-modal');
+  }
+}
+
+const Address = {
+  cep: document.querySelector('#cep'),
+  async get() {
+    let search = Address.cep.value.replace("-", "");
+
+    const options = {
+      method: 'GET',
+      mode: 'cors',
+      cache: 'default'
+    }
+
+    try {
+      let response = await fetch(`https://viacep.com.br/ws/${search}/json/`, options);
+      const data = await response.json();
+
+      Address.fillFields(data);
+      
+    } catch (error) {
+      alert(`Unexpected error: ${error}`);
+    }
+  },
+  fillFields(data) {
+    const street = document.querySelector('#street');
+    street.value = data.logradouro;
+
+    const complement = document.querySelector('#complement');
+    complement.value = data.complemento;
+
+    const district = document.querySelector('#district');
+    district.value = data.bairro;
+
+    const locale = document.querySelector('#locale');
+    locale.value = data.localidade;
+
+    const uf = document.querySelector('#uf');
+    uf.value = data.uf;
   }
 }

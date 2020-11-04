@@ -1,9 +1,12 @@
 $primary-color: #34aeeb;
 $secondary-color: #7152af;
+
 $dark-color: #282828;
 $dark-bold-color: #121212;
+
 $font-color: #cacac0;
 $font-dark-color: #b0b0a7;
+
 $link-color: #a3b8ff;
 $border-color: #4d4d4d;
 
@@ -19,6 +22,10 @@ body {
 
 body {
   background-color: $dark-color;
+}
+
+.container-global {
+  margin-top: 50px;
 }
 
 @mixin logo {

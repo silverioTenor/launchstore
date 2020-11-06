@@ -261,6 +261,8 @@ const Address = {
   async get() {
     let search = Address.cep.value.replace("-", "");
 
+    if (search.length !== 8) return;
+
     const options = {
       method: 'GET',
       mode: 'cors',
@@ -272,7 +274,7 @@ const Address = {
       const data = await response.json();
 
       Address.fillFields(data);
-      
+
     } catch (error) {
       console.log(`Unexpected error: ${error}`);
     }
@@ -297,19 +299,94 @@ const Address = {
 
 const Validate = {
   apply(input, func) {
+    Validate.clearErrors(input);
+
     let results = Validate[func](input.value);
     input.value = results.value;
 
     if (results.error) {
-      alert("Oooops! Algo deu errado.");
+      Validate.displayError(input, results.error);
     }
+  },
+  displayError(input, error) {
+    const divContainer = document.createElement('small');
+
+    divContainer.classList.add('error');
+    divContainer.innerHTML = error;
+
+    input.parentNode.appendChild(divContainer);
+    input.focus();
+  },
+  clearErrors(input) {
+    const divError = input.parentNode.querySelector('.error');
+
+    if (divError) divError.remove();
   },
   isEmail(value) {
     let error = null;
+
+    const mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if (!value.match(mailFormat)) error = "E-mail inválido.";
 
     return {
       error,
       value
     }
-  }
+  },
+  isPassword(value) {
+    let error = null;
+
+    if (value.length < 6) {
+      error = "A senha precisa ter no mínimo 6 caracteres.";
+    }
+
+    return {
+      error,
+      value
+    }
+  },
+  isPasswordConfirm(value) {
+    // let error = null;
+
+    // if (Validate.isPassword.value !== value) {
+    //   error = "As senhas não conferem.";
+    // }
+
+    // return {
+    //   error,
+    //   value
+    // }
+  },
+  isCpfAndCnpj(value) {
+    let error = null;
+
+    const cleanValues = value.replace(/\D/g, "");
+
+    if (cleanValues.length > 11 && cleanValues.length !== 14) {
+      error = "CNPJ inválido.";
+    }
+    else if (cleanValues.length < 11) {
+      error = "CPF inválido.";
+    }
+
+    return {
+      error,
+      value
+    }
+  },
+  isCep(value) {
+    let error = null;
+
+    const cleanValues = value.replace(/\D/g, "");
+
+    if (cleanValues.length !== 8) {
+      error = "CEP inválido.";
+    }
+
+    return {
+      error,
+      value
+    }
+  },
 }

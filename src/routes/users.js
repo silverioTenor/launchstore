@@ -3,7 +3,8 @@ import { Router } from 'express';
 
 const routes = Router();
 
-import SessionController from '../app/controllers/auth/SessionController';
+import Validators from '../app/validators/user';
+// import SessionController from '../app/controllers/auth/SessionController';
 import UserController from '../app/controllers/auth/UserController';
 
 // Login/Logout
@@ -19,7 +20,7 @@ import UserController from '../app/controllers/auth/UserController';
 
 // Register
 routes.get("/register", UserController.registerForm);
-routes.post("/register", multer.array("photo", 1), UserController.post);
+routes.post("/register", multer.array("photo", 1), Validators.post, UserController.post);
 
 // routes.get("/", UserController.show);
 // routes.put("/", UserController.update);

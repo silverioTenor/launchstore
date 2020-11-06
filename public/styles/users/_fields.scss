@@ -136,10 +136,14 @@
 
           input {
             padding: 10px 16px;
+            position: relative;
+
             font-size: 16px;
             font-weight: 500;
+
             color: $font-color;
             background-color: rgba($color: $dark-bold-color, $alpha: 0.3);
+
             border: 1px solid $border-color;
           }
 
@@ -181,6 +185,14 @@
           background-color: $secondary-color;
           border: 1px solid $secondary-color;
         }
+      }
+
+      .error {
+        min-width: 100px;
+        padding: 4px 8px;
+        color: $font-color;
+        background-color: #ff00009d;
+        border-radius: 4px;
       }
     }
   }

@@ -1,10 +1,12 @@
+import User from './../../models/User';
 
-
-const UrserControler = {
+const UserControler = {
   registerForm(req, res) {
-    return res.render("users/create");
+    return res.render("users/register");
   },
-  post(req, res) {}
+  async post(req, res) {
+    return res.json({ message: "Passed!"});
+  }
 }
 
-export default UrserControler;
+export default UserControler;

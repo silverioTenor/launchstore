@@ -47,6 +47,7 @@
           {% if user.email %}
               value="{{ user.email }}"
           {% endif %}
+          onblur="Validate.apply(this, 'isEmail')"
         />
       </div>
       
@@ -59,16 +60,18 @@
           {% if user.password %}
               value="{{ user.password }}"
           {% endif %}
+          onblur="Validate.apply(this, 'isPassword')"
         />
       </div>
       
       {% if not user.id %}
         <div class="field">
-          <label for="pass">Confirme sua senha</label>
+          <label for="passRepeat">Confirme sua senha</label>
           <input 
             type="password" 
             name="passwordRepeat" 
             id="passRepeat"
+            onblur="Validate.apply(this, 'isPasswordConfirm')"
           />
         </div>
       {% endif %}
@@ -83,6 +86,7 @@
               value="{{ user.cpf_cnpj }}"
           {% endif %}
           onkeydown="Mask.apply(this, 'cpfCnpj')"
+          onblur="Validate.apply(this, 'isCpfAndCnpj')"
         />
       </div>
     </fieldset>
@@ -99,8 +103,8 @@
           {% if user.cep %}
               value="{{ user.cep }}"
           {% endif %}
-          onblur="Address.get()"
           onkeydown="Mask.apply(this, 'cepFormat')"
+          onblur="Address.get(); Validate.apply(this, 'isCep');"
         />
       </div>
 

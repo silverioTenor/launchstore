@@ -20,7 +20,7 @@ import UserController from '../app/controllers/auth/UserController';
 
 // Register
 routes.get("/register", UserController.registerForm);
-routes.post("/register", multer.array("photo", 1), Validators.post, UserController.post);
+routes.post("/register", Validators.post, UserController.post);
 
 // routes.get("/", UserController.show);
 // routes.put("/", UserController.update);

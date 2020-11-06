@@ -2,10 +2,10 @@ import User from './../../models/User';
 
 const UserControler = {
   registerForm(req, res) {
-    return res.render("users/register");
+    return res.render("users/register", { formFull: false });
   },
   async post(req, res) {
-    return res.json({ message: "Passed!"});
+    return res.json({ message: "Passed!" });
   }
 }
 

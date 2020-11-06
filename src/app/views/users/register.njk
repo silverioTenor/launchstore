@@ -1,10 +1,10 @@
 {% extends '../layout.njk' %}
 
 {% block content %}
-<section id="form-user">
+<section id="form-register">
     <h2>Cadastre-se</h2>
 
-    <form method="POST" action="/users/register" enctype="multipart/form-data">
+    <form method="POST" action="/users/register">
 
       {% include './fields.njk' %}
 

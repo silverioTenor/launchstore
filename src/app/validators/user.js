@@ -5,10 +5,14 @@ const Validators = {
     const keys = Object.keys(req.body);
   
     for (const key of keys) {
-      if (req.body[key] == "") return res.json({ message: "Please! Fill all fields." });
+      if (req.body[key] == "") return res.render("users/register", {
+        user: req.body,
+        message: "Preencha todos os campos corretamente!",
+        type: "error"
+      });
     }
   
-    const { email, cpf_cnpj, password, passwordRepeat } = req.body;
+    let { email, cpf_cnpj, password, passwordRepeat } = req.body;
   
     cpf_cnpj = cpf_cnpj.replace(/\D/g, "");
   
@@ -17,9 +21,17 @@ const Validators = {
       or: { cpf_cnpj }
     });
   
-    if (user) return res.json({ message: "User exist!" });
+    if (user) return res.render("users/register", {
+      user: req.body,
+      message: "Usuário já cadastrado!",
+      type: "error"
+    });
   
-    if (password != passwordRepeat) return res.json({ message: "Password mismatch" });
+    if (password != passwordRepeat) return res.render("users/register", {
+      user: req.body,
+      message: "As senhas não coincidem!",
+      type: "error"
+    });
   
     next();
   }

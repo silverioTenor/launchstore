@@ -334,30 +334,6 @@ const Validate = {
       value
     }
   },
-  isPassword(value) {
-    let error = null;
-
-    if (value.length < 6) {
-      error = "A senha precisa ter no mínimo 6 caracteres.";
-    }
-
-    return {
-      error,
-      value
-    }
-  },
-  isPasswordConfirm(value) {
-    // let error = null;
-
-    // if (Validate.isPassword.value !== value) {
-    //   error = "As senhas não conferem.";
-    // }
-
-    // return {
-    //   error,
-    //   value
-    // }
-  },
   isCpfAndCnpj(value) {
     let error = null;
 

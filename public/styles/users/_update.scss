@@ -145,6 +145,13 @@
             background-color: rgba($color: $dark-bold-color, $alpha: 0.3);
 
             border: 1px solid $border-color;
+
+            &:-internal-autofill-previewed,
+            &:-internal-autofill-selected,
+            &:-webkit-autofill {
+              -webkit-text-fill-color: $font-color !important;
+              box-shadow: 0 0 0px 1000px $dark-bold-color inset;
+            }
           }
 
           input[type="email"] {

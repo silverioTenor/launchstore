@@ -20,7 +20,7 @@ export default class User{
   }
 
   static async getBy(filters) {
-    let sql = "SELECT email, cpf_cnpj FROM users";
+    let sql = "SELECT name, email, cpf_cnpj FROM users";
 
     Object.keys(filters).map(key => {
       sql = `${sql} ${key}`;
@@ -34,20 +34,20 @@ export default class User{
     return results.rows[0];
   }
 
-  static save(values) {
+  static async save(values) {
     try {
       const sql = `
-      INSERT INTO users (
-        name,
-        email,
-        password,
-        cpf_cnpj,
-        cep
-      ) VALUES ($1, $2, $3, $4, $5)
-      RETURNING id;
-    `;
+        INSERT INTO users (
+          name,
+          email,
+          password,
+          cpf_cnpj
+        ) VALUES ($1, $2, $3, $4)
+        RETURNING id;
+      `;
 
-      return db.query(sql, values);
+      const results = await db.query(sql, values);
+      return results.rows[0].id;
 
     } catch (error) {
       console.log(`Unexpected error: ${error}`);

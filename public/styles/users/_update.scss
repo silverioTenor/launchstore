@@ -194,6 +194,19 @@
         }
       }
 
+      #btn-delete {
+        padding: 9px 20px;
+        right: 136px;
+        font-size: 14px;
+        color:  $font-color;
+        background-color: #ff00009d;
+        border: none;
+
+        &:hover {
+          background-color: #ff000071;
+        }
+      }
+
       .error {
         min-width: 100px;
         padding: 4px 8px;

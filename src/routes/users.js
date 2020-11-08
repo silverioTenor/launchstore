@@ -22,8 +22,8 @@ import UserController from '../app/controllers/auth/UserController';
 routes.get("/register", UserController.registerForm);
 routes.post("/register", Validators.post, UserController.post);
 
-// routes.get("/", UserController.show);
-// routes.put("/", UserController.update);
+routes.get("/show/:id", Validators.show, UserController.show);
+routes.put("/", UserController.update);
 // routes.delete("/", UserController.delete);
 
 export default routes;

@@ -1,7 +1,6 @@
 import { hash } from 'bcryptjs';
 
 import User from './../../models/User';
-import FilesManager from './../../models/FilesManager';
 import Address from './../../models/Address';
 
 import utils from '../../../lib/utils';

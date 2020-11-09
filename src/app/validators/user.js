@@ -1,4 +1,4 @@
-import { compare, hash } from "bcryptjs";
+import { compare } from "bcryptjs";
 import fs from 'fs';
 
 import User from "../models/User";
@@ -112,7 +112,8 @@ const Validators = {
       return res.render("users/index", fillAllFields);
     }
 
-    let { id, password } = req.body;
+    const { userID: id } = req.session;
+    let { password } = req.body;
 
     if (!password) {
       return res.render("users/index", {
@@ -144,7 +145,7 @@ const Validators = {
       }
     }
 
-    let { name, email, cpf_cnpj, address_id } = req.body;
+    let { name, email, cpf_cnpj } = req.body;
 
     cpf_cnpj = cpf_cnpj.replace(/\D/g, "");
 
@@ -154,45 +155,54 @@ const Validators = {
     let photo = [];
     const column = "user_id";
     let values = { id, column };
-    let file = await FilesManager.get(values);
-
-    if (req.body.removedPhotos) {
-      let removedPhotos = req.body.removedPhotos.split(",");
-      const lastIndex = removedPhotos.length - 1;
-
-      removedPhotos.splice(lastIndex, 1);
-      removedPhotos = removedPhotos.map(photo => Number(photo));
-
-      if (file && file != "" || file != undefined) {
-        if (fs.existsSync(file.path[0])) {
-          fs.unlinkSync(file.path[0]);
-
-          values = [file.id, photo];
-          await FilesManager.edit(values);
-        }
-      }
-    }
-
+    let file = {};
+    
     try {
-      if (req.files && req.files.length > 0) {
-        photo.push(req.files[0].path);
-
-        if (!file || file == "" || file == undefined) {
-          let fm_id = await FilesManager.save(values);
-
-          values = [photo, fm_id];
-          await FilesManager.saveInFiles(values);
-
-        } else {
-          let fm_id = file.id;
-          values = [fm_id, photo];
-
-          await FilesManager.edit(values);
-        }
-      }
+      file = await FilesManager.get(values);
 
     } catch (error) {
-      console.error(`Unexpected error: ${error}`);
+      console.error(`Operation failure. error: ${error}`);
+    }
+
+    if (file !== "undefined" || Object.keys(file).length > 0) {
+      if (req.body.removedPhotos) {
+        let removedPhotos = req.body.removedPhotos.split(",");
+        const lastIndex = removedPhotos.length - 1;
+
+        removedPhotos.splice(lastIndex, 1);
+        removedPhotos = removedPhotos.map(photo => Number(photo));
+
+        if (file && file != "" || file != undefined) {
+          if (fs.existsSync(file.path[0])) {
+            fs.unlinkSync(file.path[0]);
+
+            values = [file.id, photo];
+            await FilesManager.edit(values);
+          }
+        }
+      }
+
+      try {
+        if (req.files && req.files.length > 0) {
+          photo.push(req.files[0].path);
+
+          if (!file || file == "" || file == undefined) {
+            let fm_id = await FilesManager.save(values);
+
+            values = [photo, fm_id];
+            await FilesManager.saveInFiles(values);
+
+          } else {
+            let fm_id = file.id;
+            values = [fm_id, photo];
+
+            await FilesManager.edit(values);
+          }
+        }
+
+      } catch (error) {
+        console.error(`Unexpected error: ${error}`);
+      }
     }
 
     // Validação do Endereço
@@ -212,7 +222,8 @@ const Validators = {
     try {
       if (!addr || addr == "" || addr == undefined) {
         values = [cep, street, complement, district, state, uf];
-        await Address.save(values);
+        const result = await Address.save(values);
+        req.user.address_id = result;
 
       } else {
         values = [addr.id, cep, street, complement, district, state, uf];

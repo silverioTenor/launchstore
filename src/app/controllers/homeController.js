@@ -14,8 +14,8 @@ const HomeController = {
 
     async function getImage(values) {
       results = await FilesManager.get(values);
-      const files = results.rows.map(file => {
-        return `${req.protocol}://${req.headers.host}${file.path[0]}`.replace("public", "");
+      const files = results.path.map(file => {
+        return `${req.protocol}://${req.headers.host}${file}`.replace("public", "");
       });
 
       return files[0];

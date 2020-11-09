@@ -1,10 +1,13 @@
 {% if formFull %}
   <div class="photoArea">
-    {% if user.path %}
+    {% if user.photo %}
         <div id="photos-preview">
-          <div id="{{ user.id }}" class="photo" onclick="PhotosUpload.removePhoto(event)">
-            <img src="{{ user.path }}" alt="{{ user.name }}"/>
-            <i class="material-icons">close</i>
+          <div id="{{ user.photo.id }}" class="photo" onclick="PhotosUpload.removePhoto(event)">
+            <img src="{{ user.photo.path }}" alt="{{ user.name }}"/>
+            <i 
+              class="material-icons" 
+              onclick="PhotosUpload.countRemovedPhotos(event)"
+            >close</i>
           </div>
         </div>
     {% else %}
@@ -21,6 +24,7 @@
       />
       <span class="choose">Escolher foto</span>
     </div>
+    <input type="hidden" name="removedPhotos"/>
   </div>
 {% endif %}
 
@@ -98,8 +102,8 @@
             type="text" 
             name="cep" 
             id="cep"
-            {% if user.cep %}
-                value="{{ user.cep }}"
+            {% if user.address.cep %}
+                value="{{ user.address.cep }}"
             {% endif %}
             onkeydown="Mask.apply(this, 'cepFormat')"
             onblur="Address.get(); Validate.apply(this, 'isCep');"
@@ -112,8 +116,8 @@
             type="text" 
             name="street" 
             id="street"
-            {% if user.street %}
-                value="{{ user.street }}"
+            {% if user.address.street %}
+                value="{{ user.address.street }}"
             {% endif %}
           />
         </div>
@@ -124,8 +128,8 @@
             type="text" 
             name="complement" 
             id="complement"
-            {% if user.complement %}
-                value="{{ user.complement }}"
+            {% if user.address.complement %}
+                value="{{ user.address.complement }}"
             {% endif %}
           />
         </div>
@@ -136,8 +140,8 @@
             type="text" 
             name="district" 
             id="district"
-            {% if user.district %}
-                value="{{ user.district }}"
+            {% if user.address.district %}
+                value="{{ user.address.district }}"
             {% endif %}
           />
         </div>
@@ -148,8 +152,8 @@
             type="text" 
             name="locale" 
             id="locale"
-            {% if user.locale %}
-                value="{{ user.locale }}"
+            {% if user.address.state %}
+                value="{{ user.address.state }}"
             {% endif %}
           />
         </div>
@@ -160,8 +164,8 @@
             type="text" 
             name="uf" 
             id="uf"
-            {% if user.uf %}
-                value="{{ user.uf }}"
+            {% if user.address.uf %}
+                value="{{ user.address.uf }}"
             {% endif %}
           />
         </div>

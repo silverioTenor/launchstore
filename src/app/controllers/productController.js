@@ -75,7 +75,7 @@ const ProductController = {
     const values = { id, column };
 
     results = await FilesManager.get(values);
-    let files = results.rows[0].path;
+    let files = results.path;
 
     files = files.map(file => `${req.protocol}://${req.headers.host}${file}`.replace("public", ""));
 
@@ -113,7 +113,7 @@ const ProductController = {
       results = await FilesManager.get(values);
       let count = 0;
 
-      const files = results.rows[0].path.map(file => {
+      const files = results.path.map(file => {
         const photo = {
           id: count,
           path: `${req.protocol}://${req.headers.host}${file}`.replace("public", "")

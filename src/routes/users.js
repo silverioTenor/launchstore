@@ -23,7 +23,7 @@ routes.get("/register", UserController.registerForm);
 routes.post("/register", Validators.post, UserController.post);
 
 routes.get("/show/:id", Validators.show, UserController.show);
-routes.put("/", UserController.update);
+routes.put("/", multer.array("photo", 1), Validators.update, UserController.update);
 // routes.delete("/", UserController.delete);
 
 export default routes;

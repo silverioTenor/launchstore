@@ -20,7 +20,7 @@ export default class User{
   }
 
   static async getBy(filters) {
-    let sql = "SELECT name, email, cpf_cnpj FROM users";
+    let sql = "SELECT * FROM users";
 
     Object.keys(filters).map(key => {
       sql = `${sql} ${key}`;
@@ -54,18 +54,26 @@ export default class User{
     }
   }
 
-  static edit(values) {
+  static async edit(id, fields) {
     try {
-      const sql = `
-        UPDATE users SET
-          name = $2,
-          email = $3,
-          password = $4,
-          cpf_cnpj = $5
-        WHERE id = $1
-      `;
+      let sql = `UPDATE users SET`;
 
-      return db.query(sql, values);
+      Object.keys(fields).map((key, index, array) => {
+        if ((index + 1) < array.length) {
+          sql = `${sql}
+            ${key} = '${fields[key]}',
+          `;
+        } else {
+          sql = `${sql}
+            ${key} = '${fields[key]}'
+            WHERE id = ${id}
+          `;
+        }
+      });
+
+      await db.query(sql);
+      return
+
     } catch (error) {
       console.log(`Unexpected error: ${error}`);
     }

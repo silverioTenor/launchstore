@@ -37,12 +37,12 @@ const UserController = {
   },
   async show(req, res) {
     try {
-      const { user } = req;
+      const { user, addr } = req;
 
       user.cpf_cnpj = formatCpfCnpj(user.cpf_cnpj);
-      user.address.cep = formatCep(user.address.cep);
+      if (addr) addr.cep = formatCep(addr.cep);
 
-      return res.render("users/index", { user, formFull: true });
+      return res.render("users/index", { user, addr, formFull: true });
 
     } catch (error) {
       console.error(error);
@@ -56,19 +56,14 @@ const UserController = {
   },
   async update(req, res) {
     const { userID: id } = req.session;
-    let { user, saveFile, address } = req;
+    let { user, addr } = req;
 
     try {
-      await Address.edit(address);
+      await Address.edit(addr);
       await User.edit(id, user);
-      await FilesManager.edit(saveFile);
 
-      return res.render("users/index", {
-        message: "Dados atualizados com sucesso!",
-        type: "success",
-        formFull: true
-      });
-        
+      return res.redirect(`users/show/${id}`);
+
     } catch (error) {
       console.error(`Failed to save. error: ${error}`);
 

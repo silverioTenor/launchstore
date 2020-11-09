@@ -102,8 +102,8 @@
             type="text" 
             name="cep" 
             id="cep"
-            {% if user.address.cep %}
-                value="{{ user.address.cep }}"
+            {% if addr.cep %}
+                value="{{ addr.cep }}"
             {% endif %}
             onkeydown="Mask.apply(this, 'cepFormat')"
             onblur="Address.get(); Validate.apply(this, 'isCep');"
@@ -116,8 +116,8 @@
             type="text" 
             name="street" 
             id="street"
-            {% if user.address.street %}
-                value="{{ user.address.street }}"
+            {% if addr.street %}
+                value="{{ addr.street }}"
             {% endif %}
           />
         </div>
@@ -128,8 +128,8 @@
             type="text" 
             name="complement" 
             id="complement"
-            {% if user.address.complement %}
-                value="{{ user.address.complement }}"
+            {% if addr.complement %}
+                value="{{ addr.complement }}"
             {% endif %}
           />
         </div>
@@ -140,8 +140,8 @@
             type="text" 
             name="district" 
             id="district"
-            {% if user.address.district %}
-                value="{{ user.address.district }}"
+            {% if addr.district %}
+                value="{{ addr.district }}"
             {% endif %}
           />
         </div>
@@ -152,8 +152,8 @@
             type="text" 
             name="locale" 
             id="locale"
-            {% if user.address.state %}
-                value="{{ user.address.state }}"
+            {% if addr.state %}
+                value="{{ addr.state }}"
             {% endif %}
           />
         </div>
@@ -164,8 +164,8 @@
             type="text" 
             name="uf" 
             id="uf"
-            {% if user.address.uf %}
-                value="{{ user.address.uf }}"
+            {% if addr.uf %}
+                value="{{ addr.uf }}"
             {% endif %}
           />
         </div>

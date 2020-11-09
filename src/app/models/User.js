@@ -66,7 +66,7 @@ export default class User{
         } else {
           sql = `${sql}
             ${key} = '${fields[key]}'
-            WHERE id = ${id}
+            WHERE id = '${id}'
           `;
         }
       });

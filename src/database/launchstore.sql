@@ -4,9 +4,10 @@ CREATE DATABASE launchstore;
 -- TABLES
 
 CREATE TABLE "address" (
-  "cep" text PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
+  "cep" text NOT NULL,
   "street" text NOT NULL,
-  "complement" text NOT NULL,
+  "complement" text,
   "district" text NOT NULL,
   "state" text NOT NULL,
   "uf" text NOT NULL
@@ -17,8 +18,8 @@ CREATE TABLE "users" (
   "name" text NOT NULL,
   "email" text UNIQUE NOT NULL,
   "password" text NOT NULL,
-  "cpf/cnpj" text UNIQUE NOT NULL,
-  "cep" text,
+  "cpf_cnpj" text UNIQUE NOT NULL,
+  "address_id" int,
   "created_at" timestamp DEFAULT now(),
   "updated_at" timestamp DEFAULT now()
 );
@@ -52,7 +53,7 @@ CREATE TABLE "files" (
 
 -- FOREIGN KEYs
 
-ALTER TABLE "users" ADD FOREIGN KEY ("cep") REFERENCES "address" ("cep");
+ALTER TABLE "users" ADD FOREIGN KEY ("address_id") REFERENCES "address" ("id");
 
 ALTER TABLE "products" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 

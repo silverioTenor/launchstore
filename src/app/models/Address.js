@@ -3,7 +3,7 @@ import db from '../../database/config';
 export default class Address{
   static async get(cep) {
     try {
-      const results = await db.query("SELECT * FROM address WHERE cep = $1", [cep]);
+      const results = await db.query("SELECT * FROM address WHERE id = $1", [cep]);
       return results.rows[0];
 
     } catch (error) {
@@ -31,10 +31,11 @@ export default class Address{
           state,
           uf
         ) VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING id;
       `;
 
-      await db.query(sql, values);
-      return
+      const results = await db.query(sql, values);
+      return results.rows[0].id;
 
     } catch (error) {
       console.log(`Unexpected error: ${error}`);
@@ -45,13 +46,13 @@ export default class Address{
     try {
       const sql = `
         UPDATE address SET
-          cep = $1,
-          street = $2,
-          complement = $3,
-          district = $4,
-          state = $5,
-          uf = $6
-        WHERE cep = $1
+          cep = $2,
+          street = $3,
+          complement = $4,
+          district = $5,
+          state = $6,
+          uf = $7
+        WHERE id = $1
       `;
 
       await db.query(sql, values);

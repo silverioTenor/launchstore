@@ -57,7 +57,6 @@ const Validators = {
 
     try {
       const filters = { where: { id } };
-
       user = await User.getBy(filters);
 
     } catch (error) {
@@ -70,26 +69,28 @@ const Validators = {
       });
     }
 
-    let address = {};
+    let addr = "";
 
-    if (user.cep && user.cep != "" || user.cep != undefined) {
+    if (user.address_id && user.address_id != "" || user.address_id != undefined) {
       try {
-        address = await Address.get(user.cep);
-        user.address = address;
+        addr = await Address.get(user.address_id);
+        req.addr = addr;
 
       } catch (error) {
-        console.error(`Search address failure. error: ${error}`);
+        console.error(`Search addr failure. error: ${error}`);
       }
     }
 
     const column = "user_id";
     const values = { id, column };
-    let photo = "";
+    let photo = {};
+
+    // console.log(Object.keys(photo).indexOf("path"));
 
     try {
       photo = await FilesManager.get(values);
 
-      if (photo.path.length > 0) {
+      if (photo !== "undefined" || Object.keys(photo.path).length > 0) {
         user.photo = {
           id: photo.id,
           path: `${req.protocol}://${req.headers.host}${photo.path}`.replace("public", "")
@@ -143,20 +144,16 @@ const Validators = {
       }
     }
 
-    let { name, email, cpf_cnpj, cep } = req.body;
+    let { name, email, cpf_cnpj, address_id } = req.body;
 
-    password = await hash(password, 8);
     cpf_cnpj = cpf_cnpj.replace(/\D/g, "");
-    cep = cep.replace(/\D/g, "");
 
-    let values = { name, email, password, cpf_cnpj, cep };
-
-    req.user = values;
+    req.user = { name, email, cpf_cnpj };
 
     // Validação da foto
     let photo = [];
     const column = "user_id";
-    values = { id, column };
+    let values = { id, column };
     let file = await FilesManager.get(values);
 
     if (req.body.removedPhotos) {
@@ -190,7 +187,7 @@ const Validators = {
           let fm_id = file.id;
           values = [fm_id, photo];
 
-          req.saveFile = values;
+          await FilesManager.edit(values);
         }
       }
 
@@ -199,26 +196,27 @@ const Validators = {
     }
 
     // Validação do Endereço
-    let address = "";
+    let addr = "";
 
     try {
-      address = await Address.get(user.cep);
+      if (user.address_id) addr = await Address.get(user.address_id);
 
     } catch (error) {
       console.error(`Operation failure. error: ${error}`);
     }
 
-    let { street, complement, district, locale, uf } = req.body;
+    let { cep, street, complement, district, locale, uf } = req.body;
     cep = cep.replace(/\D/g, "");
     const state = locale;
-    values = [cep, street, complement, district, state, uf];
 
     try {
-      if (!address || address == "" || address == undefined) {
+      if (!addr || addr == "" || addr == undefined) {
+        values = [cep, street, complement, district, state, uf];
         await Address.save(values);
+
       } else {
-        // await Address.edit(values);
-        req.address = values;
+        values = [addr.id, cep, street, complement, district, state, uf];
+        req.addr = values;
       }
 
     } catch (error) {

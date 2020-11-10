@@ -34,11 +34,31 @@
             </form>
           {% endblock filter %}
 
-          <div class="auth">
-            <a href="#">Login</a>
-            <span>|</span>
-            <a href="/users/register">Cadastre-se</a>
-          </div>
+          {% if not user %}
+            <div class="account-container">
+              <div class="account-menu">
+                <i class="material-icons">account_circle</i>
+                <a href="#">Usuário</a>
+              </div>
+              <ul class="account-submenu">
+                <li><a href="#">Minha conta</a></li>
+                <li><a href="#">Meus pedidos</a></li>
+                <li><a href="#">Minhas vendas</a></li>
+                <li class="logout">
+                  <form action="/users/logout" method="POST">
+                    <button class="btn-logout" type="submit">Sair</button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+          {% else %}
+            <div class="account-container">
+              <div class="account-menu">
+                <i class="material-icons">account_circle</i>
+                <a href="#">Minha conta</a>
+              </div>
+            </div>
+          {% endif %}
         </div>
 
         <nav>

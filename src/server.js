@@ -9,6 +9,11 @@ import routes from './routes';
 const server = express();
 
 server.use(session);
+server.use((req, res, next) => {
+  res.locals.session = req.session;
+  next();
+})
+
 server.use(urlencoded({ extended: true }));
 server.use(static('public'));
 server.use(methodOverride('_method'));

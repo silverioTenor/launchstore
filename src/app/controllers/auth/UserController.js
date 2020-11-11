@@ -20,10 +20,10 @@ const UserController = {
 
       const values = [name, email, password, cpf_cnpj];
 
-      const userID = await User.save(values);
-      req.session.userID = userID;
+      await User.save(values);
+      // req.session.userID = userID;
 
-      return res.redirect(`/users/show/${userID}`);
+      return res.redirect("/users/login");
 
     } catch (error) {
       console.error(error);
@@ -37,8 +37,6 @@ const UserController = {
   async show(req, res) {
     try {
       let { user, addr } = req;
-
-      user.name = user.name.split(" ")[0];
 
       user.cpf_cnpj = formatCpfCnpj(user.cpf_cnpj);
       if (addr) addr.cep = formatCep(addr.cep);

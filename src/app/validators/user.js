@@ -53,7 +53,7 @@ const Validators = {
   },
   async show(req, res, next) {
     let user = {};
-    const { userID: id } = req.session;
+    const { userID: id } = req.session.user;
 
     try {
       const filters = { where: { id } };

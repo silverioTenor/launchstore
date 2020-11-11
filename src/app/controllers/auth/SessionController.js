@@ -3,9 +3,9 @@ const SessionController = {
     return res.render("session/login");
   },
   login(req, res) {
-    const {userID} = req;
-    req.session.userID = userID;
-    
+    req.session.user = req.user;
+    const userID = req.user.userID;
+
     return res.redirect(`/users/show/${userID}`);
   },
   logout(req, res) {

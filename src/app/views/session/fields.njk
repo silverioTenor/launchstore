@@ -1,0 +1,29 @@
+<div class="fields">
+    <fieldset>
+      <legend>Área de acesso</legend>
+
+      <div class="field" id="field-email">
+        <label for="email">E-mail</label>
+        <input 
+          type="email" 
+          name="email" 
+          id="email"
+          {% if user.email %}
+              value="{{ user.email }}"
+          {% endif %}
+          onblur="Validate.apply(this, 'isEmail')"
+        />
+      </div>
+      
+      <div class="field field-password">
+        <label for="pass">Senha</label>
+        <input 
+          type="password" 
+          name="password" 
+          id="pass"
+        />
+      </div>
+    </fieldset>
+    
+  <button type="submit" class="button">Entrar</button>
+</div>

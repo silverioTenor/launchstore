@@ -1,5 +1,7 @@
 const SessionController = {
-  loginForm(req, res) {},
+  loginForm(req, res) {
+    return res.render("session/login");
+  },
   login(req, res) {},
   logout(req, res) {
     req.session.destroy();

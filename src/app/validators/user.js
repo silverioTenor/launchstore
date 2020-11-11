@@ -85,8 +85,6 @@ const Validators = {
     const values = { id, column };
     let photo = {};
 
-    // console.log(Object.keys(photo).indexOf("path"));
-
     try {
       photo = await FilesManager.get(values);
 
@@ -124,7 +122,7 @@ const Validators = {
     }
 
     let user = "";
-    let passad = "";
+    let passed = "";
 
     try {
       user = await User.getBy({ where: { id } });
@@ -134,9 +132,9 @@ const Validators = {
     }
 
     if (user && user != "" || user != undefined) {
-      passad = await compare(password, user.password);
+      passed = await compare(password, user.password);
 
-      if (!passad || passad == "") {
+      if (!passed || passed == "") {
         return res.render("users/index", {
           message: "Senha incorreta",
           type: "error",

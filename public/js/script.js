@@ -149,6 +149,7 @@ const PhotosUpload = {
         image.src = String(reader.result);
 
         const divContainer = PhotosUpload.divConstructor(image);
+        PhotosUpload.preview.innerHTML = "";
         PhotosUpload.preview.appendChild(divContainer);
       };
 

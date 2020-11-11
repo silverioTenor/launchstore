@@ -38,14 +38,18 @@
             <div class="account-container">
               <div class="account-menu">
                 <div class="avatar">
-                  <img src="{{ session.user.photo }}" alt="{{ session.user.name }}"/>
+                  {% if session.user.photo %}
+                    <img src="{{ session.user.photo }}" alt="{{ session.user.name }}"/>
+                  {% else %}
+                    <i class="material-icons">account_circle</i>
+                  {% endif %}
                 </div>
                 <a>Olá, {{ session.user.name }}</a>
               </div>
               <ul class="account-submenu">
                 <li><a href="/users/show/{{ session.user.userID }}">Minha conta</a></li>
                 <li><a href="#">Meus pedidos</a></li>
-                <li><a href="#">Minhas vendas</a></li>
+                <li><a href="#">Meus anúncios</a></li>
                 <li class="logout">
                   <form action="/users/logout" method="POST">
                     <button class="btn-logout" type="submit">Sair</button>

@@ -8,6 +8,8 @@ import SessionValidator from '../app/validators/session';
 import SessionController from '../app/controllers/auth/SessionController';
 import UserController from '../app/controllers/auth/UserController';
 
+import { onlyUsers as isLogged } from '../middlewares/session';
+
 // Login/Logout
 routes.get("/login", SessionController.loginForm);
 routes.post("/login", SessionValidator.login, SessionController.login);
@@ -20,10 +22,11 @@ routes.post("/logout", SessionController.logout);
 // routes.post("/password-reset", SessionController.reset);
 
 // Register
+routes.get("/", (req, res) => res.redirect("/users/register"));
 routes.get("/register", UserController.registerForm);
 routes.post("/register", UserValidator.post, UserController.post);
 
-routes.get("/show/:id", UserValidator.show, UserController.show);
+routes.get("/show/:id", isLogged, UserValidator.show, UserController.show);
 routes.put("/", multer.array("photo", 1), UserValidator.update, UserController.update);
 // routes.delete("/", UserController.delete);
 

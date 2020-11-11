@@ -4,14 +4,15 @@
         <div id="photos-preview">
           <div id="{{ user.photo.id }}" class="photo" onclick="PhotosUpload.removePhoto(event)">
             <img src="{{ user.photo.path }}" alt="{{ user.name }}"/>
-            <i 
-              class="material-icons" 
-              onclick="PhotosUpload.countRemovedPhotos(event)"
-            >close</i>
+            <i class="material-icons" onclick="PhotosUpload.countRemovedPhotos(event)">close</i>
           </div>
         </div>
     {% else %}
-      <div id="photos-preview"></div>
+      <div id="photos-preview">
+        <div class="photoAux">
+          <span class="material-icons">account_circle</span>
+        </div>
+      </div>
     {% endif %}
 
     <div id="photos-upload">
@@ -171,5 +172,5 @@
         </div>
       </fieldset>
     {% endif %}
-  <button type="submit" class="button">Salvar dados</button>
+  <button type="submit" class="button">Cadastrar</button>
 </div>

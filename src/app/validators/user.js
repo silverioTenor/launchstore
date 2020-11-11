@@ -87,12 +87,14 @@ const Validators = {
     try {
       photo = await FilesManager.get(values);
 
-      if (photo !== "undefined" || Object.keys(photo.path).length > 0) {
+      if (Object.keys(photo.path).length > 0) {
         user.photo = {
           id: photo.id,
           path: `${req.protocol}://${req.headers.host}${photo.path}`.replace("public", "")
         }
+
       }
+      req.session.user.photo = user.photo.path;
 
     } catch (error) {
       console.error(`oparation failure. error: ${error}`)
@@ -109,7 +111,7 @@ const Validators = {
       return res.render("users/index", fillAllFields);
     }
 
-    const { userID: id } = req.session;
+    const { userID: id } = req.session.user;
     let { password } = req.body;
 
     if (!password) {

@@ -54,7 +54,7 @@ const UserController = {
     }
   },
   async update(req, res) {
-    const { userID: id } = req.session;
+    const { userID: id } = req.session.user;
     let { user, addr } = req;
 
     try {

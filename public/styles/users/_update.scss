@@ -26,7 +26,8 @@
         background-color: rgba($color: $dark-bold-color, $alpha: 0.3);
         overflow: hidden;
 
-        .photo {
+        .photo,
+        .photoAux {
           width: 100%;
           height: 100%;
           position: relative;
@@ -62,6 +63,17 @@
 
           &:hover i {
             opacity: 1;
+          }
+
+          span.material-icons {
+            width: 100%;
+            height: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 1900%;
           }
         }
       }

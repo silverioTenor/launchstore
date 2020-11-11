@@ -1,4 +1,4 @@
-{% extends '../layout.njk' %}
+{% extends './parts/header.njk' %}
 
 {% block content %}
 <section id="form-register">
@@ -7,6 +7,10 @@
     <form method="POST" action="/users/register">
 
       {% include './fields.njk' %}
+
+      <div class="footer-register">
+        <a href="/users/login">Já tem cadastro?</a>
+      </div>
 
     </form>
 </section>

@@ -1,115 +1,139 @@
-#form-register {
-  width: 50%;
-  margin: 0 auto;
-  margin-top: 60px;
-  padding: 40px;
+.register-global {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  position: relative;
-  background-color: $dark-bold-color;
+  #form-register {
+    width: 600px;
+    margin: 0 auto;
+    padding: 40px;
 
-  border: 1px solid $border-color;
-  border-radius: 4px;
+    position: relative;
+    background-color: $dark-bold-color;
 
-  box-sizing: border-box;
+    border: 1px solid $border-color;
+    border-radius: 4px;
 
-  h2 {
-    margin-bottom: 20px;
-    color: $font-color;
-  }
+    box-sizing: border-box;
 
-  .fields {
-    fieldset {
-      margin-top: 40px;
-      margin-bottom: 16px;
+    h2 {
+      width: 100%;
+      margin-bottom: 20px;
+      text-align: center;
+      color: $font-color;
+    }
 
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+    .fields {
+      fieldset {
+        margin-top: 40px;
+        margin-bottom: 16px;
 
-      position: relative;
-      border-radius: 4px;
-      box-sizing: border-box;
-
-      legend {
-        color: $link-color;
-        text-transform: uppercase;
-        font-weight: 500;
-        display: none;
-      }
-      .field {
-        margin-bottom: 20px;
         display: flex;
-        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 8px;
 
-        label {
-          margin-bottom: 8px;
-          color: $font-dark-color;
-          font-size: 16px;
+        position: relative;
+        border-radius: 4px;
+        box-sizing: border-box;
+
+        legend {
+          color: $link-color;
+          text-transform: uppercase;
           font-weight: 500;
+          display: none;
         }
+        .field {
+          margin-bottom: 20px;
+          display: flex;
+          flex-direction: column;
 
-        input {
-          padding: 10px 16px;
-          position: relative;
+          label {
+            margin-bottom: 8px;
+            color: $font-dark-color;
+            font-size: 16px;
+            font-weight: 500;
+          }
 
-          font-size: 16px;
-          font-weight: 500;
+          input {
+            padding: 10px 16px;
+            position: relative;
 
-          color: $font-color;
-          background-color: transparent;
+            font-size: 16px;
+            font-weight: 500;
 
-          border: 1px solid $border-color;
+            color: $font-color;
+            background-color: transparent;
 
-          &:-internal-autofill-previewed,
-          &:-internal-autofill-selected,
-          &:-webkit-autofill {
-            -webkit-text-fill-color: $font-color !important;
-            box-shadow: 0 0 0px 1000px $dark-bold-color inset;
+            border: 1px solid $border-color;
+
+            &:-internal-autofill-previewed,
+            &:-internal-autofill-selected,
+            &:-webkit-autofill {
+              -webkit-text-fill-color: $font-color !important;
+              box-shadow: 0 0 0px 1000px $dark-bold-color inset;
+            }
           }
         }
+
+        #field-name,
+        #field-email {
+          flex: 100%;
+        }
+
+        .field-password {
+          flex: 25%;
+        }
+
+        #field-cpf_cnpj {
+          width: 50%;
+        }
       }
 
-      #field-name,
-      #field-email {
-        flex: 100%;
+      button {
+        width: 100%;
+        padding: 12px 20px;
+
+        font-size: 16px;
+        font-weight: 500;
+
+        background-color: $primary-color;
+        border: 1px solid $primary-color;
+        border-radius: 4px;
+        cursor: pointer;
+        @include transition(0.1s);
+
+        &:hover {
+          color: $font-color;
+          background-color: $secondary-color;
+          border: 1px solid $secondary-color;
+        }
       }
 
-      .field-password {
-        flex: 25%;
-      }
-
-      #field-cpf_cnpj {
-        width: 50%;
-      }
-    }
-
-    button {
-      padding: 8px 20px;
-      position: absolute;
-      top: 35px;
-      right: 40px;
-
-      font-size: 14px;
-      font-weight: 500;
-
-      background-color: $primary-color;
-      border: 1px solid $primary-color;
-      cursor: pointer;
-      @include transition(0.1s);
-
-      &:hover {
+      .error {
+        min-width: 100px;
+        padding: 4px 8px;
         color: $font-color;
-        background-color: $secondary-color;
-        border: 1px solid $secondary-color;
+        background-color: #ff00009d;
+        border-radius: 4px;
       }
     }
 
-    .error {
-      min-width: 100px;
-      padding: 4px 8px;
-      color: $font-color;
-      background-color: #ff00009d;
-      border-radius: 4px;
+    .footer-register {
+      width: 100%;
+      margin-top: 24px;
+      display: flex;
+      justify-content: space-evenly;
+
+      a {
+        color: $font-dark-color;
+        @include transition(0.1s);
+
+        &:hover {
+          color: $link-color;
+        }
+      }
     }
   }
 }

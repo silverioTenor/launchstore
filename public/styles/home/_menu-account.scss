@@ -47,14 +47,14 @@
       color: $font-color;
     }
 
-    a {
+    span {
       font-size: 14px;
       color: $font-color;
       transition: ease-in-out 0.1s;
     }
 
     &:hover i,
-    &:hover a {
+    &:hover span {
       color: $link-color;
     }
   }

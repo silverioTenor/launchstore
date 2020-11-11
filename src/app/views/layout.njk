@@ -37,11 +37,13 @@
           {% if user %}
             <div class="account-container">
               <div class="account-menu">
-                <i class="material-icons">account_circle</i>
-                <a href="#">Usuário</a>
+                <div class="avatar">
+                  <img src="{{ user.photo.path }}" alt="{{ user.name }}"/>
+                </div>
+                <a>Olá, {{ user.name }}</a>
               </div>
               <ul class="account-submenu">
-                <li><a href="#">Minha conta</a></li>
+                <li><a href="/users/show/{{ user.id }}">Minha conta</a></li>
                 <li><a href="#">Meus pedidos</a></li>
                 <li><a href="#">Minhas vendas</a></li>
                 <li class="logout">

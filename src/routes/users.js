@@ -4,13 +4,13 @@ import { Router } from 'express';
 const routes = Router();
 
 import Validators from '../app/validators/user';
-// import SessionController from '../app/controllers/auth/SessionController';
+import SessionController from '../app/controllers/auth/SessionController';
 import UserController from '../app/controllers/auth/UserController';
 
 // Login/Logout
-// routes.get("/login", SessionController.loginForm);
-// routes.post("/login", SessionController.login);
-// routes.post("/logout", SessionController.logout);
+routes.get("/login", SessionController.loginForm);
+routes.post("/login", SessionController.login);
+routes.post("/logout", SessionController.logout);
 
 // Password/Forgot
 // routes.get("/forgot-password", SessionController.forgotForm);

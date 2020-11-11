@@ -36,7 +36,9 @@ const UserController = {
   },
   async show(req, res) {
     try {
-      const { user, addr } = req;
+      let { user, addr } = req;
+
+      user.name = user.name.split(" ")[0];
 
       user.cpf_cnpj = formatCpfCnpj(user.cpf_cnpj);
       if (addr) addr.cep = formatCep(addr.cep);

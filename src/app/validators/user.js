@@ -62,10 +62,9 @@ const Validators = {
     } catch (error) {
       console.error(`Search user failure. error: ${error}`);
 
-      return res.render("users/register", {
+      return res.render("session/login", {
         message: "Usuário não encontrado!",
-        type: "error",
-        formFull: true
+        type: "error"
       });
     }
 

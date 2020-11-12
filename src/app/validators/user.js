@@ -148,6 +148,7 @@ const Validators = {
 
     cpf_cnpj = cpf_cnpj.replace(/\D/g, "");
 
+    req.session.user.name = name.split(" ")[0];
     req.user = { name, email, cpf_cnpj };
 
     // Validação da foto

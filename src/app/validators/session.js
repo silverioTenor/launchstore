@@ -13,14 +13,14 @@ const Validators = {
     try {
       user = await User.getBy({ where: { email } });
 
-    } catch (error) {
-      console.error(`Search user failure. error: ${error}`);
-
-      return res.render("session/login", {
+      if (!user) return res.render("session/login", {
         user: req.body,
         message: "Usuário não encontrado!",
         type: "error"
       });
+
+    } catch (error) {
+      console.error(`Search user failure. error: ${error}`);
     }
 
     if (user && user != "" || user != undefined) {
@@ -55,6 +55,23 @@ const Validators = {
     };
 
     next();
+  },
+  async forgot(req, res, next) {
+    const { email } = req.body;
+
+    try {
+      let user = await User.getBy({ where: { email } });
+
+      if (!user) return res.render("session/forgot/forgot-password", {
+        message: "E-mail não encontrado!",
+        type: "error"
+      });
+
+      next();
+
+    } catch (error) {
+      console.error(`User not found. ${error}`);
+    }
   }
 }
 

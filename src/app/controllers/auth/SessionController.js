@@ -12,6 +12,12 @@ const SessionController = {
     req.session.destroy();
 
     return res.redirect("/users/login");
+  },
+  forgotForm(req, res) {
+    return res.render("session/forgot/forgot-password");
+  },
+  forgot(req, res) {
+    return
   }
 }
 

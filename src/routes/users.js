@@ -17,9 +17,9 @@ routes.post("/logout", SessionController.logout);
 
 // Password/Forgot
 routes.get("/forgot-password", SessionController.forgotForm);
-// routes.get("/password-reset", SessionController.resetForm);
+routes.get("/password-reset", SessionController.resetForm);
 routes.post("/forgot-password", SessionValidator.forgot, SessionController.forgot);
-// routes.post("/password-reset", SessionController.reset);
+routes.post("/password-reset", SessionValidator.reset, SessionController.reset);
 
 // Register
 routes.get("/", (req, res) => res.redirect("/users/register"));

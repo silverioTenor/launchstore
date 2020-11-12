@@ -67,11 +67,61 @@ const Validators = {
         type: "error"
       });
 
+      req.user = user;
       next();
 
     } catch (error) {
       console.error(`User not found. ${error}`);
     }
+  },
+  async reset(req, res, next) {
+    // Procura o Usuário
+    let { email, password, passwordRepeat, token } = req.body;
+    let user = {};
+
+    try {
+      user = await User.getBy({ where: { email } });
+
+      if (!user) return res.render("session/reset/password-reset", {
+        token,
+        message: "E-mail não cadastrado!",
+        type: "error"
+      });
+
+    } catch (error) {
+      console.error(`Unexpected error in ResetValidator: ${error}`);
+    }
+
+    // Confere a senha e a repetição de senha
+    if (password !== passwordRepeat) {
+      return res.render("session/reset/password-reset", {
+        token,
+        message: "As senhas não coincidem!",
+        type: "error"
+      });
+    }
+
+    // Confere se o token é válido
+    if (token !== user.reset_token) {
+      return res.render("session/reset/password-reset", {
+        message: "Token inválido! Solicite uma nova recuperação de senha.",
+        type: "error"
+      });
+    }
+    
+    // Confere se o token não expirou
+    let now = new Date();
+    now = now.setHours(now.getHours());
+
+    if (now > user.reset_token_expires) {
+      return res.render("session/reset/password-reset", {
+        message: "Token expirado! Solicite uma nova recuperação de senha.",
+        type: "error"
+      });
+    }
+
+    req.user = user;
+    next();
   }
 }
 

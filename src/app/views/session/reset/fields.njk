@@ -1,0 +1,39 @@
+<div class="fields">
+    <fieldset>
+
+      <div class="field" id="field-email">
+        <label for="email">Digite o e-mail cadastrado</label>
+        <input 
+          type="email" 
+          name="email" 
+          id="email"
+          {% if user.email %}
+              value="{{ user.email }}"
+          {% endif %}
+          onblur="Validate.apply(this, 'isEmail')"
+        />
+      </div>
+
+      <div class="field">
+        <label for="pass">Digite uma nova senha</label>
+        <input 
+          type="password" 
+          name="password" 
+          id="pass"
+        />
+      </div>
+      
+      <div class="field">
+        <label for="passr">Confirme a senha</label>
+        <input 
+          type="password" 
+          name="passwordRepeat" 
+          id="passr"
+        />
+      </div>
+    </fieldset>
+
+    <input type="hidden" name="token" value="{{ token }}">
+    
+  <button type="submit" class="button">Salvar senha</button>
+</div>

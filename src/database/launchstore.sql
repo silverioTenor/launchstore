@@ -20,6 +20,8 @@ CREATE TABLE "users" (
   "password" text NOT NULL,
   "cpf_cnpj" text UNIQUE NOT NULL,
   "address_id" int,
+  "reset_token" text,
+  "reset_token_expires" text,
   "created_at" timestamp DEFAULT now(),
   "updated_at" timestamp DEFAULT now()
 );
@@ -99,3 +101,40 @@ WITH (OIDS=FALSE);
 ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
 
 CREATE INDEX "IDX_session_expire" ON "session" ("expire");
+
+-- CASCADE EFFECT ON DELETE
+
+ALTER TABLE "users"
+DROP CONSTRAINT users_address_id_fkey,
+ADD CONSTRAINT users_address_id_fkey
+FOREIGN KEY ("address_id")
+REFERENCES "address" ("id")
+ON DELETE CASCADE;
+
+ALTER TABLE "products"
+DROP CONSTRAINT products_user_id_fkey,
+ADD CONSTRAINT products_user_id_fkey
+FOREIGN KEY ("user_id")
+REFERENCES "users" ("id")
+ON DELETE CASCADE;
+
+ALTER TABLE "files_manager"
+DROP CONSTRAINT files_manager_user_id_fkey,
+ADD CONSTRAINT files_manager_user_id_fkey
+FOREIGN KEY ("user_id")
+REFERENCES "users" ("id")
+ON DELETE CASCADE;
+
+ALTER TABLE "files_manager"
+DROP CONSTRAINT files_manager_product_id_fkey,
+ADD CONSTRAINT files_manager_product_id_fkey
+FOREIGN KEY ("product_id")
+REFERENCES "products" ("id")
+ON DELETE CASCADE;
+
+ALTER TABLE "files"
+DROP CONSTRAINT files_files_manager_id_fkey,
+ADD CONSTRAINT files_files_manager_id_fkey
+FOREIGN KEY ("files_manager_id")
+REFERENCES "files_manager" ("id")
+ON DELETE CASCADE;

@@ -185,30 +185,9 @@
         }
       }
 
-      button {
-        padding: 8px 20px;
-        position: absolute;
-        top: 0;
-        right: 0;
-
-        font-size: 14px;
-        font-weight: 500;
-
-        background-color: $primary-color;
-        border: 1px solid $primary-color;
-        cursor: pointer;
-        @include transition(0.1s);
-
-        &:hover {
-          color: $font-color;
-          background-color: $secondary-color;
-          border: 1px solid $secondary-color;
-        }
-      }
-
       #btn-delete {
         padding: 9px 20px;
-        right: 136px;
+        right: 110px;
         font-size: 14px;
         color:  $font-color;
         background-color: #ff00009d;
@@ -225,6 +204,27 @@
         color: $font-color;
         background-color: #ff00009d;
         border-radius: 4px;
+      }
+    }
+
+    button {
+      padding: 8px 20px;
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      font-size: 14px;
+      font-weight: 500;
+
+      background-color: $primary-color;
+      border: 1px solid $primary-color;
+      cursor: pointer;
+      @include transition(0.1s);
+
+      &:hover {
+        color: $font-color;
+        background-color: $secondary-color;
+        border: 1px solid $secondary-color;
       }
     }
   }

@@ -110,6 +110,7 @@
       justify-content: space-evenly;
 
       a {
+        font-size: 14px;
         color: $font-dark-color;
         @include transition(0.1s);
 

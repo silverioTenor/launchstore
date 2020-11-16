@@ -6,7 +6,10 @@
 
     <form method="POST" action="/users?_method=PUT" enctype="multipart/form-data">
       <input type="hidden" name="id" value="{{ user.id }}">
+
       {% include './fields.njk' %}
+
+      <button type="submit" class="button">Atualizar</button>
     </form>
 
     <form method="POST" action="/users?_method=DELETE">

@@ -30,147 +30,146 @@
 {% endif %}
 
 <div class="fields">
-    <fieldset>
-      <legend>Dados pessoais</legend>
+  <fieldset>
+    <legend>Dados pessoais</legend>
 
-      <div class="field" id="field-name">
-        <label for="name">Nome</label>
-        <input 
-          type="text" 
-          name="name" 
-          id="name"
-          {% if user.name %}
-              value="{{ user.name }}"
-          {% endif %}
-        />
-      </div>
-      
-      <div class="field" id="field-email">
-        <label for="email">E-mail</label>
-        <input 
-          type="email" 
-          name="email" 
-          id="email"
-          {% if user.email %}
-              value="{{ user.email }}"
-          {% endif %}
-          onblur="Validate.apply(this, 'isEmail')"
-        />
-      </div>
-      
+    <div class="field" id="field-name">
+      <label for="name">Nome</label>
+      <input 
+        type="text" 
+        name="name" 
+        id="name"
+        {% if user.name %}
+            value="{{ user.name }}"
+        {% endif %}
+      />
+    </div>
+    
+    <div class="field" id="field-email">
+      <label for="email">E-mail</label>
+      <input 
+        type="email" 
+        name="email" 
+        id="email"
+        {% if user.email %}
+            value="{{ user.email }}"
+        {% endif %}
+        onblur="Validate.apply(this, 'isEmail')"
+      />
+    </div>
+    
+    <div class="field field-password">
+      <label for="pass">Senha</label>
+      <input 
+        type="password" 
+        name="password" 
+        id="pass"
+      />
+    </div>
+    
+    {% if not user.id %}
       <div class="field field-password">
-        <label for="pass">Senha</label>
+        <label for="passRepeat">Confirme sua senha</label>
         <input 
           type="password" 
-          name="password" 
-          id="pass"
+          name="passwordRepeat" 
+          id="passRepeat"
+        />
+      </div>
+    {% endif %}
+    
+    <div class="field" id="field-cpf_cnpj">
+      <label for="doc">CPF / CNPJ</label>
+      <input 
+        type="text" 
+        name="cpf_cnpj" 
+        id="doc"
+        {% if user.cpf_cnpj %}
+            value="{{ user.cpf_cnpj }}"
+        {% endif %}
+        onkeydown="Mask.apply(this, 'cpfCnpj')"
+        onblur="Validate.apply(this, 'isCpfAndCnpj')"
+      />
+    </div>
+  </fieldset>
+
+  {% if formFull %}
+    <fieldset>
+      <legend>Endereço</legend>
+
+      <div class="field">
+        <label for="cep">CEP</label>
+        <input 
+          type="text" 
+          name="cep" 
+          id="cep"
+          {% if addr.cep %}
+              value="{{ addr.cep }}"
+          {% endif %}
+          onkeydown="Mask.apply(this, 'cepFormat')"
+          onblur="Address.get(); Validate.apply(this, 'isCep');"
+        />
+      </div>
+
+      <div class="field">
+        <label for="street">Logradouro</label>
+        <input 
+          type="text" 
+          name="street" 
+          id="street"
+          {% if addr.street %}
+              value="{{ addr.street }}"
+          {% endif %}
+        />
+      </div>
+
+      <div class="field">
+        <label for="complement">Complemento</label>
+        <input 
+          type="text" 
+          name="complement" 
+          id="complement"
+          {% if addr.complement %}
+              value="{{ addr.complement }}"
+          {% endif %}
+        />
+      </div>
+
+      <div class="field">
+        <label for="district">Bairro</label>
+        <input 
+          type="text" 
+          name="district" 
+          id="district"
+          {% if addr.district %}
+              value="{{ addr.district }}"
+          {% endif %}
+        />
+      </div>
+
+      <div class="field">
+        <label for="locale">Município</label>
+        <input 
+          type="text" 
+          name="locale" 
+          id="locale"
+          {% if addr.state %}
+              value="{{ addr.state }}"
+          {% endif %}
         />
       </div>
       
-      {% if not user.id %}
-        <div class="field field-password">
-          <label for="passRepeat">Confirme sua senha</label>
-          <input 
-            type="password" 
-            name="passwordRepeat" 
-            id="passRepeat"
-          />
-        </div>
-      {% endif %}
-      
-      <div class="field" id="field-cpf_cnpj">
-        <label for="doc">CPF / CNPJ</label>
+      <div class="field">
+        <label for="uf">UF</label>
         <input 
           type="text" 
-          name="cpf_cnpj" 
-          id="doc"
-          {% if user.cpf_cnpj %}
-              value="{{ user.cpf_cnpj }}"
+          name="uf" 
+          id="uf"
+          {% if addr.uf %}
+              value="{{ addr.uf }}"
           {% endif %}
-          onkeydown="Mask.apply(this, 'cpfCnpj')"
-          onblur="Validate.apply(this, 'isCpfAndCnpj')"
         />
       </div>
     </fieldset>
-
-    {% if formFull %}
-      <fieldset>
-        <legend>Endereço</legend>
-
-        <div class="field">
-          <label for="cep">CEP</label>
-          <input 
-            type="text" 
-            name="cep" 
-            id="cep"
-            {% if addr.cep %}
-                value="{{ addr.cep }}"
-            {% endif %}
-            onkeydown="Mask.apply(this, 'cepFormat')"
-            onblur="Address.get(); Validate.apply(this, 'isCep');"
-          />
-        </div>
-
-        <div class="field">
-          <label for="street">Logradouro</label>
-          <input 
-            type="text" 
-            name="street" 
-            id="street"
-            {% if addr.street %}
-                value="{{ addr.street }}"
-            {% endif %}
-          />
-        </div>
-
-        <div class="field">
-          <label for="complement">Complemento</label>
-          <input 
-            type="text" 
-            name="complement" 
-            id="complement"
-            {% if addr.complement %}
-                value="{{ addr.complement }}"
-            {% endif %}
-          />
-        </div>
-
-        <div class="field">
-          <label for="district">Bairro</label>
-          <input 
-            type="text" 
-            name="district" 
-            id="district"
-            {% if addr.district %}
-                value="{{ addr.district }}"
-            {% endif %}
-          />
-        </div>
-
-        <div class="field">
-          <label for="locale">Município</label>
-          <input 
-            type="text" 
-            name="locale" 
-            id="locale"
-            {% if addr.state %}
-                value="{{ addr.state }}"
-            {% endif %}
-          />
-        </div>
-        
-        <div class="field">
-          <label for="uf">UF</label>
-          <input 
-            type="text" 
-            name="uf" 
-            id="uf"
-            {% if addr.uf %}
-                value="{{ addr.uf }}"
-            {% endif %}
-          />
-        </div>
-      </fieldset>
-    {% endif %}
-  <button type="submit" class="button">Cadastrar</button>
+  {% endif %}
 </div>

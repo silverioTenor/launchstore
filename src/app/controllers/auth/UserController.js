@@ -1,12 +1,12 @@
 import { hash } from 'bcryptjs';
 import fs from 'fs';
 
-import User from './../../models/User';
 import Address from './../../models/Address';
+import User from './../../models/User';
+import Product from './../../models/Product';
 import FilesManager from './../../models/FilesManager';
 
 import utils from '../../../lib/utils';
-import Product from './../../models/Product';
 
 const { formatCpfCnpj, formatCep } = utils;
 
@@ -105,7 +105,8 @@ const UserController = {
 
       // Busca o ID da tabela Address para então remov
       const id = req.session.user.userID;
-      const addr_id = await User.get(id);
+      const data = await User.get(id);
+      const addr_id = data.address_id;
       await Address.remove(addr_id);
 
       req.session.destroy();

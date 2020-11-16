@@ -1,9 +1,10 @@
 import db from '../../database/config';
 
 export default class User{
-  static get(id) {
+  static async get(id) {
     try {
-      return db.query("SELECT address_id FROM users WHERE id = $1", [id]);
+      const results = await db.query("SELECT * FROM users WHERE id = $1", [id]);
+      return results.rows[0];
 
     } catch (error) {
       console.log(`Unexpected error: ${error}`);

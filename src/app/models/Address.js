@@ -65,7 +65,7 @@ export default class Address{
 
   static remove(id) {
     try {
-      return db.query("DELETE address WHERE id = $1", [id]);
+      return db.query("DELETE FROM address WHERE id = $1", [id]);
 
     } catch (error) {
       console.log(`Unexpected error: ${error}`);

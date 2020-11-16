@@ -30,9 +30,11 @@ const ProductController = {
       description
     } = req.body;
 
+    const userID = req.session.user.userID;
     price = price.replace(/\D/g, "");
 
     let values = [
+      userID,
       color,
       brand,
       model,
@@ -44,8 +46,7 @@ const ProductController = {
     ];
 
     // Saving product
-    let results = await Product.save(values);
-    const productID = results.rows[0].id;
+    const productID = await Product.save(values);
 
     // Saving files
     const photos = [];
@@ -57,8 +58,7 @@ const ProductController = {
     const column = "product_id";
     values = { id: productID, column };
 
-    results = await FilesManager.save(values);
-    const fileID = results.rows[0].id;
+    const fileID = await FilesManager.save(values);
 
     values = [photos, fileID];
     await FilesManager.saveInFiles(values);

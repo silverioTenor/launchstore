@@ -9,10 +9,11 @@ export default class Product{
     return db.query("SELECT id, brand, model, storage, color, price FROM products");
   }
 
-  static save(values) {
+  static async save(values) {
     try {
       const sql = `
       INSERT INTO products (
+        user_id,
         color,
         brand,
         model,
@@ -21,13 +22,15 @@ export default class Product{
         price,
         old_price,
         storage
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       RETURNING id;
     `;
 
-      return db.query(sql, values);
+      const results = await db.query(sql, values);
+      return results.rows[0].id;
+
     } catch (error) {
-      throw new Error(error);
+      console.error(`Unexpected error in SAVE: ${error}`);
     }
   }
 
@@ -48,7 +51,7 @@ export default class Product{
 
       return db.query(sql, values);
     } catch (error) {
-      throw new Error(error);
+      console.error(`Unexpected error in UPDATE: ${error}`);
     }
   }
 
@@ -56,7 +59,7 @@ export default class Product{
     try {
       return db.query("DELETE FROM products WHERE id = $1", [id]);
     } catch (error) {
-      throw new Error(error);
+      console.error(`Unexpected error in REMOVE: ${error}`);
     }
   }
 

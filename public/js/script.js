@@ -132,7 +132,7 @@ const PhotosUpload = {
   input: "",
   preview: document.querySelector('#photos-preview'),
   files: [],
-  main(event, uploadLimit) {
+  handleFileInput(event, uploadLimit) {
     const { files: fileList } = event.target;
 
     PhotosUpload.input = event.target;
@@ -149,7 +149,7 @@ const PhotosUpload = {
         image.src = String(reader.result);
 
         const divContainer = PhotosUpload.divConstructor(image);
-        PhotosUpload.preview.innerHTML = "";
+        // PhotosUpload.preview.innerHTML = "";
         PhotosUpload.preview.appendChild(divContainer);
       };
 

@@ -9,6 +9,16 @@ export default class Product{
     return db.query("SELECT id, brand, model, storage, color, price FROM products");
   }
 
+  static async getAllOfUsers(id) {
+    try {
+      const results = await db.query("SELECT * FROM products WHERE user_id = $1", [id]);
+      return results.rows;
+
+    } catch (error) {
+      console.error(`Unexpected error in getAllOfUsers: ${error}`);
+    }
+  }
+
   static async save(values) {
     try {
       const sql = `

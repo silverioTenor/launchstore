@@ -1,9 +1,12 @@
 import { hash } from 'bcryptjs';
+import fs from 'fs';
 
 import User from './../../models/User';
 import Address from './../../models/Address';
+import FilesManager from './../../models/FilesManager';
 
 import utils from '../../../lib/utils';
+import Product from './../../models/Product';
 
 const { formatCpfCnpj, formatCep } = utils;
 
@@ -67,6 +70,55 @@ const UserController = {
       console.error(`Failed to save. error: ${error}`);
 
       return res.render("users/register", {
+        message: "Desculpa! Não foi possível completar a operação.",
+        type: "error",
+        formFull: true
+      });
+    }
+  },
+  async delete(req, res) {
+    try {      
+      async function removeImage(values) {
+        const results = await FilesManager.get(values);
+        const files = results.path;
+
+        files.forEach(file => {
+          if (fs.existsSync(file)) fs.unlinkSync(file);
+        });
+      }
+
+      // Pegar as imagens do Usuário
+      let column = "user_id";
+      const userID = req.session.user.userID;
+      let values = { id: userID, column };
+
+      await removeImage(values);
+
+      // Pegar as imagens dos produtos
+      column = "product_id";
+      const products = await Product.getAllOfUsers(userID);
+
+      products.forEach(async product => {
+        values = { id: product.id, column };
+        await removeImage(values);
+      });
+
+      // Busca o ID da tabela Address para então remov
+      const id = req.session.user.userID;
+      const addr_id = await User.get(id);
+      await Address.remove(addr_id);
+
+      req.session.destroy();
+
+      return res.render("session/login", {
+        message: "Conta removida com sucesso!",
+        type: "success"
+      });
+      
+    } catch (error) {
+      console.error(`Failed to Delete. error: ${error}`);
+
+      return res.render("users/index", {
         message: "Desculpa! Não foi possível completar a operação.",
         type: "error",
         formFull: true

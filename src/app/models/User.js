@@ -3,7 +3,7 @@ import db from '../../database/config';
 export default class User{
   static get(id) {
     try {
-      return db.query("", [id]);
+      return db.query("SELECT address_id FROM users WHERE id = $1", [id]);
 
     } catch (error) {
       console.log(`Unexpected error: ${error}`);
@@ -81,7 +81,7 @@ export default class User{
 
   static remove(id) {
     try {
-      return db.query("", [id]);
+      return db.query("DELETE users WHERE id = $1", [id]);
 
     } catch (error) {
       console.log(`Unexpected error: ${error}`);

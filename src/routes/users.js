@@ -28,6 +28,6 @@ routes.post("/register", UserValidator.post, UserController.post);
 
 routes.get("/show/:id", isLogged, UserValidator.show, UserController.show);
 routes.put("/", multer.array("photo", 1), UserValidator.update, UserController.update);
-// routes.delete("/", UserController.delete);
+routes.delete("/", UserController.delete);
 
 export default routes;

@@ -1,8 +1,8 @@
 import crypto from 'crypto';
 import { hash } from 'bcryptjs';
-import mailer from '../../../lib/mailer';
+import mailer from '../../lib/mailer';
 
-import User from './../../models/User';
+import User from '../models/User';
 
 const SessionController = {
   loginForm(req, res) {

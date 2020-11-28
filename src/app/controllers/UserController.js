@@ -1,12 +1,12 @@
 import { hash } from 'bcryptjs';
 import fs from 'fs';
 
-import Address from './../../models/Address';
-import User from './../../models/User';
-import Product from './../../models/Product';
-import FilesManager from './../../models/FilesManager';
+import Address from '../models/Address';
+import User from '../models/User';
+import Product from '../models/Product';
+import FilesManager from '../models/FilesManager';
 
-import utils from '../../../lib/utils';
+import utils from '../../lib/utils';
 
 const { formatCpfCnpj, formatCep } = utils;
 

@@ -5,8 +5,8 @@ const routes = Router();
 
 import UserValidator from '../app/validators/user';
 import SessionValidator from '../app/validators/session';
-import SessionController from '../app/controllers/auth/SessionController';
-import UserController from '../app/controllers/auth/UserController';
+import SessionController from '../app/controllers/SessionController';
+import UserController from '../app/controllers/UserController';
 
 import { onlyUsers as isLogged } from '../middlewares/session';
 

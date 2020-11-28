@@ -1,7 +1,8 @@
 # Launchstore
 
-#### Sistema de compra e venda de smartphones.
+#### E-commerce.
 
-Este sistema está sendo desenvolvido para fins didáticos, uma vez que se baseia em sua maior parte no [Trocaphone](https://www.trocafone.com/) e na [Kanui](https://www.kanui.com.br/).
+Sistema de compra e venda de smartphones. (Apenas para fins didáticos).
+Baseado em sistemas como o [Trocaphone](https://www.trocafone.com/) e [Kanui](https://www.kanui.com.br/).
 
-> A prática leva a perfeição!
+> A prática leva a perfeição. Nunca desista!

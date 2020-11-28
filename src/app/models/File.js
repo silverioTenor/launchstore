@@ -2,6 +2,6 @@
 import Base from './Base';
 
 const base = new Base();
-base.init({ table: 'User' });
+base.init({ table: 'File' });
 
-export default class User extends Base { }
+export default class File extends Base { }

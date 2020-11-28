@@ -1,13 +1,10 @@
 import db from '../../database/config';
+import Base from './Base';
 
-export default class Product{
-  static get(id) {
-    return db.query("SELECT * FROM products WHERE id = $1", [id]);
-  }
+const base = new Base();
+base.init({ table: 'Product' });
 
-  static getAll() {
-    return db.query("SELECT id, brand, model, storage, color, price FROM products");
-  }
+export default class Product extends Base {
 
   static async getAllOfUsers(id) {
     try {
@@ -16,60 +13,6 @@ export default class Product{
 
     } catch (error) {
       console.error(`Unexpected error in getAllOfUsers: ${error}`);
-    }
-  }
-
-  static async save(values) {
-    try {
-      const sql = `
-      INSERT INTO products (
-        user_id,
-        color,
-        brand,
-        model,
-        condition,
-        description,
-        price,
-        old_price,
-        storage
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-      RETURNING id;
-    `;
-
-      const results = await db.query(sql, values);
-      return results.rows[0].id;
-
-    } catch (error) {
-      console.error(`Unexpected error in SAVE: ${error}`);
-    }
-  }
-
-  static edit(values) {
-    try {
-      const sql = `
-      UPDATE products SET
-        color = $2,
-        brand = $3,
-        model = $4,
-        condition = $5,
-        description = $6,
-        price = $7,
-        old_price = $8,
-        storage = $9
-      WHERE id = $1
-    `;
-
-      return db.query(sql, values);
-    } catch (error) {
-      console.error(`Unexpected error in UPDATE: ${error}`);
-    }
-  }
-
-  static remove(id) {
-    try {
-      return db.query("DELETE FROM products WHERE id = $1", [id]);
-    } catch (error) {
-      console.error(`Unexpected error in REMOVE: ${error}`);
     }
   }
 

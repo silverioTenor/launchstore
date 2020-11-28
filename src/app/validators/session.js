@@ -40,21 +40,21 @@ const Validators = {
     try {
       photo = await FilesManager.get(values);
 
+      if (photo && photo.path) {
+        user.photo = `${req.protocol}://${req.headers.host}${photo.path}`.replace("public", "");
+      }
+
+      req.user = {
+        userID: user.id,
+        name: user.name.split(" ")[0],
+        photo: user.photo
+      };
+
+      next();
+
     } catch (error) {
       console.error(`oparation failure. error: ${error}`)
     }
-
-    if (photo !== "undefined" || Object.keys(photo.path).length > 0) {
-      user.photo = `${req.protocol}://${req.headers.host}${photo.path}`.replace("public", "");
-    }
-
-    req.user = {
-      userID: user.id,
-      name: user.name.split(" ")[0],
-      photo: user.photo
-    };
-
-    next();
   },
   async forgot(req, res, next) {
     const { email } = req.body;
@@ -108,7 +108,7 @@ const Validators = {
         type: "error"
       });
     }
-    
+
     // Confere se o token não expirou
     let now = new Date();
     now = now.setHours(now.getHours());

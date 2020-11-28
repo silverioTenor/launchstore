@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    {% block head %}
+      <title>Página inicial</title>
+    {% endblock head %}
+
+    <!-- FONTS, STYLES, ICON -->
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    
+    <link rel="stylesheet" href="/styles/main.css"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/img/logo/"/>
+  </head>
+  <body>
+    {% include 'utils/messages.njk' %}
+
+    {% block header %}
+      <header class="public-area">
+        <div class="top">
+          <div class="container-logo">
+            <div class="logo">
+              <a href="/" class="logo">Launchstore</a>
+            </div>
+          </div>
+
+          {% block filter %}
+            <form action="/products/search" method="GET">
+              <input type="text" name="filter" placeholder="Pesquisar pelo modelo"/>
+              <button class="button" type="submit">Pesquisar</button>
+            </form>
+          {% endblock filter %}
+
+          {% if session.user %}
+            <div class="account-container">
+              <div class="account-menu">
+                <div class="avatar">
+                  {% if session.user.photo %}
+                    <img src="{{ session.user.photo }}" alt="{{ session.user.name }}"/>
+                  {% else %}
+                    <i class="material-icons">account_circle</i>
+                  {% endif %}
+                </div>
+                <a>Olá, {{ session.user.name }}</a>
+              </div>
+              <ul class="account-submenu">
+                <li><a href="/users/show/{{ session.user.userID }}">Minha conta</a></li>
+                <li><a href="#">Meus pedidos</a></li>
+                <li><a href="#">Meus anúncios</a></li>
+                <li class="logout">
+                  <form action="/users/logout" method="POST">
+                    <button class="btn-logout" type="submit">Sair</button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+          {% else %}
+            <div class="account-container">
+              <a href="/users/login" class="account-menu">
+                <i class="material-icons">account_circle</i>
+                <span>Minha conta</span>
+              </a>
+            </div>
+          {% endif %}
+        </div>
+
+        <nav>
+          <div class="menu">
+            <div class="sub">
+              <span>iPhone</span>
+              <i class="fas fa-caret-down"></i>
+
+              <div class="subPhone-container">
+                <div class="subPhone">
+                  <a href="">iPhone X</a>
+                  <a href="">iPhone 8</a>
+                  <a href="">iPhone 7 plus</a>
+                  <a href="">iPhone 7</a>
+                  <a href="">iPhone 6S plus</a>
+                  <a href="">iPhone 6</a>
+                </div>
+              </div>
+            </div>
+            <div class="sub">
+              <span>Samsung</span>
+              <i class="fas fa-caret-down"></i>
+
+              <div class="subPhone-container">
+                <div class="subPhone">
+                  <a href="">Galaxy S10+</a>
+                  <a href="">Galaxy Note 10+</a>
+                  <a href="">Galaxy A51</a>
+                  <a href="">Galaxy A31</a>
+                  <a href="">Galaxy A70</a>
+                  <a href="">Galaxy J7</a>
+                </div>
+              </div>
+            </div>
+            <div class="sub">
+              <span>Motorola</span>
+              <i class="fas fa-caret-down"></i>
+
+              <div class="subPhone-container">
+                <div class="subPhone">
+                  <a href="#">One Zoom</a>
+                  <a href="#">One Vision</a>
+                  <a href="#">Moto Z2 Force</a>
+                  <a href="#">Moto G8</a>
+                  <a href="#">Moto G7</a>
+                  <a href="#">Moto E5</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </header>
+    {% endblock header %}

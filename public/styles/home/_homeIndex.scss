@@ -339,8 +339,9 @@ footer {
       }
 
       .phones {
+        width: 160px;
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
 
         a {
           padding: 6px 0;

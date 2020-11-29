@@ -1,8 +1,7 @@
 import db from '../../database/config';
 import Base from './Base';
 
-const base = new Base();
-base.init({ table: 'Product' });
+Base.init({ table: 'Product' });
 
 export default class Product extends Base {
 

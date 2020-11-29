@@ -11,7 +11,8 @@ const Validators = {
     let passed = "";
 
     try {
-      user = await User.getBy({ where: { email } });
+      const userDB = new User();
+      user = await userDB.getBy({ where: { email } });
 
       if (!user) return res.render("session/login", {
         user: req.body,
@@ -60,7 +61,8 @@ const Validators = {
     const { email } = req.body;
 
     try {
-      let user = await User.getBy({ where: { email } });
+      const userDB = new User();
+      user = await userDB.getBy({ where: { email } });
 
       if (!user) return res.render("session/forgot/forgot-password", {
         message: "E-mail não encontrado!",
@@ -80,7 +82,8 @@ const Validators = {
     let user = {};
 
     try {
-      user = await User.getBy({ where: { email } });
+      const userDB = new User();
+      user = await userDB.getBy({ where: { email } });
 
       if (!user) return res.render("session/reset/password-reset", {
         token,

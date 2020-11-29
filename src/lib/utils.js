@@ -1,3 +1,5 @@
+import fs from 'fs';
+
 const utils = {
   status(value) {
     if (value == "excelent") return "Excelente";
@@ -61,7 +63,18 @@ const utils = {
     }).filter((product, index) => index > limit ? false : true);
 
     return await Promise.all(productsPromise);
-  }
+  },
+  removeImages(removedPhotos, photos) {
+    removedPhotos = removedPhotos.split(",");
+    const lastIndex = removedPhotos.length - 1;
+
+    removedPhotos.splice(lastIndex, 1);
+    removedPhotos = removedPhotos.map(photo => Number(photo));
+
+    photos.forEach(photo => {
+      if (fs.existsSync(photo)) fs.unlinkSync(photo);
+    });
+  },
 }
 
 export default utils;

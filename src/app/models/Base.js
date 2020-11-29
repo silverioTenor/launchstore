@@ -2,7 +2,7 @@ import db from '../../database/config';
 
 export default class Base {
 
-  init({ table }) {
+  static init({ table }) {
     if (!table) throw new Error('Invalid Params');
 
     this.table = table;
@@ -10,14 +10,33 @@ export default class Base {
     return this;
   }
 
-  async get(val) {
+  static async getDefault(val) {
     try {
       const { id, column } = val;
 
       let sql = `SELECT * FROM ${this.table} WHERE ${column} = ${id}`;
 
-      const results = await db.query(sql);
+      return await db.query(sql);
+
+    } catch (error) {
+      console.log(`Unexpected error in DB getDefault: ${error}`);
+    }
+  }
+  
+  async get(val) {
+    try {
+      const results = await this.getDefault(val);
       return results.rows[0];
+
+    } catch (error) {
+      console.log(`Unexpected error in DB GET: ${error}`);
+    }
+  }
+  
+  async getID(val) {
+    try {
+      const results = await this.getDefault(val);
+      return results.rows[0].id;
 
     } catch (error) {
       console.log(`Unexpected error in DB GETBY: ${error}`);

@@ -4,6 +4,10 @@ import fs from 'fs';
 import User from "../models/User";
 import FilesManager from '../models/FilesManager';
 import Address from './../models/Address';
+import File from './../models/File';
+
+import factory from '../services/factory'
+import { removeImages } from '../../lib/utils';
 
 const Needed = {
   checkAllFields(body) {
@@ -32,7 +36,8 @@ const Validators = {
 
     cpf_cnpj = cpf_cnpj.replace(/\D/g, "");
 
-    const user = await User.getBy({
+    const userDB = new User();
+    const user = await userDB.getBy({
       where: { email },
       or: { cpf_cnpj }
     });
@@ -56,8 +61,8 @@ const Validators = {
     const { userID: id } = req.session.user;
 
     try {
-      const filters = { where: { id } };
-      user = await User.getBy(filters);
+      const userDB = new User();
+      user = await userDB.getBy({ where: { id } });
 
     } catch (error) {
       console.error(`Search user failure. error: ${error}`);
@@ -70,9 +75,13 @@ const Validators = {
 
     let addr = "";
 
-    if (user.address_id && user.address_id != "" || user.address_id != undefined) {
+    if (user && user.address_id) {
       try {
-        addr = await Address.get(user.address_id);
+        const values = { id: user.address_id, column: "id" };
+
+        const addrDB = new Address();
+        addr = await addrDB.get(values);
+
         req.addr = addr;
 
       } catch (error) {
@@ -80,29 +89,19 @@ const Validators = {
       }
     }
 
-    const column = "user_id";
-    const values = { id, column };
-    let photo = {};
-
     try {
-      photo = await FilesManager.get(values);
+      const values = { id, column: "user_id" };
 
-      if (Object.keys(photo.path).length > 0) {
-        user.photo = {
-          id: photo.id,
-          path: `${req.protocol}://${req.headers.host}${photo.path}`.replace("public", "")
-        }
-
-      }
+      user.photo = await factory.getImages(values);
       req.session.user.photo = user.photo.path;
+
+      req.user = user;
+
+      next();
 
     } catch (error) {
       console.error(`oparation failure. error: ${error}`)
     }
-
-    req.user = user;
-
-    next();
   },
   async update(req, res, next) {
     const fillAllFields = Needed.checkAllFields(req.body);
@@ -111,127 +110,120 @@ const Validators = {
       return res.render("users/index", fillAllFields);
     }
 
-    const { userID: id } = req.session.user;
-    let { password } = req.body;
+    // Validação do usuário
+    async function userValidation() {
+      const { userID: id } = req.session.user;
+      let { password } = req.body;
 
-    if (!password) {
-      return res.render("users/index", {
-        message: "Coloque sua senha para atualizar.",
-        type: "warning",
-        formFull: true
-      });
-    }
-
-    let user = "";
-    let passed = "";
-
-    try {
-      user = await User.getBy({ where: { id } });
-
-    } catch (error) {
-      console.error(`Operation failure. error: ${error}`);
-    }
-
-    if (user && user != "" || user != undefined) {
-      passed = await compare(password, user.password);
-
-      if (!passed || passed == "") {
+      if (!password) {
         return res.render("users/index", {
-          message: "Senha incorreta",
-          type: "error",
+          message: "Coloque sua senha para atualizar.",
+          type: "warning",
           formFull: true
         });
       }
-    }
 
-    let { name, email, cpf_cnpj } = req.body;
+      let user = "";
+      let passed = "";
 
-    cpf_cnpj = cpf_cnpj.replace(/\D/g, "");
+      try {
+        const userDB = new User();
+        user = await userDB.getBy({ where: { id } });
 
-    req.session.user.name = name.split(" ")[0];
-    req.user = { name, email, cpf_cnpj };
+      } catch (error) {
+        console.error(`Operation failure. error: ${error}`);
+      }
 
-    // Validação da foto
-    let photo = [];
-    const column = "user_id";
-    let values = { id, column };
-    let file = {};
-    
-    try {
-      file = await FilesManager.get(values);
+      if (user && user != "" || user != undefined) {
+        passed = await compare(password, user.password);
 
-    } catch (error) {
-      console.error(`Operation failure. error: ${error}`);
-    }
-
-    if (file !== "undefined" || Object.keys(file).length > 0) {
-      if (req.body.removedPhotos) {
-        let removedPhotos = req.body.removedPhotos.split(",");
-        const lastIndex = removedPhotos.length - 1;
-
-        removedPhotos.splice(lastIndex, 1);
-        removedPhotos = removedPhotos.map(photo => Number(photo));
-
-        if (file && file != "" || file != undefined) {
-          if (fs.existsSync(file.path[0])) {
-            fs.unlinkSync(file.path[0]);
-
-            values = [file.id, photo];
-            await FilesManager.edit(values);
-          }
+        if (!passed || passed == "") {
+          return res.render("users/index", {
+            message: "Senha incorreta",
+            type: "error",
+            formFull: true
+          });
         }
       }
 
-      try {
-        if (req.files && req.files.length > 0) {
-          photo.push(req.files[0].path);
+      let { name, email, cpf_cnpj } = req.body;
 
-          if (!file || file == "" || file == undefined) {
+      cpf_cnpj = cpf_cnpj.replace(/\D/g, "");
+
+      req.session.user.name = name.split(" ")[0];
+      req.user = { name, email, cpf_cnpj };
+    }
+
+    // Validação da foto
+    async function fileValidation() {
+      try {
+        let values = { id, column: "user_id" };
+        let files = await factory.getImages(values);
+
+        if (files && files.path && req.body.removedPhotos) {
+          removeImages(req.body.removedPhotos, files.path);
+
+          values = [files.id, photo];
+          req.updateFile = values;
+          await FilesManager.edit(values);
+        }
+
+        // ====================
+        // Refatoração pendente
+        // ====================
+        if (req.files && req.files.length > 0) {
+          files = req.files[0].path;
+
+          if (files) {
             let fm_id = await FilesManager.save(values);
 
             values = [photo, fm_id];
+            req.saveFile = values;
             await FilesManager.saveInFiles(values);
 
           } else {
             let fm_id = file.id;
             values = [fm_id, photo];
+            req.updateFile = values;
 
             await FilesManager.edit(values);
           }
         }
 
       } catch (error) {
-        console.error(`Unexpected error: ${error}`);
+        console.error(`Operation failure. error: ${error}`);
       }
     }
 
     // Validação do Endereço
-    let addr = "";
+    async function addressValidation() {
+      let addr = "";
 
-    try {
-      if (user.address_id) addr = await Address.get(user.address_id);
+      try {
+        if (user.address_id) addr = await Address.get(user.address_id);
 
-    } catch (error) {
-      console.error(`Operation failure. error: ${error}`);
-    }
-
-    let { cep, street, complement, district, locale, uf } = req.body;
-    cep = cep.replace(/\D/g, "");
-    const state = locale;
-
-    try {
-      if (!addr || addr == "" || addr == undefined) {
-        values = [cep, street, complement, district, state, uf];
-        const result = await Address.save(values);
-        req.user.address_id = result;
-
-      } else {
-        values = [addr.id, cep, street, complement, district, state, uf];
-        req.addr = values;
+      } catch (error) {
+        console.error(`Operation failure. error: ${error}`);
       }
 
-    } catch (error) {
-      console.error(`Operation failure. error: ${error}`);
+      let { cep, street, complement, district, locale, uf } = req.body;
+      cep = cep.replace(/\D/g, "");
+      const state = locale;
+
+      try {
+        if (!addr || addr == "" || addr == undefined) {
+          values = [cep, street, complement, district, state, uf];
+          const result = await Address.save(values);
+          req.user.address_id = result;
+
+        } else {
+          values = [addr.id, cep, street, complement, district, state, uf];
+          req.addr = values;
+        }
+
+      } catch (error) {
+        console.error(`Operation failure. error: ${error}`);
+      }
     }
 
     next();

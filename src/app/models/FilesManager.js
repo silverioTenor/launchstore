@@ -1,8 +1,7 @@
 import db from '../../database/config';
 import Base from './Base';
 
-const base = new Base();
-base.init({ table: 'FilesManager' });
+Base.init({ table: 'FilesManager' });
 
 export default class FilesManager extends Base {
 

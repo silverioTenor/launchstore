@@ -2,44 +2,21 @@ import db from '../../database/config';
 
 export default class Base {
 
-  static init({ table }) {
-    if (!table) throw new Error('Invalid Params');
-
-    this.table = table;
-
-    return this;
+  constructor() {
+    this.table = this;
   }
 
-  static async getDefault(val) {
+  async get(val) {
     try {
       const { id, column } = val;
 
       let sql = `SELECT * FROM ${this.table} WHERE ${column} = ${id}`;
 
-      return await db.query(sql);
-
-    } catch (error) {
-      console.log(`Unexpected error in DB getDefault: ${error}`);
-    }
-  }
-  
-  async get(val) {
-    try {
-      const results = await this.getDefault(val);
+      const results = await db.query(sql);
       return results.rows[0];
 
     } catch (error) {
       console.log(`Unexpected error in DB GET: ${error}`);
-    }
-  }
-  
-  async getID(val) {
-    try {
-      const results = await this.getDefault(val);
-      return results.rows[0].id;
-
-    } catch (error) {
-      console.log(`Unexpected error in DB GETBY: ${error}`);
     }
   }
 
@@ -51,7 +28,7 @@ export default class Base {
         sql += ` ${key}`;
 
         Object.keys(filters[key]).map(field => {
-          sql += ` ${field} = ${filters[key][field]}`;
+          sql += ` ${field} = '${filters[key][field]}'`;
         });
       });
 

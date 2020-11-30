@@ -1,34 +1,26 @@
 import Product from '../models/Product';
-import FilesManager from '../models/FilesManager';
-
 import utils from '../../lib/utils';
 
 const { formatPrice, getProducts } = utils;
 
 const HomeController = {
   async index(req, res) {
-    let results = await Product.getAll();
-    const data = results.rows;
+    const productDB = new Product();
+    const data = await productDB.getAll();
 
-    if (!data) return res.json({ message: "Data not found!" });
-
-    async function getImage(values) {
-      results = await FilesManager.get(values);
-      const files = results.path.map(file => {
-        return `${req.protocol}://${req.headers.host}${file}`.replace("public", "");
-      });
-
-      return files[0];
-    }
+    if (!data) return res.render("home/index", {
+      message: "Sistema indisponível no momento! Volte mais tarde.",
+      type: "error"
+    });
 
     const inf = {
       object: data,
-      func: { getImage, formatPrice }
+      func: { formatPrice }
     };
 
     const products = await getProducts(inf, 11);
     const lastAdded = products.filter((product, index) => index > 3 ? false : true);
-    
+
     return res.render("home/index", { products, lastAdded });
   },
   about(req, res) {

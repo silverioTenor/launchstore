@@ -1,9 +1,12 @@
 import db from '../../database/config';
 import Base from './Base';
 
-Base.init({ table: 'Product' });
-
 export default class Product extends Base {
+
+  constructor() {
+    super();
+    this.table = "products";
+  }
 
   static async getAllOfUsers(id) {
     try {

@@ -5,17 +5,23 @@ const factory = {
   async getImages(values) {
     try {
       const fmDB = new FilesManager();
-      const fm_id = await fmDB.getID(values);
+      const fm_id = await fmDB.get(values);
+      
+      const files_manager_id = fm_id.id;
 
       const fileDB = new File();
-      let photos = await fileDB.getBy({ where: { id: fm_id } });
+      let photos = await fileDB.getBy({ where: { files_manager_id } });
 
       if (photos && photos.path) {
-        photos.forEach(photo => {
+        photos.path.forEach(photo => {
+          let count = 1;
+
           photos = {
-            id: photo.id,
-            path: `${photo.path}`.replace("public", "")
+            id: count,
+            path: `${photo}`.replace("public", "")
           }
+
+          count++;
         });
 
         return photos;

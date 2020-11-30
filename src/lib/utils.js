@@ -1,4 +1,5 @@
 import fs from 'fs';
+import factory from '../app/services/factory';
 
 const utils = {
   status(value) {
@@ -48,14 +49,14 @@ const utils = {
   },
   async getProducts(data, limit) {
     const { object, func } = data;
-    const { getImage, formatPrice } = func;
+    const { formatPrice } = func;
 
     const column = "product_id";
     
     const productsPromise = object.map(async product => {
       const values = { id: product.id, column };
 
-      product.image = await getImage(values);
+      product.image = await factory.getImages(values);
       product.priceParcel = formatPrice(product.price / 12);
       product.price = formatPrice(product.price);
 
@@ -67,13 +68,19 @@ const utils = {
   removeImages(removedPhotos, photos) {
     removedPhotos = removedPhotos.split(",");
     const lastIndex = removedPhotos.length - 1;
-
     removedPhotos.splice(lastIndex, 1);
+    
     removedPhotos = removedPhotos.map(photo => Number(photo));
 
     photos.forEach(photo => {
       if (fs.existsSync(photo)) fs.unlinkSync(photo);
     });
+
+    for (const p of photos) {
+      photos.splice(removedPhotos[p], 1);
+    }
+
+    return photos;
   },
 }
 

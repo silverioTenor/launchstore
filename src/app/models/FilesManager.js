@@ -1,9 +1,12 @@
 import db from '../../database/config';
 import Base from './Base';
 
-Base.init({ table: 'FilesManager' });
-
 export default class FilesManager extends Base {
+
+  constructor() {
+    super();
+    this.table = "files_manager";
+  }
 
   static async getFiles(values) {
     try {

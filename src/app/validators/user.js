@@ -1,10 +1,7 @@
 import { compare } from "bcryptjs";
-import fs from 'fs';
 
 import User from "../models/User";
-import FilesManager from '../models/FilesManager';
 import Address from './../models/Address';
-import File from './../models/File';
 
 import factory from '../services/factory'
 import { removeImages } from '../../lib/utils';
@@ -111,10 +108,7 @@ const Validators = {
     }
 
     // Validação do usuário
-    async function userValidation() {
-      const { userID: id } = req.session.user;
-      let { password } = req.body;
-
+    async function userValidation(id, password) {
       if (!password) {
         return res.render("users/index", {
           message: "Coloque sua senha para atualizar.",
@@ -151,42 +145,39 @@ const Validators = {
       cpf_cnpj = cpf_cnpj.replace(/\D/g, "");
 
       req.session.user.name = name.split(" ")[0];
+
       req.user = { name, email, cpf_cnpj };
+
+      return user;
     }
 
     // Validação da foto
-    async function fileValidation() {
+    async function fileValidation(id) {
       try {
         let values = { id, column: "user_id" };
-        let files = await factory.getImages(values);
 
-        if (files && files.path && req.body.removedPhotos) {
-          removeImages(req.body.removedPhotos, files.path);
+        if (req.body.removedPhotos) {
+          const files = await factory.getImages(values);
 
-          values = [files.id, photo];
-          req.updateFile = values;
-          await FilesManager.edit(values);
+          if (files && files.path) {
+            const updatedPhotos = removeImages(req.body.removedPhotos, files.path);
+
+            values = { id: files.id, updatedPhotos };
+            req.updateFiles = values;
+          }
         }
 
-        // ====================
-        // Refatoração pendente
-        // ====================
-        if (req.files && req.files.length > 0) {
-          files = req.files[0].path;
+        if (req.files && req.files.length > 0 && req.files[0].path) {
+          let images = [];
 
-          if (files) {
-            let fm_id = await FilesManager.save(values);
+          req.files.forEach(file => images.push(file.path));
 
-            values = [photo, fm_id];
-            req.saveFile = values;
-            await FilesManager.saveInFiles(values);
+          if (req.updateFiles) {
+            images = [...images, ...req.updateFiles];
+            req.fileSave = { images, values };
 
           } else {
-            let fm_id = file.id;
-            values = [fm_id, photo];
-            req.updateFile = values;
-
-            await FilesManager.edit(values);
+            req.fileSave = { images, values };
           }
         }
 
@@ -196,11 +187,12 @@ const Validators = {
     }
 
     // Validação do Endereço
-    async function addressValidation() {
+    async function addressValidation(user) {
       let addr = "";
+      const addrDB = new Address();
 
       try {
-        if (user.address_id) addr = await Address.get(user.address_id);
+        if (user.address_id) addr = await addrDB.get(user.address_id);
 
       } catch (error) {
         console.error(`Operation failure. error: ${error}`);
@@ -213,18 +205,25 @@ const Validators = {
       try {
         if (!addr || addr == "" || addr == undefined) {
           values = [cep, street, complement, district, state, uf];
-          const result = await Address.save(values);
+          const result = await addrDB.save(values);
           req.user.address_id = result;
 
         } else {
-          values = [addr.id, cep, street, complement, district, state, uf];
-          req.addr = values;
+          values = { cep, street, complement, district, state, uf };
+          req.addr = { id: addr.id, values };
         }
 
       } catch (error) {
         console.error(`Operation failure. error: ${error}`);
       }
     }
+
+    const { userID: id } = req.session.user;
+    const { password } = req.body;
+
+    const user = await userValidation(id, password);
+    await fileValidation(id);
+    await addressValidation(user);
 
     next();
   }

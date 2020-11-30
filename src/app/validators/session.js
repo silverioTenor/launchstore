@@ -1,7 +1,7 @@
 import { compare } from "bcryptjs";
 
 import User from "../models/User";
-import FilesManager from './../models/FilesManager';
+import factory from '../services/factory';
 
 const Validators = {
   async login(req, res, next) {
@@ -36,19 +36,14 @@ const Validators = {
 
     const column = "user_id";
     const values = { id: user.id, column };
-    let photo = {};
 
     try {
-      photo = await FilesManager.get(values);
-
-      if (photo && photo.path) {
-        user.photo = `${req.protocol}://${req.headers.host}${photo.path}`.replace("public", "");
-      }
+      const photo = await factory.getImages(values);
 
       req.user = {
         userID: user.id,
         name: user.name.split(" ")[0],
-        photo: user.photo
+        photo
       };
 
       next();

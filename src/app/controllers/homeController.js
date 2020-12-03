@@ -1,6 +1,7 @@
 import Product from '../models/Product';
-import utils from '../../lib/utils';
 
+import factory from '../services/factory'
+import utils from '../../lib/utils';
 const { formatPrice, getProducts } = utils;
 
 const HomeController = {

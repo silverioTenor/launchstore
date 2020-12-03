@@ -59,7 +59,7 @@ export default class Base {
 
       Object.keys(fields).map(key => {
         keys.push(key);
-        values.push(fields[key]);
+        values.push(`'${fields[key]}'`);
       });
 
       const sql = `INSERT INTO ${this.table} (${keys.join(',')}) VALUES (${values.join(',')}) RETURNING id`;
@@ -83,7 +83,7 @@ export default class Base {
         update.push(line);
       });
 
-      sql = `UPDATE ${this.table} SET (${update.join(',')}) WHERE ${column} = ${id}`;
+      const sql = `UPDATE ${this.table} SET ${update.join(',')} WHERE ${column} = ${id}`;
 
       return await db.query(sql);
 

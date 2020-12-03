@@ -1,152 +1,150 @@
+import fs from 'fs';
+
 import Product from '../models/Product';
+import File from './../models/File';
 import FilesManager from '../models/FilesManager';
 
-import fs from 'fs';
+import factory from '../services/factory';
 import utils from '../../lib/utils';
-
-const { formatPrice, status } = utils;
+const { formatPrice, status, removeImages } = utils;
 
 const ProductController = {
   create(req, res) {
     return res.render("products/create");
   },
   async post(req, res) {
-    const keys = Object.keys(req.body);
+    try {
+      let {
+        brand,
+        color,
+        model,
+        condition,
+        price,
+        old_price,
+        storage,
+        description
+      } = req.body;
 
-    for (const key of keys) {
-      if (req.body[key] == "") return res.json({ message: "Please! Fill all fields." });
+      const userID = req.session.user.userID;
+      price = price.replace(/\D/g, "");
+
+      let values = {
+        user_id: userID,
+        color,
+        brand,
+        model,
+        condition,
+        description,
+        price,
+        old_price: old_price || price,
+        storage
+      };
+
+      // Saving product
+      const productDB = new Product();
+      const productID = await productDB.create(values);
+
+      // Saving files
+      const photos = req.files.map(file => file.path);
+
+      const fmDB = new FilesManager();
+      const fmID = await fmDB.create({ product_id: productID });
+
+      values = [photos, fmID];
+
+      const fileDB = new File();
+      await fileDB.create(values);
+
+      return res.redirect(`/products/show/${productID}?status=200`);
+
+    } catch (error) {
+      console.log(`Unexpected error in POST PRODUCT: ${error}`);
     }
-
-    if (req.files.length == 0) return res.json({ message: "Upload at least one image!" });
-
-    let {
-      brand,
-      color,
-      model,
-      condition,
-      price,
-      old_price,
-      storage,
-      description
-    } = req.body;
-
-    const userID = req.session.user.userID;
-    price = price.replace(/\D/g, "");
-
-    let values = [
-      userID,
-      color,
-      brand,
-      model,
-      condition,
-      description,
-      price,
-      old_price || price,
-      storage
-    ];
-
-    // Saving product
-    const productID = await Product.save(values);
-
-    // Saving files
-    const photos = [];
-
-    for (const f of req.files) {
-      photos.push(f.path);
-    }
-
-    const column = "product_id";
-    values = { id: productID, column };
-
-    const fileID = await FilesManager.save(values);
-
-    values = [photos, fileID];
-    await FilesManager.saveInFiles(values);
-
-    return res.redirect(`/products/show/${productID}`);
   },
   async show(req, res) {
-    const { id } = req.params;
-
-    let results = await Product.get(id);
-    const data = results.rows[0];
-
-    const column = "product_id";
-    const values = { id, column };
-    let files = [];
-
     try {
-      results = await FilesManager.get(values);
-      files = results.path;
+      const { id } = req.params;
 
-      files = files.map(file => `${req.protocol}://${req.headers.host}${file}`.replace("public", ""));
+      const productDB = new Product();
+      const data = await productDB.getBy({ where: { id } });
+
+      const values = { id, column: "product_id" };
+      let files = "";
+
+      files = await factory.getImages(values);
+
+      files = files.map(file => `${file.path}`.replace("public", ""));
+
+
+      function formatPriceNow() {
+        data.priceParcel = formatPrice(data.price / 12);
+
+        data.off = formatPrice(data.price - (data.price * 5 / 100));
+
+        data.price = formatPrice(data.price);
+
+        data.condition = status(data.condition);
+      }
+
+      formatPriceNow();
+
+      const product = {
+        ...data,
+        files
+      };
+
+      if (req.query.status == 200) {
+        return res.render("products/show", {
+          product,
+          message: "Operação feita com sucesso!",
+          type: "success"
+        });
+      } else {
+        return res.render("products/show", { product });
+      }
 
     } catch (error) {
       console.error(`Unexpected error: ${error}`);
     }
-
-    function formatPriceNow() {
-      data.priceParcel = formatPrice(data.price / 12);
-
-      data.off = formatPrice(data.price - (data.price * 5 / 100));
-
-      data.price = formatPrice(data.price);
-
-      data.condition = status(data.condition);
-    }
-
-    formatPriceNow();
-
-    const product = {
-      ...data,
-      files
-    };
-
-    return res.render("products/show", { product });
   },
   async update(req, res) {
     try {
       const { id } = req.params;
 
-      let results = await Product.get(id);
-      const data = results.rows[0];
+      const productDB = new Product();
+      const data = await productDB.getBy({ where: { id } });
 
       data.price = formatPrice(data.price);
 
-      async function getImage(values) {
-        results = await FilesManager.get(values);
-        let count = 0;
-
-        const files = results.path.map(file => {
-          const photo = {
-            id: count,
-            path: `${req.protocol}://${req.headers.host}${file}`.replace("public", "")
-          }
-          count++
-
-          return photo;
-        });
-
-        return files;
-      }
-
-      const column = "product_id";
-      const values = { id, column };
-      const photos = [];
+      const values = { id, column: "product_id" };
+      let photos = "";
 
       try {
-        photos = await getImage(values);
+        photos = await factory.getImages(values);
       } catch (error) {
         console.error(`Unexpected error: ${error}`);
       }
 
       const product = {
-        id,
         ...data,
         photos
       }
 
-      return res.render("products/update", { product });
+      if (req.query.status == 200) {
+        return res.render("products/update", {
+          product,
+          message: "Operação feita com sucesso!",
+          type: "success"
+        });
+      } else if (req.query.status == 400) {
+        return res.render("products/update", {
+          product,
+          message: "Não foi possível completar a operação. Tente novamente.",
+          type: "error"
+        });
+      } else {
+        return res.render("products/update", { product });
+      }
 
     } catch (error) {
       console.error(`Failed in Update. error: ${error}`);
@@ -160,12 +158,6 @@ const ProductController = {
   },
   async put(req, res) {
     try {
-      const keys = Object.keys(req.body);
-
-      for (const key of keys) {
-        if (req.body[key] == "" && key != "removedPhotos") return res.json({ message: "Please! Fill all fields." });
-      }
-
       let {
         id,
         brand,
@@ -179,98 +171,67 @@ const ProductController = {
       } = req.body;
 
       price = price.replace(/\D/g, "");
+      id = Number(id)
+      let values = { id, column: "id" };
 
-      if (old_price != price) {
-        const results = await Product.get(id);
-        old_price = results.rows[0].price;
-      }
-
-      let values = [
-        id = Number(id),
+      const fields = {
         color,
         brand,
         model,
         condition,
         description,
-        price = Number(price),
-        old_price = Number(old_price),
+        price: Number(price),
+        old_price: Number(old_price),
         storage
-      ];
+      };
 
-      // Saving product
-      try {
-        await Product.edit(values);
-      } catch (error) {
-        console.error(`Operation failure. error: ${error}`);
+      const productDB = new Product();
+      await productDB.update(values, fields);
 
-        return res.render("products/update", {
-          message: "Falha na operação. Tente novamente.",
-          type: "error"
-        });
-      }
+      async function photosValidation() {
+        const fileDB = new File();
 
-      let fm_id = 0;
+        let updatedFiles = [];
 
-      if (req.body.removedPhotos) {
-        let removedPhotos = req.body.removedPhotos.split(",");
-        const lastIndex = removedPhotos.length - 1;
+        const fmDB = new FilesManager();
+        let photos = await fmDB.getFiles({ id, column: "product_id" });
 
-        removedPhotos.splice(lastIndex, 1);
+        if (req.body.removedPhotos) {
 
-        removedPhotos = removedPhotos.map(photo => Number(photo));
+          if (photos && photos.path) {
+            updatedFiles = removeImages(req.body.removedPhotos, photos.path);
 
-        // Remove old photos
-        if (removedPhotos.length > 0) {
-          const column = "product_id";
-          let values = { id, column };
-
-          const results = await FilesManager.get(values);
-          fm_id = results.rows[0].id;
-          let oldPhotos = results.rows[0].path;
-
-          let filteredPhotos = [];
-
-          for (let i = 0; i < removedPhotos.length; i++) {
-            filteredPhotos[i] = oldPhotos[removedPhotos[i]];
-          }
-
-          filteredPhotos.forEach(photo => {
-            if (fs.existsSync(photo)) {
-              fs.unlinkSync(photo);
+            if (!req.files || req.files.length <= 0) {
+              values = [photos.id, updatedFiles];
+              await fileDB.update(values);
             }
-          });
+          }
+        }
 
-          removedPhotos.forEach(photo => {
-            oldPhotos.splice(photo, 1);
-          });
+        if (req.files && req.files.length > 0) {
+          const files = req.files.map(file => file.path);
 
-          values = [fm_id, oldPhotos];
-          await FilesManager.edit(values);
+          if (updatedFiles.length > 0) {
+            updatedFiles = [...files, ...updatedFiles];
+            values = [photos.id, updatedFiles];
+            await fileDB.update(values);
+
+          } else {
+            updatedFiles = [...files, ...photos.path];
+            values = [photos.id, updatedFiles];
+            await fileDB.update(values);
+          }
         }
       }
 
-      // Saving files
-      if (req.files.length > 0) {
-        const photos = [];
+      await photosValidation();
 
-        for (const f in req.files) {
-          photos[f] = req.files[f].path;
-        }
-
-        values = [fm_id, photos];
-        await FilesManager.edit(values);
-      }
-
-      return res.redirect(`/products/show/${id}`);
+      return res.redirect(`/products/update/${id}?status=200`);
 
     } catch (error) {
       console.error(`Failed to Update. error: ${error}`);
 
-      return res.render("users/index", {
-        message: "Desculpa! Não foi possível completar a operação.",
-        type: "error",
-        formFull: true
-      });
+      return res.redirect(`/products/update/${req.body.id}?status=400`);
     }
   },
   async delete(req, res) {

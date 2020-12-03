@@ -8,7 +8,7 @@ export default class FilesManager extends Base {
     this.table = "files_manager";
   }
 
-  static async getFiles(values) {
+  async getFiles(values) {
     try {
       const { id, column } = values;
 

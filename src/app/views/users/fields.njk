@@ -3,7 +3,7 @@
     {% if user.photo %}
       <div id="photos-preview">
         <div id="{{ user.photo.id }}" class="photo" onclick="PhotosUpload.removePhoto(event)">
-          <img src="{{ user.photo.path }}" alt="{{ user.name }}"/>
+          <img src="{{ user.photo }}" alt="{{ user.name }}"/>
           <i class="material-icons" onclick="PhotosUpload.countRemovedPhotos(event)">close</i>
         </div>
       </div>

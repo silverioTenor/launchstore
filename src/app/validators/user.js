@@ -71,10 +71,11 @@ const Validators = {
     }
 
     let addr = "";
+    let values = {};
 
     if (user && user.address_id) {
       try {
-        const values = { id: user.address_id, column: "id" };
+        values = { id: user.address_id, column: "id" };
 
         const addrDB = new Address();
         addr = await addrDB.get(values);
@@ -87,10 +88,12 @@ const Validators = {
     }
 
     try {
-      const values = { id, column: "user_id" };
+      values = { id, column: "user_id" };
 
-      user.photo = await factory.getImages(values);
-      req.session.user.photo = user.photo.path;
+      const photo = await factory.getImages(values);
+     
+      req.session.user.photo = photo[0].path;
+      user.photo = photo[0].path;
 
       req.user = user;
 
@@ -160,9 +163,9 @@ const Validators = {
           const files = await factory.getImages(values);
 
           if (files && files.path) {
-            const updatedPhotos = removeImages(req.body.removedPhotos, files.path);
+            const updatedFiles = removeImages(req.body.removedPhotos, files.path);
 
-            values = { id: files.id, updatedPhotos };
+            values = { id: files.id, updatedFiles };
             req.updateFiles = values;
           }
         }

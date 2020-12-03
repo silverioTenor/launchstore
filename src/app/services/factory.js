@@ -1,31 +1,29 @@
-import File from "../models/File";
 import FilesManager from "../models/FilesManager";
 
 const factory = {
   async getImages(values) {
     try {
       const fmDB = new FilesManager();
-      const fm_id = await fmDB.get(values);
-      
-      const files_manager_id = fm_id.id;
+      const photos = await fmDB.getFiles(values);
 
-      const fileDB = new File();
-      let photos = await fileDB.getBy({ where: { files_manager_id } });
+      let images = [];
+      let count = 0;
 
       if (photos && photos.path) {
         photos.path.forEach(photo => {
-          let count = 1;
-
-          photos = {
+          photo = {
             id: count,
-            path: `${photo}`.replace("public", "")
+            path: `${photo}`.replace("public", ""),
+            fileID: photos.id
           }
 
-          count++;
+          images.push(photo);
+          count++
         });
-
-        return photos;
       }
+
+      return images;
+
     } catch (error) {
       console.log(`Unexpected error in Services getImages: ${error}`);
     }

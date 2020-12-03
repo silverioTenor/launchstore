@@ -50,13 +50,12 @@ const utils = {
   async getProducts(data, limit) {
     const { object, func } = data;
     const { formatPrice } = func;
-
-    const column = "product_id";
     
     const productsPromise = object.map(async product => {
-      const values = { id: product.id, column };
+      const values = { id: product.id, column: "product_id" };
 
-      product.image = await factory.getImages(values);
+      const images = await factory.getImages(values);
+      product.image = images[0].path;
       product.priceParcel = formatPrice(product.price / 12);
       product.price = formatPrice(product.price);
 
@@ -71,13 +70,18 @@ const utils = {
     removedPhotos.splice(lastIndex, 1);
     
     removedPhotos = removedPhotos.map(photo => Number(photo));
+    let removed = [];
 
-    photos.forEach(photo => {
+    for (const i of removedPhotos) {
+      removed.push(photos[i]);
+    }
+
+    removed.forEach(photo => {
       if (fs.existsSync(photo)) fs.unlinkSync(photo);
     });
 
-    for (const p of photos) {
-      photos.splice(removedPhotos[p], 1);
+    for (const p of removedPhotos) {
+      photos.splice(photos.indexOf(removed[p]), 1);
     }
 
     return photos;

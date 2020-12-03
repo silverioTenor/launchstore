@@ -1,7 +1,7 @@
 import { compare } from "bcryptjs";
 
 import User from "../models/User";
-import factory from '../services/factory';
+import { getImages } from '../services/procedures';
 
 const Validators = {
   async login(req, res, next) {
@@ -38,7 +38,7 @@ const Validators = {
     const values = { id: user.id, column };
 
     try {
-      const photo = await factory.getImages(values);
+      const photo = await getImages(values);
 
       req.user = {
         userID: user.id,

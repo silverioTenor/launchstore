@@ -3,10 +3,9 @@ import { compare } from "bcryptjs";
 import User from "../models/User";
 import Address from './../models/Address';
 
-import factory from '../services/factory'
-import { removeImages } from '../../lib/utils';
+import { getImages, removeImages } from '../services/procedures';
 
-const Needed = {
+const Validators = {
   checkAllFields(body) {
     const keys = Object.keys(body);
 
@@ -19,11 +18,8 @@ const Needed = {
       };
     }
   },
-}
-
-const Validators = {
   async post(req, res, next) {
-    const fillAllFields = Needed.checkAllFields(req.body);
+    const fillAllFields = Validators.checkAllFields(req.body);
 
     if (fillAllFields) {
       return res.render("users/register", fillAllFields);
@@ -90,8 +86,8 @@ const Validators = {
     try {
       values = { id, column: "user_id" };
 
-      const photo = await factory.getImages(values);
-     
+      const photo = await getImages(values);
+
       req.session.user.photo = photo[0].path;
       user.photo = photo[0].path;
 
@@ -104,7 +100,7 @@ const Validators = {
     }
   },
   async update(req, res, next) {
-    const fillAllFields = Needed.checkAllFields(req.body);
+    const fillAllFields = Validators.checkAllFields(req.body);
 
     if (fillAllFields) {
       return res.render("users/index", fillAllFields);
@@ -160,7 +156,7 @@ const Validators = {
         let values = { id, column: "user_id" };
 
         if (req.body.removedPhotos) {
-          const files = await factory.getImages(values);
+          const files = await getImages(values);
 
           if (files && files.path) {
             const updatedFiles = removeImages(req.body.removedPhotos, files.path);

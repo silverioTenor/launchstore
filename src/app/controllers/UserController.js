@@ -6,9 +6,7 @@ import User from '../models/User';
 import Product from '../models/Product';
 import FilesManager from '../models/FilesManager';
 
-import utils from '../../lib/utils';
-
-const { formatCpfCnpj, formatCep } = utils;
+import { formatCpfCnpj, formatCep } from '../../lib/utils';
 
 const UserController = {
   registerForm(req, res) {

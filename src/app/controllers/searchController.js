@@ -1,9 +1,7 @@
 import Product from '../models/Product';
 import FilesManager from '../models/FilesManager';
 
-import utils from '../../lib/utils';
-
-const { formatPrice, getProducts } = utils;
+import { formatPrice, formatProducts } from '../../lib/utils';
 
 const SearchController = {
   async index(req, res) {
@@ -35,7 +33,7 @@ const SearchController = {
         func: { getImage, formatPrice }
       };
 
-      const products = await getProducts(inf, 15);
+      const products = await formatProducts(inf, 15);
 
       const search = {
         term: req.query.filter,

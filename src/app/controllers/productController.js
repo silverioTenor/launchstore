@@ -4,9 +4,8 @@ import Product from '../models/Product';
 import File from './../models/File';
 import FilesManager from '../models/FilesManager';
 
-import factory from '../services/factory';
-import utils from '../../lib/utils';
-const { formatPrice, status, removeImages } = utils;
+import { getImages, removeImages } from '../services/procedures';
+import { formatPrice, status } from '../../lib/utils';
 
 const ProductController = {
   create(req, res) {
@@ -71,7 +70,7 @@ const ProductController = {
       const values = { id, column: "product_id" };
       let files = "";
 
-      files = await factory.getImages(values);
+      files = await getImages(values);
 
       files = files.map(file => `${file.path}`.replace("public", ""));
 
@@ -120,7 +119,7 @@ const ProductController = {
       let photos = "";
 
       try {
-        photos = await factory.getImages(values);
+        photos = await getImages(values);
       } catch (error) {
         console.error(`Unexpected error: ${error}`);
       }

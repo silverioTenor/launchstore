@@ -46,8 +46,46 @@ export function removeImages(removedPhotos, photos) {
   });
 
   for (const p of removedPhotos) {
-    photos.splice(photos.indexOf(removed[p]), 1);
+    photos.splice(photos.indexOf(photos[p]), 1);
   }
 
   return photos;
+}
+
+export async function prepareToUpdate(reqBody, reqFiles, tableIdentifier) {
+  let updatedFiles = [];
+  let values = [];
+  let toSave = "";
+
+  const fmDB = new FilesManager();
+  let photos = await fmDB.getFiles(tableIdentifier);
+
+  if (reqBody.removedPhotos) {
+
+    if (photos && photos.path) {
+      updatedFiles = removeImages(reqBody.removedPhotos, photos.path);
+
+      if (!reqFiles || reqFiles.length <= 0) {
+        values = [photos.id, updatedFiles];
+        toSave = values;
+      }
+    }
+  }
+
+  if (reqFiles && reqFiles.length > 0) {
+    const images = reqFiles.map(file => file.path);
+
+    if (updatedFiles.length > 0) {
+      updatedFiles = [...images, ...updatedFiles];
+      values = [photos.id, updatedFiles];
+      toSave = values;
+
+    } else {
+      updatedFiles = [...images, ...photos.path];
+      values = [photos.id, updatedFiles];
+      toSave = values;
+    }
+  }
+
+  return toSave;
 }

@@ -1,5 +1,7 @@
 import Product from '../models/Product';
 
+import { prepareToUpdate } from './../services/procedures';
+
 const ProductValidator = {
   checkAllFields(body) {
     const keys = Object.keys(body);
@@ -29,13 +31,21 @@ const ProductValidator = {
       type: "error"
     })
 
-    if (req.body.old_price != req.body.price) {
-      const productDB = new Product();
-      const data = await productDB.getBy({ where: { id: req.body.id } });
-      req.body.old_price = data.price;
-    }
+    try {
+      if (req.body.old_price != req.body.price) {
+        const productDB = new Product();
+        const data = await productDB.getBy({ where: { id: req.body.id } });
+        req.body.old_price = data.price;
+      }
 
-    next();
+      const values = { id: req.body.id, column: "product_id" };
+      req.updatedFiles = await prepareToUpdate(req.body, req.files, values);
+
+      next();
+
+    } catch (error) {
+      console.log(`Unexpected error in PUT VALIDATORS: ${error}`);
+    }
   }
 }
 

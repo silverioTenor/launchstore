@@ -18,7 +18,7 @@ const HomeController = {
       };
 
       const products = await formatProducts(inf, 11);
-      const lastAdded = products.filter((product, index) => index > 3 ? false : true);
+      const lastAdded = products.filter((product, index) => index > 3 ? false : true).reverse();
 
       return res.render("home/index", { products, lastAdded });
       

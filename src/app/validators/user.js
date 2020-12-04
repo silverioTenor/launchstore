@@ -3,7 +3,7 @@ import { compare } from "bcryptjs";
 import User from "../models/User";
 import Address from './../models/Address';
 
-import { getImages, removeImages } from '../services/procedures';
+import { getImages, prepareToUpdate } from '../services/procedures';
 
 const Validators = {
   checkAllFields(body) {
@@ -88,8 +88,11 @@ const Validators = {
 
       const photo = await getImages(values);
 
-      req.session.user.photo = photo[0].path;
-      user.photo = photo[0].path;
+      if (photo && photo.path) {
+        req.session.user.photo = photo[0].path;
+      }
+
+      user.photo = photo[0];
 
       req.user = user;
 
@@ -145,44 +148,12 @@ const Validators = {
 
       req.session.user.name = name.split(" ")[0];
 
-      req.user = { name, email, cpf_cnpj };
+      req.user = {
+        val: { id, column: "id" },
+        fields: { name, email, cpf_cnpj }
+      };
 
       return user;
-    }
-
-    // Validação da foto
-    async function fileValidation(id) {
-      try {
-        let values = { id, column: "user_id" };
-
-        if (req.body.removedPhotos) {
-          const files = await getImages(values);
-
-          if (files && files.path) {
-            const updatedFiles = removeImages(req.body.removedPhotos, files.path);
-
-            values = { id: files.id, updatedFiles };
-            req.updateFiles = values;
-          }
-        }
-
-        if (req.files && req.files.length > 0 && req.files[0].path) {
-          let images = [];
-
-          req.files.forEach(file => images.push(file.path));
-
-          if (req.updateFiles) {
-            images = [...images, ...req.updateFiles];
-            req.fileSave = { images, values };
-
-          } else {
-            req.fileSave = { images, values };
-          }
-        }
-
-      } catch (error) {
-        console.error(`Operation failure. error: ${error}`);
-      }
     }
 
     // Validação do Endereço
@@ -191,7 +162,7 @@ const Validators = {
       const addrDB = new Address();
 
       try {
-        if (user.address_id) addr = await addrDB.get(user.address_id);
+        if (user.address_id) addr = await addrDB.get({ id: user.address_id, column: "id" });
 
       } catch (error) {
         console.error(`Operation failure. error: ${error}`);
@@ -203,13 +174,14 @@ const Validators = {
 
       try {
         if (!addr || addr == "" || addr == undefined) {
-          values = [cep, street, complement, district, state, uf];
-          const result = await addrDB.save(values);
-          req.user.address_id = result;
+          const addrID = await addrDB.create({ cep, street, complement, district, state, uf });
+          req.user.address_id = addrID;
 
         } else {
-          values = { cep, street, complement, district, state, uf };
-          req.addr = { id: addr.id, values };
+          req.addr = {
+            val: { id: addr.id, column: "id" },
+            fields: { cep, street, complement, district, state, uf }
+          };
         }
 
       } catch (error) {
@@ -221,8 +193,17 @@ const Validators = {
     const { password } = req.body;
 
     const user = await userValidation(id, password);
-    await fileValidation(id);
+
     await addressValidation(user);
+    
+    // Validação da foto
+    const values = { id: req.body.id, column: "user_id" };
+    req.updatedFiles = await prepareToUpdate(req.body, req.files, values);
+
+    // Verifica se tem foto e então atribui ela à sessão
+    if (req.updatedFiles?.length > 0 && req.updatedFiles[1].length > 0) {
+      req.session.user.photo = req.updatedFiles[1][0].replace("public", "");
+    }
 
     next();
   }

@@ -6,7 +6,19 @@ import User from '../models/User';
 
 const SessionController = {
   loginForm(req, res) {
-    return res.render("session/login");
+    if (req.query.status == 200) {
+      return res.render("session/login", {
+        message: "Operação feita com sucesso!",
+        type: "success"
+      });
+    } else if (req.query == 400) {
+      return res.render("session/login", {
+        message: "Erro insperado. Tente novamente.",
+        type: "error"
+      });
+    } else {
+      return res.render("session/login");
+    }
   },
   login(req, res) {
     req.session.user = req.user;
@@ -33,7 +45,13 @@ const SessionController = {
       let now = new Date();
       now = now.setHours(now.getHours() + 1);
 
-      await User.edit(user.id, {
+      const values = { 
+        id: user.id, 
+        column: "id" 
+      };
+
+      const userDB = new User();
+      await userDB.update(values, {
         reset_token: token,
         reset_token_expires: now
       });
@@ -56,18 +74,12 @@ const SessionController = {
       });
 
       // Avisa ao usuário que um e-mail com o link foi enviado
-      return res.render("session/login", {
-        message: "Um link foi enviado para o e-mail cadastrado.",
-        type: "warning"
-      });
+      return res.redirect("users/login?status=200");
 
     } catch (error) {
       console.error(`Unexpected error in token: ${error}`);
 
-      return res.render("session/forgot/forgot-password", {
-        message: "Erro insperado. Tente novamente mais tarde.",
-        type: "error"
-      });
+      return res.redirect("users/forgot/forgot-password?status=400");
     }
   },
   resetForm(req, res) {
@@ -83,17 +95,20 @@ const SessionController = {
       const newPassword = await hash(password, 8);
 
       // Atualiza o usuário
-      await User.edit(user.id, {
+      const values = { 
+        id: user.id, 
+        column: "id" 
+      };
+
+      const userDB = new User();
+      await userDB.update(values, {
         password: newPassword,
         reset_token: "",
         reset_token_expires: ""
       });
 
       // Informa que a senha foi alterada com sucesso
-      return res.render("session/login", {
-        message: "Senha alterada com sucesso!",
-        type: "success"
-      });
+      return res.redirect("users/login?status=200");
 
     } catch (error) {
       console.error(`Unexpected error in reset: ${error}`);

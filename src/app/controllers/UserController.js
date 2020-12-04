@@ -4,13 +4,20 @@ import fs from 'fs';
 import Address from '../models/Address';
 import User from '../models/User';
 import Product from '../models/Product';
+import File from './../models/File';
 import FilesManager from '../models/FilesManager';
 
 import { formatCpfCnpj, formatCep } from '../../lib/utils';
 
 const UserController = {
   registerForm(req, res) {
-    return res.render("users/register", { formFull: false });
+    if (req.query.status == 400) {
+      return res.render("users/register", {
+        message: "Erro inesperado!",
+        type: "error",
+        formFull: false
+      });
+    }
   },
   async post(req, res) {
     try {
@@ -19,20 +26,17 @@ const UserController = {
       password = await hash(password, 8);
       cpf_cnpj = cpf_cnpj.replace(/\D/g, "");
 
-      const values = [name, email, password, cpf_cnpj];
+      const values = { name, email, password, cpf_cnpj };
 
-      await User.save(values);
-      // req.session.userID = userID;
+      const userDB = new User();
+      await userDB.create(values);
 
       return res.redirect("/users/login");
 
     } catch (error) {
       console.error(error);
 
-      return res.render("users/register", {
-        message: "Erro inesperado!",
-        type: "error"
-      });
+      return res.redirect("users/register?status=400");
     }
   },
   async show(req, res) {
@@ -56,18 +60,23 @@ const UserController = {
   },
   async update(req, res) {
     const { userID: id } = req.session.user;
-    let { user, addr } = req;
-
+    
     try {
-      await Address.edit(addr);
-      await User.edit(id, user);
+      const addrDB = new Address();
+      await addrDB.update(req.addr.val, req.addr.fields);
+      
+      const userDB = new User();
+      await userDB.update(req.user.val, req.user.fields);
+
+      const fileDB = new File();
+      await fileDB.update(req.updatedFiles);
 
       return res.redirect(`users/show/${id}`);
 
     } catch (error) {
       console.error(`Failed to save. error: ${error}`);
 
-      return res.render("users/register", {
+      return res.render("users/index", {
         message: "Desculpa! Não foi possível completar a operação.",
         type: "error",
         formFull: true
@@ -75,7 +84,7 @@ const UserController = {
     }
   },
   async delete(req, res) {
-    try {      
+    try {
       async function removeImage(values) {
         const results = await FilesManager.get(values);
         const files = results.path;
@@ -113,7 +122,7 @@ const UserController = {
         message: "Conta removida com sucesso!",
         type: "success"
       });
-      
+
     } catch (error) {
       console.error(`Failed to Delete. error: ${error}`);
 

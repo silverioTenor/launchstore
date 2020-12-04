@@ -4,7 +4,7 @@ import Product from '../models/Product';
 import File from './../models/File';
 import FilesManager from '../models/FilesManager';
 
-import { getImages, removeImages } from '../services/procedures';
+import { getImages } from '../services/procedures';
 import { formatPrice, status } from '../../lib/utils';
 
 const ProductController = {
@@ -187,43 +187,8 @@ const ProductController = {
       const productDB = new Product();
       await productDB.update(values, fields);
 
-      async function photosValidation() {
-        const fileDB = new File();
-
-        let updatedFiles = [];
-
-        const fmDB = new FilesManager();
-        let photos = await fmDB.getFiles({ id, column: "product_id" });
-
-        if (req.body.removedPhotos) {
-
-          if (photos && photos.path) {
-            updatedFiles = removeImages(req.body.removedPhotos, photos.path);
-
-            if (!req.files || req.files.length <= 0) {
-              values = [photos.id, updatedFiles];
-              await fileDB.update(values);
-            }
-          }
-        }
-
-        if (req.files && req.files.length > 0) {
-          const files = req.files.map(file => file.path);
-
-          if (updatedFiles.length > 0) {
-            updatedFiles = [...files, ...updatedFiles];
-            values = [photos.id, updatedFiles];
-            await fileDB.update(values);
-
-          } else {
-            updatedFiles = [...files, ...photos.path];
-            values = [photos.id, updatedFiles];
-            await fileDB.update(values);
-          }
-        }
-      }
-
-      await photosValidation();
+      const fileDB = new File();
+      await fileDB.update(req.updatedFiles);
 
       return res.redirect(`/products/update/${id}?status=200`);
 

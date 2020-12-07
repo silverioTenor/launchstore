@@ -29,27 +29,20 @@ export async function getImages(values) {
   }
 }
 
-export function removeImages(removedPhotos, photos) {
-  removedPhotos = removedPhotos.split(",");
-  const lastIndex = removedPhotos.length - 1;
-  removedPhotos.splice(lastIndex, 1);
-  
-  removedPhotos = removedPhotos.map(photo => Number(photo));
-  let removed = [];
+export async function getImagesWithoutReplace(values) {
+  try {
+    const fmDB = new FilesManager();
+    let photos = await fmDB.getFiles(values);
 
-  for (const i of removedPhotos) {
-    removed.push(photos[i]);
+    if (photos && photos.path) {
+      photos = photos.path.map(photo => photo);
+    }
+
+    return photos;
+
+  } catch (error) {
+    console.log(`Unexpected error in Services getImagesWithoutReplace: ${error}`);
   }
-
-  removed.forEach(photo => {
-    if (fs.existsSync(photo)) fs.unlinkSync(photo);
-  });
-
-  for (const p of removedPhotos) {
-    photos.splice(photos.indexOf(photos[p]), 1);
-  }
-
-  return photos;
 }
 
 export async function prepareToUpdate(reqBody, reqFiles, tableIdentifier) {
@@ -88,4 +81,27 @@ export async function prepareToUpdate(reqBody, reqFiles, tableIdentifier) {
   }
 
   return toSave;
+}
+
+export function removeImages(removedPhotos, photos) {
+  removedPhotos = removedPhotos.split(",");
+  const lastIndex = removedPhotos.length - 1;
+  removedPhotos.splice(lastIndex, 1);
+  
+  removedPhotos = removedPhotos.map(photo => Number(photo));
+  let removed = [];
+
+  for (const i of removedPhotos) {
+    removed.push(photos[i]);
+  }
+
+  removed.forEach(photo => {
+    if (fs.existsSync(photo)) fs.unlinkSync(photo);
+  });
+
+  for (const p of removedPhotos) {
+    photos.splice(photos.indexOf(photos[p]), 1);
+  }
+
+  return photos;
 }

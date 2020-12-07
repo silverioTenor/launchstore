@@ -1,10 +1,8 @@
-import fs from 'fs';
-
 import Product from '../models/Product';
 import File from './../models/File';
 import FilesManager from '../models/FilesManager';
 
-import { getImages } from '../services/procedures';
+import { getImages, getImagesWithoutReplace, removeImages } from '../services/procedures';
 import { formatPrice, status } from '../../lib/utils';
 
 const ProductController = {
@@ -202,29 +200,30 @@ const ProductController = {
     let { id } = req.body;
     id = Number(id);
 
-    // Primeiro buscamos o path das imagens no DB para então sabermos quais excluir do diretório físico.
-    const column = "product_id";
-    const values = { id, column };
+    async function removeLocalPhotos(id) {
+      const photos = await getImagesWithoutReplace({ id, column: "product_id" });
+      let removedPhotos = [];
 
-    const results = await FilesManager.get(values);
-    const fm_id = results.rows[0].id;
-    let oldPhotos = results.rows[0].path;
-
-    // Aqui, de fato excluímos as imagens do diretório.
-    oldPhotos.forEach(photo => {
-      if (fs.existsSync(photo)) {
-        fs.unlinkSync(photo);
+      for (let i = 0; i <= photos.length; i++) {
+        removedPhotos.push(photos.indexOf(photos[i]));
       }
-    });
 
-    // Aqui excluímos os registros referentes ao produto a em questão.
-    await FilesManager.removeInFiles(fm_id);
-    await FilesManager.remove(values);
+      removedPhotos = removedPhotos.toString();
 
-    // Por fim, excluímos o produto
-    await Product.remove(id);
+      await removeImages(removedPhotos, photos);
+    }
 
-    return res.redirect("/");
+    try {
+      await removeLocalPhotos(id);
+
+      const productDB = new Product();
+      await productDB.delete({ id, column: "id" });
+
+      return res.redirect("/?status=200");
+
+    } catch (error) {
+      console.log(`Unexpected error in DELETE CONTROLLERS: ${error}`);
+    }
   },
 }
 

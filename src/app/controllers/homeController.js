@@ -20,7 +20,23 @@ const HomeController = {
       const products = await formatProducts(inf, 11);
       const lastAdded = products.filter((product, index) => index > 3 ? false : true).reverse();
 
-      return res.render("home/index", { products, lastAdded });
+      if (req.query.status == 200) {
+        return res.render("home/index", { 
+          products, 
+          lastAdded,
+          message: "Operação feita com sucesso!",
+          type: "success"
+        });
+      } else if (req.query.status == 400) {
+        return res.render("home/index", { 
+          products, 
+          lastAdded,
+          message: "Falha na operação!",
+          type: "error"
+        });
+      } else {
+        return res.render("home/index", { products, lastAdded });
+      }
       
     } catch (error) {
       console.log(`Unexpected error in HOME: ${error}`);

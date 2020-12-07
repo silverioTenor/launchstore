@@ -34,22 +34,19 @@ const Validators = {
       });
     }
 
-    const column = "user_id";
-    const values = { id: user.id, column };
-
     try {
-      const photo = await getImages(values);
+      const photo = await getImages({ id: user.id, column: "user_id" });
 
       req.user = {
         userID: user.id,
         name: user.name.split(" ")[0],
-        photo
+        photo: photo[0]
       };
 
       next();
 
     } catch (error) {
-      console.error(`oparation failure. error: ${error}`)
+      console.error(`oparation failure. error: ${error}`);
     }
   },
   async forgot(req, res, next) {

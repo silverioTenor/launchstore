@@ -38,8 +38,8 @@
             <div class="account-container">
               <div class="account-menu">
                 <div class="avatar">
-                  {% if session.user.photo %}
-                    <img src="{{ session.user.photo }}" alt="{{ session.user.name }}"/>
+                  {% if session.user.photo.path %}
+                    <img src="{{ session.user.photo.path }}" alt="{{ session.user.name }}"/>
                   {% else %}
                     <i class="material-icons">account_circle</i>
                   {% endif %}

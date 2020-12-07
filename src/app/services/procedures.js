@@ -48,46 +48,63 @@ export async function getImagesWithoutReplace(values) {
 export async function prepareToUpdate(reqBody, reqFiles, tableIdentifier) {
   let updatedFiles = [];
   let values = [];
-  let toSave = "";
+  let toSave = false;
 
-  const fmDB = new FilesManager();
-  let photos = await fmDB.getFiles(tableIdentifier);
+  try {
+    const fmDB = new FilesManager();
+    let photos = await fmDB.getFiles(tableIdentifier);
 
-  if (reqBody.removedPhotos) {
+    if (photos?.path) {
+      if (reqBody.removedPhotos) {
 
-    if (photos && photos.path) {
-      updatedFiles = removeImages(reqBody.removedPhotos, photos.path);
+        if (photos?.path) {
+          updatedFiles = removeImages(reqBody.removedPhotos, photos.path);
 
-      if (!reqFiles || reqFiles.length <= 0) {
-        values = [photos.id, updatedFiles];
-        toSave = values;
+          if (!reqFiles || reqFiles.length <= 0) {
+            values = [photos.id, updatedFiles];
+            toSave = {values, save: false};
+          }
+        }
+      }
+
+      if (reqFiles?.length > 0) {
+        const images = reqFiles.map(file => file.path);
+
+        if (updatedFiles.length > 0) {
+          updatedFiles = [...images, ...updatedFiles];
+          values = [photos.id, updatedFiles];
+          toSave = {values, save: false};
+
+        } else {
+          updatedFiles = [...images, ...photos.path];
+          values = [photos.id, updatedFiles];
+          toSave = {values, save: false};
+        }
+      }
+      
+    } else {
+      if (reqFiles?.length > 0) {
+        const images = reqFiles.map(file => file.path);
+
+        toSave = {
+          values: images, 
+          save: true
+        };
       }
     }
+
+    return toSave;
+
+  } catch (error) {
+    console.log(`Unexpected error in Services prepareToUpdate: ${error}`);
   }
-
-  if (reqFiles && reqFiles.length > 0) {
-    const images = reqFiles.map(file => file.path);
-
-    if (updatedFiles.length > 0) {
-      updatedFiles = [...images, ...updatedFiles];
-      values = [photos.id, updatedFiles];
-      toSave = values;
-
-    } else {
-      updatedFiles = [...images, ...photos.path];
-      values = [photos.id, updatedFiles];
-      toSave = values;
-    }
-  }
-
-  return toSave;
 }
 
 export function removeImages(removedPhotos, photos) {
   removedPhotos = removedPhotos.split(",");
   const lastIndex = removedPhotos.length - 1;
   removedPhotos.splice(lastIndex, 1);
-  
+
   removedPhotos = removedPhotos.map(photo => Number(photo));
   let removed = [];
 

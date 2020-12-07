@@ -46,7 +46,23 @@ const UserController = {
       user.cpf_cnpj = formatCpfCnpj(user.cpf_cnpj);
       if (addr) addr.cep = formatCep(addr.cep);
 
-      return res.render("users/index", { user, addr, formFull: true });
+      if (req.query.status == 200) {
+        return res.render("users/index", {
+          user, addr,
+          message: "Operação feita com sucesso!",
+          type: "success",
+          formFull: true
+        });
+      } else if (req.query.status == 400) {
+        return res.render("users/index", {
+          user, addr,
+          message: "Falha na operação!",
+          type: "error",
+          formFull: true
+        });
+      } else {
+        return res.render("users/index", { user, addr, formFull: true });
+      }
 
     } catch (error) {
       console.error(error);
@@ -60,27 +76,35 @@ const UserController = {
   },
   async update(req, res) {
     const { userID: id } = req.session.user;
-    
+
     try {
       const addrDB = new Address();
       await addrDB.update(req.addr.val, req.addr.fields);
-      
+
       const userDB = new User();
       await userDB.update(req.user.val, req.user.fields);
 
-      const fileDB = new File();
-      await fileDB.update(req.updatedFiles);
+      if (req.updatedFiles.save != undefined) {
+        if (!req.updatedFiles.save) {
+          const { values } = req.updatedFiles;
+          const fileDB = new File();
+          await fileDB.update([values[0], values[1]]);
 
-      return res.redirect(`users/show/${id}`);
+        } else {
+          const fmDB = new FilesManager();
+          const fmID = await fmDB.create({ user_id: id });
+
+          const fileDB = new File();
+          await fileDB.create([req.updatedFiles.values, fmID]);
+        }
+      }
+
+      return res.redirect(`users/show/${id}?status=200`);
 
     } catch (error) {
       console.error(`Failed to save. error: ${error}`);
 
-      return res.render("users/index", {
-        message: "Desculpa! Não foi possível completar a operação.",
-        type: "error",
-        formFull: true
-      });
+      return res.redirect(`users/show/${id}?status=400`);
     }
   },
   async delete(req, res) {

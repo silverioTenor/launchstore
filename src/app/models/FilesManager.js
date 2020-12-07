@@ -8,17 +8,15 @@ export default class FilesManager extends Base {
     this.table = "files_manager";
   }
 
-  async getFiles(values) {
+  async getFiles({ id, column }) {
     try {
-      const { id, column } = values;
-
       const sql = `
         SELECT files_manager.id, files.path FROM files_manager
         LEFT JOIN files ON (files_manager.id = files.files_manager_id)
-        WHERE ${column} = $1;
+        WHERE ${column} = ${id};
       `;
 
-      const results = await db.query(sql, [id]);
+      const results = await db.query(sql);
       return results.rows[0];
 
     } catch (error) {

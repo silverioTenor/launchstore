@@ -189,23 +189,28 @@ const Validators = {
       }
     }
 
-    const { userID: id } = req.session.user;
-    const { password } = req.body;
+    try {
+      const { userID: id } = req.session.user;
+      const { password } = req.body;
 
-    const user = await userValidation(id, password);
+      const user = await userValidation(id, password);
 
-    await addressValidation(user);
-    
-    // Validação da foto
-    const values = { id: req.body.id, column: "user_id" };
-    req.updatedFiles = await prepareToUpdate(req.body, req.files, values);
+      await addressValidation(user);
 
-    // Verifica se tem foto e então atribui ela à sessão
-    if (req.updatedFiles?.length > 0 && req.updatedFiles[1].length > 0) {
-      req.session.user.photo = req.updatedFiles[1][0].replace("public", "");
+      // Validação da foto
+      const values = { id: Number(req.body.id), column: "user_id" };
+      req.updatedFiles = await prepareToUpdate(req.body, req.files, values);
+
+      // Verifica se tem foto e então atribui ela à sessão
+      if (req.updatedFiles?.values) {
+        req.session.user.photo = { path: req.updatedFiles.values[0].replace("public", "") };
+      }
+
+      next();
+
+    } catch (error) {
+      console.error(`Unexpected error in UPDATE VALIDATORS. error: ${error}`);
     }
-
-    next();
   }
 }
 

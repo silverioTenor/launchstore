@@ -76,7 +76,7 @@ const Validators = {
         const addrDB = new Address();
         addr = await addrDB.get(values);
 
-        req.addr = addr;
+        req.addr = addr[0];
 
       } catch (error) {
         console.error(`Search addr failure. error: ${error}`);

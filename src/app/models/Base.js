@@ -13,7 +13,7 @@ export default class Base {
       let sql = `SELECT * FROM ${this.table} WHERE ${column} = ${id}`;
 
       const results = await db.query(sql);
-      return results.rows[0];
+      return results.rows;
 
     } catch (error) {
       console.log(`Unexpected error in DB GET: ${error}`);

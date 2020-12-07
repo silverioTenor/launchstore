@@ -1,12 +1,12 @@
 import { hash } from 'bcryptjs';
-import fs from 'fs';
 
 import Address from '../models/Address';
 import User from '../models/User';
-import Product from '../models/Product';
+import Product from './../models/Product';
 import File from './../models/File';
 import FilesManager from '../models/FilesManager';
 
+import { getImagesWithoutReplace, removeImages } from './../services/procedures';
 import { formatCpfCnpj, formatCep } from '../../lib/utils';
 
 const UserController = {
@@ -108,55 +108,43 @@ const UserController = {
     }
   },
   async delete(req, res) {
-    try {
-      async function removeImage(values) {
-        const results = await FilesManager.get(values);
-        const files = results.path;
+    let { id } = req.body;
+    id = Number(id);
 
-        files.forEach(file => {
-          if (fs.existsSync(file)) fs.unlinkSync(file);
-        });
+    async function removeLocalPhotos(id, column) {
+      const photos = await getImagesWithoutReplace({ id, column });
+      let removedPhotos = [];
+
+      for (let i = 0; i <= photos.length; i++) {
+        removedPhotos.push(photos.indexOf(photos[i]));
       }
 
-      // Pegar as imagens do Usuário
-      let column = "user_id";
-      const userID = req.session.user.userID;
-      let values = { id: userID, column };
+      removedPhotos = removedPhotos.toString();
 
-      await removeImage(values);
+      await removeImages(removedPhotos, photos);
+    }
 
-      // Pegar as imagens dos produtos
-      column = "product_id";
-      const products = await Product.getAllOfUsers(userID);
+    try {
+      await removeLocalPhotos(id, "user_id");
 
-      products.forEach(async product => {
-        values = { id: product.id, column };
-        await removeImage(values);
-      });
+      const productDB = new Product();
+      const products = await productDB.get({ id, column: "user_id" });
 
-      // Busca o ID da tabela Address para então remov
-      const id = req.session.user.userID;
-      const data = await User.get(id);
-      const addr_id = data.address_id;
-      await Address.remove(addr_id);
+      for (const product of products) {
+        await removeLocalPhotos(product.id, "product_id");
+      }
+
+      const userDB = new User();
+      await userDB.delete({ id, column: "id" });
 
       req.session.destroy();
 
-      return res.render("session/login", {
-        message: "Conta removida com sucesso!",
-        type: "success"
-      });
+      return res.redirect("/session/login?status=200");
 
     } catch (error) {
-      console.error(`Failed to Delete. error: ${error}`);
-
-      return res.render("users/index", {
-        message: "Desculpa! Não foi possível completar a operação.",
-        type: "error",
-        formFull: true
-      });
+      console.log(`Unexpected error in DELETE CONTROLLERS: ${error}`);
     }
-  }
+  },
 }
 
 export default UserController;

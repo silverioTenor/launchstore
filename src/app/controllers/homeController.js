@@ -40,6 +40,11 @@ const HomeController = {
       
     } catch (error) {
       console.log(`Unexpected error in HOME: ${error}`);
+
+      return res.render("home/index", {
+        message: "Sistema indisponível no momento!",
+        type: "error"
+      });
     }
   },
   about(req, res) {

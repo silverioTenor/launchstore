@@ -85,8 +85,9 @@ const UserController = {
       await userDB.update(req.user.val, req.user.fields);
 
       if (req.updatedFiles.save != undefined) {
+        const { values } = req.updatedFiles;
+
         if (!req.updatedFiles.save) {
-          const { values } = req.updatedFiles;
           const fileDB = new File();
           await fileDB.update([values[0], values[1]]);
 
@@ -95,7 +96,7 @@ const UserController = {
           const fmID = await fmDB.create({ user_id: id });
 
           const fileDB = new File();
-          await fileDB.create([req.updatedFiles.values, fmID]);
+          await fileDB.create([values[1], fmID]);
         }
       }
 

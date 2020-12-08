@@ -57,13 +57,11 @@ export async function prepareToUpdate(reqBody, reqFiles, tableIdentifier) {
     if (photos?.path) {
       if (reqBody.removedPhotos) {
 
-        if (photos?.path) {
-          updatedFiles = removeImages(reqBody.removedPhotos, photos.path);
+        updatedFiles = removeImages(reqBody.removedPhotos, photos.path);
 
-          if (!reqFiles || reqFiles.length <= 0) {
-            values = [photos.id, updatedFiles];
-            toSave = {values, save: false};
-          }
+        if (!reqFiles || reqFiles.length <= 0) {
+          values = [photos.id, updatedFiles];
+          toSave = { values, save: false };
         }
       }
 
@@ -73,21 +71,21 @@ export async function prepareToUpdate(reqBody, reqFiles, tableIdentifier) {
         if (updatedFiles.length > 0) {
           updatedFiles = [...images, ...updatedFiles];
           values = [photos.id, updatedFiles];
-          toSave = {values, save: false};
+          toSave = { values, save: false };
 
         } else {
           updatedFiles = [...images, ...photos.path];
           values = [photos.id, updatedFiles];
-          toSave = {values, save: false};
+          toSave = { values, save: false };
         }
       }
-      
+
     } else {
       if (reqFiles?.length > 0) {
         const images = reqFiles.map(file => file.path);
 
         toSave = {
-          values: images, 
+          values: [0, images],
           save: true
         };
       }

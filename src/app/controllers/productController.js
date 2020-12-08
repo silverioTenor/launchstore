@@ -185,8 +185,12 @@ const ProductController = {
       const productDB = new Product();
       await productDB.update(values, fields);
 
-      const fileDB = new File();
-      await fileDB.update(req.updatedFiles);
+      if (req.updatedFiles.save != undefined) {
+        const { values } = req.updatedFiles;
+        
+        const fileDB = new File();
+        await fileDB.update([values[0], values[1]]);
+      }
 
       return res.redirect(`/products/update/${id}?status=200`);
 

@@ -140,7 +140,7 @@ const UserController = {
 
       req.session.destroy();
 
-      return res.redirect("/session/login?status=200");
+      return res.redirect("/users/login?status=200");
 
     } catch (error) {
       console.log(`Unexpected error in DELETE CONTROLLERS: ${error}`);

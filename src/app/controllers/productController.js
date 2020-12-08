@@ -187,9 +187,18 @@ const ProductController = {
 
       if (req.updatedFiles.save != undefined) {
         const { values } = req.updatedFiles;
-        
-        const fileDB = new File();
-        await fileDB.update([values[0], values[1]]);
+
+        if (!req.updatedFiles.save) {
+          const fileDB = new File();
+          await fileDB.update([values[0], values[1]]);
+
+        } else {
+          const fmDB = new FilesManager();
+          const fmID = await fmDB.create({ product_id: id });
+
+          const fileDB = new File();
+          await fileDB.create([values[1], fmID]);
+        }
       }
 
       return res.redirect(`/products/update/${id}?status=200`);

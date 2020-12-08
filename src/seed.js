@@ -3,6 +3,7 @@ import { hash } from 'bcryptjs';
 
 import Address from './app/models/Address';
 import User from './app/models/User';
+import Product from './app/models/Product';
 
 export default async function seed() {
   async function createAddress() {
@@ -26,17 +27,17 @@ export default async function seed() {
     return addrsIDs;
   }
 
-  async function createUsers(id) {
+  async function createUsers(listIDs) {
     const users = [];
-    const password = await hash('123456', 8);
+    const password = await hash('123', 8);
 
-    while (users.length < 1) {
+    while (users.length < 5) {
       users.push({
         name: faker.name.firstName(),
         email: faker.internet.email(),
         password,
         cpf_cnpj: faker.random.number(9999999999),
-        address_id: id
+        address_id: listIDs[Math.floor(Math.random() * listIDs.length)]
       });
     }
 
@@ -47,9 +48,40 @@ export default async function seed() {
     return usersIDs;
   }
 
-  const addressIDs = await createAddress();
+  async function createProducts(listIDs) {
+    const products = [];
+    const condition = ['good', 'very_good', 'excelent'];
+    const storage = ['64GB', '128GB', '1TB'];
+    const price = Math.ceil(faker.commerce.price(80000, 400000, 2));
 
-  for (const addrID of addressIDs) {
-    await createUsers(addrID);
+    while (products.length < 10) {
+      products.push({
+        user_id: listIDs[Math.floor(Math.random() * listIDs.length)],
+        color: faker.commerce.color(),
+        brand: faker.commerce.product(),
+        model: faker.commerce.productName(),
+        condition: condition[Math.floor(Math.random() * 3)],
+        description: faker.lorem.paragraph(Math.ceil(Math.random() * 5)),
+        price,
+        old_price: price,
+        storage: storage[Math.floor(Math.random() * 3)]
+      });
+    }
+
+    const productDB = new Product();
+    const productsPromise = products.map(product => productDB.create(product));
+    const productsIDs = await Promise.all(productsPromise);
+
+    return productsIDs;
   }
+
+  async function runFunctions() {
+    const addressIDs = await createAddress();
+
+    const usersIDs = await createUsers(addressIDs);
+
+    await createProducts(usersIDs);
+  }
+
+  await runFunctions();
 }

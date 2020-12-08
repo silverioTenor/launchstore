@@ -53,6 +53,19 @@ CREATE TABLE "files" (
   "files_manager_id" int UNIQUE
 );
 
+-- CONNECT PG SIMPLE TABLE
+  
+CREATE TABLE "session" (
+  "sid" varchar NOT NULL COLLATE "default",
+	"sess" json NOT NULL,
+	"expire" timestamp(6) NOT NULL
+)
+WITH (OIDS=FALSE);
+
+ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
+
+CREATE INDEX "IDX_session_expire" ON "session" ("expire");
+
 -- FOREIGN KEYs
 
 ALTER TABLE "users" ADD FOREIGN KEY ("address_id") REFERENCES "address" ("id");
@@ -88,19 +101,6 @@ CREATE TRIGGER trigger_set_timestamp
 BEFORE UPDATE ON products
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
-
--- CONNECT PG SIMPLE TABLE
-  
-CREATE TABLE "session" (
-  "sid" varchar NOT NULL COLLATE "default",
-	"sess" json NOT NULL,
-	"expire" timestamp(6) NOT NULL
-)
-WITH (OIDS=FALSE);
-
-ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
-
-CREATE INDEX "IDX_session_expire" ON "session" ("expire");
 
 -- CASCADE EFFECT ON DELETE
 

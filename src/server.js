@@ -5,8 +5,12 @@ import methodOverride from 'method-override';
 
 import session from './database/session';
 import routes from './routes';
+// import seed from './seed';
 
 const server = express();
+
+// Alimenta o DB com dados fake.
+// server.use(seed);
 
 server.use(session);
 server.use((req, res, next) => {

@@ -1,6 +1,5 @@
 import { getImages } from '../app/services/procedures';
 
-
 export function status(value) {
   if (value == "excelent") return "Excelente";
   else if (value == "very_good") return "Muito Bom";
@@ -51,13 +50,13 @@ export function formatCep(value) {
 }
 
 export async function formatProducts(data, limit) {
-  const { object, func } = data;
-  const { formatPrice } = func;
+  const { object } = data;
   
   const productsPromise = object.map(async product => {
     const values = { id: product.id, column: "product_id" };
 
     const images = await getImages(values);
+
     product.image = images[0].path;
     product.priceParcel = formatPrice(product.price / 12);
     product.price = formatPrice(product.price);

@@ -4,6 +4,8 @@ import { hash } from 'bcryptjs';
 import Address from './app/models/Address';
 import User from './app/models/User';
 import Product from './app/models/Product';
+import File from './app/models/File';
+import FilesManager from './app/models/FilesManager';
 
 export default async function seed() {
   async function createAddress() {
@@ -75,13 +77,26 @@ export default async function seed() {
     return productsIDs;
   }
 
-  async function runFunctions() {
+  async function createImagesForProducts(listIDs) {
+    const fmDB = new FilesManager();
+    const fmPromise = listIDs.map(id => fmDB.create({ product_id: id }));
+    const fmIDs = await Promise.all(fmPromise);
+
+    const path = ['public/img/common/others/notFound.png'];
+
+    const fileDB = new File();
+    fmIDs.forEach(fm => fileDB.create([path, fm]));
+  }
+
+  async function init() {
     const addressIDs = await createAddress();
 
     const usersIDs = await createUsers(addressIDs);
 
-    await createProducts(usersIDs);
+    const productsIDs = await createProducts(usersIDs);
+
+    await createImagesForProducts(productsIDs);
   }
 
-  await runFunctions();
+  await init();
 }

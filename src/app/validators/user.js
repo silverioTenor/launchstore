@@ -202,7 +202,7 @@ const Validators = {
       req.updatedFiles = await prepareToUpdate(req.body, req.files, values);
 
       // Verifica se tem foto e então atribui ela à sessão
-      if (req.updatedFiles?.values) {
+      if (req.updatedFiles?.values[1][0]) {
         req.session.user.photo = { path: req.updatedFiles.values[1][0].replace("public", "") };
       }
 

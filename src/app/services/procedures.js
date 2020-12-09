@@ -1,5 +1,7 @@
 import fs from 'fs';
+
 import FilesManager from "../models/FilesManager";
+import File from '../models/File';
 
 export async function getImages(values) {
   try {
@@ -119,4 +121,26 @@ export function removeImages(removedPhotos, photos) {
   }
 
   return photos;
+}
+
+export async function saveFiles(reqUpdatedFiles, column) {
+  try {
+    if (reqUpdatedFiles.save != undefined) {
+      const { values } = reqUpdatedFiles;
+
+      if (!reqUpdatedFiles.save) {
+        const fileDB = new File();
+        await fileDB.update([values[0], values[1]]);
+
+      } else {
+        const fmDB = new FilesManager();
+        const fmID = await fmDB.create(column);
+
+        const fileDB = new File();
+        await fileDB.create([values[1], fmID]);
+      }
+    }
+  } catch (error) {
+    console.log(`Unexpected error in Procedures saveFiles: ${error}`);
+  }
 }

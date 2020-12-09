@@ -2,7 +2,7 @@ import Product from '../models/Product';
 import File from './../models/File';
 import FilesManager from '../models/FilesManager';
 
-import { getImages, getImagesWithoutReplace, removeImages } from '../services/procedures';
+import { getImages, getImagesWithoutReplace, removeImages, saveFiles } from '../services/procedures';
 import { formatPrice, status } from '../../lib/utils';
 
 const ProductController = {
@@ -185,21 +185,7 @@ const ProductController = {
       const productDB = new Product();
       await productDB.update(values, fields);
 
-      if (req.updatedFiles.save != undefined) {
-        const { values } = req.updatedFiles;
-
-        if (!req.updatedFiles.save) {
-          const fileDB = new File();
-          await fileDB.update([values[0], values[1]]);
-
-        } else {
-          const fmDB = new FilesManager();
-          const fmID = await fmDB.create({ product_id: id });
-
-          const fileDB = new File();
-          await fileDB.create([values[1], fmID]);
-        }
-      }
+      saveFiles(req.updatedFiles, { product_id: id });
 
       return res.redirect(`/products/update/${id}?status=200`);
 

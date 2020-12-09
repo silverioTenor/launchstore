@@ -3,10 +3,8 @@ import { hash } from 'bcryptjs';
 import Address from '../models/Address';
 import User from '../models/User';
 import Product from './../models/Product';
-import File from './../models/File';
-import FilesManager from '../models/FilesManager';
 
-import { getImagesWithoutReplace, removeImages } from './../services/procedures';
+import { getImagesWithoutReplace, removeImages, saveFiles } from './../services/procedures';
 import { formatCpfCnpj, formatCep } from '../../lib/utils';
 
 const UserController = {
@@ -84,21 +82,7 @@ const UserController = {
       const userDB = new User();
       await userDB.update(req.user.val, req.user.fields);
 
-      if (req.updatedFiles.save != undefined) {
-        const { values } = req.updatedFiles;
-
-        if (!req.updatedFiles.save) {
-          const fileDB = new File();
-          await fileDB.update([values[0], values[1]]);
-
-        } else {
-          const fmDB = new FilesManager();
-          const fmID = await fmDB.create({ user_id: id });
-
-          const fileDB = new File();
-          await fileDB.create([values[1], fmID]);
-        }
-      }
+      saveFiles(req.updatedFiles, { user_id: id });
 
       return res.redirect(`users/show/${id}?status=200`);
 

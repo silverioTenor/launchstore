@@ -7,7 +7,7 @@ import Product from './app/models/Product';
 import File from './app/models/File';
 import FilesManager from './app/models/FilesManager';
 
-export default async function seed() {
+export default function seed() {
   async function createAddress() {
     const addrs = [];
 
@@ -98,5 +98,5 @@ export default async function seed() {
     await createImagesForProducts(productsIDs);
   }
 
-  await init();
+  init();
 }

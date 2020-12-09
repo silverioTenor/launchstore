@@ -18,37 +18,6 @@ const Validators = {
       };
     }
   },
-  async post(req, res, next) {
-    const fillAllFields = Validators.checkAllFields(req.body);
-
-    if (fillAllFields) {
-      return res.render("users/register", fillAllFields);
-    }
-
-    let { email, cpf_cnpj, password, passwordRepeat } = req.body;
-
-    cpf_cnpj = cpf_cnpj.replace(/\D/g, "");
-
-    const userDB = new User();
-    const user = await userDB.getBy({
-      where: { email },
-      or: { cpf_cnpj }
-    });
-
-    if (user) return res.render("users/register", {
-      user: req.body,
-      message: "Usuário já cadastrado!",
-      type: "error"
-    });
-
-    if (password != passwordRepeat) return res.render("users/register", {
-      user: req.body,
-      message: "As senhas não coincidem!",
-      type: "error"
-    });
-
-    next();
-  },
   async show(req, res, next) {
     let user = {};
     const { userID: id } = req.session.user;
@@ -202,7 +171,7 @@ const Validators = {
       req.updatedFiles = await prepareToUpdate(req.body, req.files, values);
 
       // Verifica se tem foto e então atribui ela à sessão
-      if (req.updatedFiles?.values[1][0]) {
+      if (req.updatedFiles?.values?.[1][0]) {
         req.session.user.photo = { path: req.updatedFiles.values[1][0].replace("public", "") };
       }
 

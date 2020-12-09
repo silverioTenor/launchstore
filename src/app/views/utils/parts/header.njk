@@ -47,11 +47,11 @@
                 <a>Olá, {{ session.user.name }}</a>
               </div>
               <ul class="account-submenu">
-                <li><a href="/users/show/{{ session.user.userID }}">Minha conta</a></li>
+                <li><a href="/users/profile/{{ session.user.userID }}">Minha conta</a></li>
                 <li><a href="#">Meus pedidos</a></li>
                 <li><a href="#">Meus anúncios</a></li>
                 <li class="logout">
-                  <form action="/users/logout" method="POST">
+                  <form action="/session/logout" method="POST">
                     <button class="btn-logout" type="submit">Sair</button>
                   </form>
                 </li>
@@ -59,7 +59,7 @@
             </div>
           {% else %}
             <div class="account-container">
-              <a href="/users/login" class="account-menu">
+              <a href="/session/login" class="account-menu">
                 <i class="material-icons">account_circle</i>
                 <span>Minha conta</span>
               </a>

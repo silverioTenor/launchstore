@@ -4,14 +4,14 @@
 <section id="form-register">
     <h2>Cadastre-se</h2>
 
-    <form method="POST" action="/users/register">
+    <form method="POST" action="/session/register">
 
       {% include './fields.njk' %}
 
       <button type="submit" class="button">Cadastrar</button>
 
       <div class="footer-register">
-        <a href="/users/login">Já tem cadastro?</a>
+        <a href="/session/login">Já tem cadastro?</a>
       </div>
 
     </form>

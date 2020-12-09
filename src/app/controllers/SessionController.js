@@ -5,6 +5,37 @@ import mailer from '../../lib/mailer';
 import User from '../models/User';
 
 const SessionController = {
+  registerForm(req, res) {
+    if (req.query.status == 400) {
+      return res.render("users/register", {
+        message: "Erro inesperado!",
+        type: "error",
+        formFull: false
+      });
+    } else {
+      return res.render("users/register");
+    }
+  },
+  async register(req, res) {
+    try {
+      let { name, email, password, cpf_cnpj } = req.body;
+
+      password = await hash(password, 8);
+      cpf_cnpj = cpf_cnpj.replace(/\D/g, "");
+
+      const values = { name, email, password, cpf_cnpj };
+
+      const userDB = new User();
+      await userDB.create(values);
+
+      return res.redirect("/session/login");
+
+    } catch (error) {
+      console.error(error);
+
+      return res.redirect("session/register?status=400");
+    }
+  },
   loginForm(req, res) {
     if (req.query.status == 200) {
       return res.render("session/login", {
@@ -24,12 +55,12 @@ const SessionController = {
     req.session.user = req.user;
     const userID = req.user.userID;
 
-    return res.redirect(`/users/show/${userID}`);
+    return res.redirect(`/users/profile/${userID}`);
   },
   logout(req, res) {
     req.session.destroy();
 
-    return res.redirect("/users/login");
+    return res.redirect("/session/login");
   },
   forgotForm(req, res) {
     return res.render("session/forgot/forgot-password");
@@ -45,9 +76,9 @@ const SessionController = {
       let now = new Date();
       now = now.setHours(now.getHours() + 1);
 
-      const values = { 
-        id: user.id, 
-        column: "id" 
+      const values = {
+        id: user.id,
+        column: "id"
       };
 
       const userDB = new User();
@@ -74,12 +105,12 @@ const SessionController = {
       });
 
       // Avisa ao usuário que um e-mail com o link foi enviado
-      return res.redirect("users/login?status=200");
+      return res.redirect("session/login?status=200");
 
     } catch (error) {
       console.error(`Unexpected error in token: ${error}`);
 
-      return res.redirect("users/forgot/forgot-password?status=400");
+      return res.redirect("session/forgot/forgot-password?status=400");
     }
   },
   resetForm(req, res) {
@@ -95,9 +126,9 @@ const SessionController = {
       const newPassword = await hash(password, 8);
 
       // Atualiza o usuário
-      const values = { 
-        id: user.id, 
-        column: "id" 
+      const values = {
+        id: user.id,
+        column: "id"
       };
 
       const userDB = new User();
@@ -108,7 +139,7 @@ const SessionController = {
       });
 
       // Informa que a senha foi alterada com sucesso
-      return res.redirect("users/login?status=200");
+      return res.redirect("session/login?status=200");
 
     } catch (error) {
       console.error(`Unexpected error in reset: ${error}`);

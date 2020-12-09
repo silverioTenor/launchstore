@@ -1,5 +1,3 @@
-import { hash } from 'bcryptjs';
-
 import Address from '../models/Address';
 import User from '../models/User';
 import Product from './../models/Product';
@@ -8,35 +6,6 @@ import { getImagesWithoutReplace, removeImages, saveFiles } from './../services/
 import { formatCpfCnpj, formatCep } from '../../lib/utils';
 
 const UserController = {
-  registerForm(req, res) {
-    if (req.query.status == 400) {
-      return res.render("users/register", {
-        message: "Erro inesperado!",
-        type: "error",
-        formFull: false
-      });
-    }
-  },
-  async post(req, res) {
-    try {
-      let { name, email, password, cpf_cnpj } = req.body;
-
-      password = await hash(password, 8);
-      cpf_cnpj = cpf_cnpj.replace(/\D/g, "");
-
-      const values = { name, email, password, cpf_cnpj };
-
-      const userDB = new User();
-      await userDB.create(values);
-
-      return res.redirect("/users/login");
-
-    } catch (error) {
-      console.error(error);
-
-      return res.redirect("users/register?status=400");
-    }
-  },
   async show(req, res) {
     try {
       let { user, addr } = req;
@@ -84,12 +53,12 @@ const UserController = {
 
       saveFiles(req.updatedFiles, { user_id: id });
 
-      return res.redirect(`users/show/${id}?status=200`);
+      return res.redirect(`users/profile/${id}?status=200`);
 
     } catch (error) {
       console.error(`Failed to save. error: ${error}`);
 
-      return res.redirect(`users/show/${id}?status=400`);
+      return res.redirect(`users/profile/${id}?status=400`);
     }
   },
   async delete(req, res) {
@@ -124,7 +93,7 @@ const UserController = {
 
       req.session.destroy();
 
-      return res.redirect("/users/login?status=200");
+      return res.redirect("/session/login?status=200");
 
     } catch (error) {
       console.log(`Unexpected error in DELETE CONTROLLERS: ${error}`);

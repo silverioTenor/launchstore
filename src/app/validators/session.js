@@ -4,6 +4,49 @@ import User from "../models/User";
 import { getImages } from '../services/procedures';
 
 const Validators = {
+  checkAllFields(body) {
+    const keys = Object.keys(body);
+
+    for (const key of keys) {
+      if (body[key] == "" && body[key] == "removedPhotos") return {
+        user: body,
+        message: `Preencha todos os campos!`,
+        type: "error",
+        formFull: true
+      };
+    }
+  },
+  async register(req, res, next) {
+    const fillAllFields = Validators.checkAllFields(req.body);
+
+    if (fillAllFields) {
+      return res.render("users/register", fillAllFields);
+    }
+
+    let { email, cpf_cnpj, password, passwordRepeat } = req.body;
+
+    cpf_cnpj = cpf_cnpj.replace(/\D/g, "");
+
+    const userDB = new User();
+    const user = await userDB.getBy({
+      where: { email },
+      or: { cpf_cnpj }
+    });
+
+    if (user) return res.render("users/register", {
+      user: req.body,
+      message: "Usuário já cadastrado!",
+      type: "error"
+    });
+
+    if (password != passwordRepeat) return res.render("users/register", {
+      user: req.body,
+      message: "As senhas não coincidem!",
+      type: "error"
+    });
+
+    next();
+  },
   async login(req, res, next) {
 
     let { email, password } = req.body;

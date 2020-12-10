@@ -12,4 +12,6 @@ routes.get("/profile/:id", isLogged, UserValidator.show, UserController.show);
 routes.put("/", multer.array("photo", 1), UserValidator.update, UserController.update);
 routes.delete("/", UserController.delete);
 
+routes.get("/:id/purchases", UserController.purchases);
+
 export default routes;

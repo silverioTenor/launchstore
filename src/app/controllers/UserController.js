@@ -3,9 +3,20 @@ import User from '../models/User';
 import Product from './../models/Product';
 
 import { getImagesWithoutReplace, removeImages, saveFiles } from './../services/procedures';
-import { formatCpfCnpj, formatCep } from '../../lib/utils';
+import { formatProducts, formatCpfCnpj, formatCep } from '../../lib/utils';
 
 const UserController = {
+  async purchases(req, res) {
+    const { userID } = req.session.user;
+
+    const productDB = new Product();
+    let products = await productDB.get({ id: userID, column: "user_id" });
+
+    products = await formatProducts({ object: products }, products.length);
+    products = await Promise.all(products);
+
+    return res.render("users/my_shopping", { products });
+  },
   async show(req, res) {
     try {
       let { user, addr } = req;
@@ -42,7 +53,7 @@ const UserController = {
     }
   },
   async update(req, res) {
-    const { userID: id } = req.session.user;
+    const { userID } = req.session.user;
 
     try {
       const addrDB = new Address();
@@ -51,14 +62,14 @@ const UserController = {
       const userDB = new User();
       await userDB.update(req.user.val, req.user.fields);
 
-      saveFiles(req.updatedFiles, { user_id: id });
+      saveFiles(req.updatedFiles, { user_id: userID });
 
-      return res.redirect(`users/profile/${id}?status=200`);
+      return res.redirect(`users/profile/${userID}?status=200`);
 
     } catch (error) {
       console.error(`Failed to save. error: ${error}`);
 
-      return res.redirect(`users/profile/${id}?status=400`);
+      return res.redirect(`users/profile/${userID}?status=400`);
     }
   },
   async delete(req, res) {

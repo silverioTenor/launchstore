@@ -11,7 +11,7 @@ export async function getImages(values) {
     let images = [];
     let count = 0;
 
-    if (photos && photos.path) {
+    if (photos?.path) {
       photos.path.forEach(photo => {
         photo = {
           id: count,

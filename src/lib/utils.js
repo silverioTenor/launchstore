@@ -50,19 +50,26 @@ export function formatCep(value) {
 }
 
 export async function formatProducts(data, limit) {
-  const { object } = data;
-  
-  const productsPromise = object.map(async product => {
-    const values = { id: product.id, column: "product_id" };
+  try {
+    const { object } = data;
 
-    const images = await getImages(values);
+    const productsPromise = object.map(async product => {
+      const values = { id: product.id, column: "product_id" };
 
-    product.image = images[0].path;
-    product.priceParcel = formatPrice(product.price / 12);
-    product.price = formatPrice(product.price);
+      const images = await getImages(values);
 
-    return product;
-  }).filter((product, index) => index > limit ? false : true);
+      product.image = images[0].path;
+      product.priceParcel = formatPrice(product.price / 12);
+      product.price = formatPrice(product.price);
+      product.old_price = formatPrice(product.old_price);
 
-  return await Promise.all(productsPromise);
+      return product;
+      
+    }).filter((product, index) => index > limit ? false : true);
+
+    return await Promise.all(productsPromise);
+
+  } catch (error) {
+    console.log(`Unexpected error in formatProducts: ${error}`);
+  }
 }

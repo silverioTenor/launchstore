@@ -1,0 +1,23 @@
+{% extends '../layout.njk' %}
+
+{% block content %}
+  <section id="shopping">
+    <h2>Meus pedidos</h2>
+    
+    {% for product in products %}
+      <div class="purchase {{ product.status }}">
+        <img src="{{ product.image }}" alt="{{ product.model }}"/>
+
+        <div class="purchase-content">
+          <h4>
+            <a href="/products/show/{{ product.id }}">
+              {{ product.brand }} {{ product.model }} {{ product.storage }} - {{ product.color }}
+            </a>
+          </h4>
+
+          <span>{{ product.price }}</span>
+        </div>
+      </div>
+    {% endfor %}
+  </section>
+{% endblock content %}

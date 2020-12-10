@@ -46,4 +46,16 @@ export default class Product extends Base {
       console.error(error);
     }
   }
+  
+  async getInOrder({ id, column }) {
+    try {
+      let sql = `SELECT * FROM ${this.table} WHERE ${column} = ${id} ORDER BY updated_at DESC`;
+
+      const results = await db.query(sql);
+      return results.rows;
+
+    } catch (error) {
+      console.log(`Unexpected error in DB GET: ${error}`);
+    }
+  }
 }

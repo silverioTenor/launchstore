@@ -5,7 +5,7 @@
 {% endblock head %}
 
 {% block content %}
-  <div class="container-show">
+  <form method="POST" action="/users/orders" class="container-show">
     <div class="view">
       <div class="big-view">
         <img 
@@ -109,7 +109,14 @@
           </div>
         </div>
 
-        <button class="buy">Comprar</button>
+        <input type="hidden" name="id" value="{{ product.id }}"/>
+        
+
+        {% if session.user.userID != product.user_id %}
+          <button class="buy" type="submit">Comprar</button>
+        {% else %}
+          <span class="no-buy">Indisponível</span>
+        {% endif %}
       </div>
 
       <div class="delivery">
@@ -129,7 +136,7 @@
         <button class="search-cep">Consultar</button>
       </div>
     </div>
-  </div>
+  </form>
 
   <div class="anchor">
     <a href="#statusCel">

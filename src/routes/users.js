@@ -5,6 +5,7 @@ const routes = Router();
 
 import UserValidator from '../app/validators/user';
 import UserController from '../app/controllers/UserController';
+import OrderController from '../app/controllers/OrderController';
 
 import { onlyUsers as isLogged } from '../middlewares/session';
 
@@ -13,5 +14,7 @@ routes.put("/", multer.array("photo", 1), UserValidator.update, UserController.u
 routes.delete("/", UserController.delete);
 
 routes.get("/:id/ads", UserController.ads);
+
+routes.post("/orders", OrderController.post);
 
 export default routes;

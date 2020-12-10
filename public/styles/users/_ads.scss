@@ -9,7 +9,7 @@
     font-size: 24px;
   }
 
-  .purchase {
+  .ads {
     width: 100%;
     margin-bottom: 20px;
     padding: 20px;
@@ -26,7 +26,7 @@
       object-fit: contain;
     }
 
-    .purchase-content {
+    .ads-content {
       margin-left: 20px;
 
       h4 a {
@@ -43,16 +43,16 @@
     }
   }
 
-  .purchase.process {
+  .ads.process {
     border-left: 6px solid #ffe600;
   }
-  .purchase.send {
+  .ads.send {
     border-left: 6px solid #0066ff;
   }
-  .purchase.okay {
+  .ads.okay {
     border-left: 6px solid #26a50c;
   }
-  .purchase.canceled {
+  .ads.canceled {
     border-left: 6px solid #ff0000;
   }
 }

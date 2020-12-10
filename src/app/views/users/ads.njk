@@ -2,13 +2,13 @@
 
 {% block content %}
   <section id="shopping">
-    <h2>Meus pedidos</h2>
+    <h2>Meus anúncios</h2>
     
     {% for product in products %}
-      <div class="purchase {{ product.status }}">
+      <div class="ads {{ product.status }}">
         <img src="{{ product.image }}" alt="{{ product.model }}"/>
 
-        <div class="purchase-content">
+        <div class="ads-content">
           <h4>
             <a href="/products/show/{{ product.id }}">
               {{ product.brand }} {{ product.model }} {{ product.storage }} - {{ product.color }}

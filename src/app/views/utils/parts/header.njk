@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-    
+
     <link rel="stylesheet" href="/styles/main.css"/>
     <link rel="shortcut icon" type="image/x-icon" href="/img/logo/"/>
   </head>
@@ -44,12 +44,19 @@
                     <i class="material-icons">account_circle</i>
                   {% endif %}
                 </div>
-                <a>Olá, {{ session.user.name }}</a>
+                <a>Olá,
+                  {{ session.user.name }}</a>
               </div>
               <ul class="account-submenu">
-                <li><a href="/users/profile/{{ session.user.userID }}">Minha conta</a></li>
-                <li><a href="/users/{{ session.user.userID }}/purchases">Meus pedidos</a></li>
-                <li><a href="#">Meus anúncios</a></li>
+                <li>
+                  <a href="/users/profile/{{ session.user.userID }}">Minha conta</a>
+                </li>
+                <li>
+                  <a href="#">Meus pedidos</a>
+                </li>
+                <li>
+                  <a href="/users/{{ session.user.userID }}/ads">Meus anúncios</a>
+                </li>
                 <li class="logout">
                   <form action="/session/logout" method="POST">
                     <button class="btn-logout" type="submit">Sair</button>

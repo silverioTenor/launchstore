@@ -6,7 +6,7 @@ import { getImagesWithoutReplace, removeImages, saveFiles } from './../services/
 import { formatProducts, formatCpfCnpj, formatCep } from '../../lib/utils';
 
 const UserController = {
-  async purchases(req, res) {
+  async ads(req, res) {
     const { userID } = req.session.user;
 
     const productDB = new Product();
@@ -15,7 +15,7 @@ const UserController = {
     products = await formatProducts({ object: products }, products.length);
     products = await Promise.all(products);
 
-    return res.render("users/my_shopping", { products });
+    return res.render("users/ads", { products });
   },
   async show(req, res) {
     try {

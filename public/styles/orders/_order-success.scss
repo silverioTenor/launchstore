@@ -1,0 +1,64 @@
+.lottie {
+  width: 600px;
+  margin: 0 auto;
+  margin-top: 40px;
+  padding: 40px 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  background-color: $border-color;
+  border-radius: 4px;
+  box-sizing: border-box;
+
+  .lottie-success {
+    height: 100px;
+  }
+  
+  .lottie-failed {
+    height: 70px;
+  }
+
+  h2 {
+    margin-top: 16px;
+    margin-bottom: 4px;
+    color: $font-color;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  p,
+  a {
+    font-size: 16px;
+    color: $font-color;
+  }
+
+  a {
+    margin-top: 16px;
+    position: relative;
+    color: $link-color;
+    transition: color 0.5s;
+    cursor: pointer;
+
+    &::before {
+      content: "";
+      width: 0px;
+      height: 2px;
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      background-color: $primary-color;
+      transition: ease-in-out 0.5s;
+    }
+
+    &:hover {
+      color: $primary-color;
+
+      &::before {
+        width: 100%;
+      }
+    }
+  }
+}

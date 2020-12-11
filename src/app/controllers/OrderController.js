@@ -15,12 +15,15 @@ function mailHTML(seller, product, buyer) {
       <p>Você tem um novo pedido de compra para o seguinte produto:</p>
       <p>Produto: ${product.brand} ${product.model} ${product.color}</p>
       <p>Preço: ${formatPrice(product.price)}</p>
-      <br><br>
+      <br>
       <h4>Dados do comprador</h4>
-      <p>${buyer.name}</p>
-      <p>${buyer.email}</p>
-      <br><br>
+      <p>Nome: ${buyer.name}</p>
+      <p>E-mail: ${buyer.email}</p>
+      <br>
       <strong>Entre em contato com o comprador, para finalizar a venda!</strong>
+      <br><br>
+      <p>Atenciosamente,</p>
+      <p>Equipe Launchstore</p>
     `
   }
 }
@@ -46,13 +49,19 @@ const OrderController = {
 
       mailer.sendMail(mailHTML(seller, product, buyer));
 
-      return res.redirect(`/users/${userID}/ads?status=200`);
+      return res.redirect('/users/order-success');
 
     } catch (error) {
       console.log(`Unexpected error in POST CONTROLLERS: ${error}`);
 
-      return res.redirect(`/products/show/${productID}?status=400`);
+      return res.redirect('/users/order-failed');
     }
+  },
+  success(req, res) {
+    return res.render("orders/order-success");
+  },
+  failed(req, res) {
+    return res.render("orders/order-failed");
   }
 }
 

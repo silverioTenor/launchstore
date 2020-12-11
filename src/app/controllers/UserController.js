@@ -21,7 +21,8 @@ const UserController = {
     if (req.query.status == 200) {
       return res.render("users/ads", { 
         products,
-        message: "Pedido feito com sucesso! Aguarde o contato do vendedor."
+        message: "Pedido feito com sucesso! Aguarde o contato do vendedor.",
+        type: "success"
       });
     } else {
       return res.render("users/ads", { products });

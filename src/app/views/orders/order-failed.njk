@@ -1,0 +1,26 @@
+{% extends '../layout.njk' %}
+
+{% block content %}
+  <div class="lottie">
+    <div class="lottie-failed"></div>
+
+    <h2>Seu pedido não pôde ser processado!</h2>
+    <p>Por favor, tente novamente.</p>
+
+    <a onclick="history.back()">Voltar</a>
+  </div>
+
+  <script src="/js/lottie.min.js" type="text/javascript"></script>
+
+  <script>
+    const element = document.querySelector('.lottie-failed');
+
+    lottie.loadAnimation({
+      container: element, // the dom element that will contain the animation
+      renderer: 'svg',
+      loop: false,
+      autoplay: true,
+      path: '/lottie/9915-spinner-fail.json' // the path to the animation json
+    }).setSpeed(2.5);
+  </script>
+{% endblock content %}

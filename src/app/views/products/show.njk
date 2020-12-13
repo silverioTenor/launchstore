@@ -5,7 +5,7 @@
 {% endblock head %}
 
 {% block content %}
-  <form method="POST" action="/users/orders" class="container-show">
+  <form method="POST" action="/shopping-cart/add/{{ product.id }}" class="container-show">
     <div class="view">
       <div class="big-view">
         <img 
@@ -107,10 +107,7 @@
             <span>Ou até 12x de {{ product.priceParcel }} sem juros</span>
             <a href="#">Ver parcelas</a>
           </div>
-        </div>
-
-        <input type="hidden" name="id" value="{{ product.id }}"/>
-        
+        </div>        
 
         {% if session.user.userID != product.user_id %}
           <button class="buy" type="submit">Comprar</button>

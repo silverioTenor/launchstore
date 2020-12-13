@@ -49,12 +49,12 @@ const OrderController = {
 
       mailer.sendMail(mailHTML(seller, product, buyer));
 
-      return res.redirect('/users/order-success');
+      return res.redirect('/shopping-cart/order-success');
 
     } catch (error) {
       console.log(`Unexpected error in POST CONTROLLERS: ${error}`);
 
-      return res.redirect('/users/order-failed');
+      return res.redirect('/shopping-cart/order-failed');
     }
   },
   success(req, res) {

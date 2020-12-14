@@ -11,6 +11,7 @@ import { onlyUsers } from '../middlewares/session';
 
 routes.get("/search", SearchController.index);
 
+routes.get("/", ProductController.index);
 routes.get("/create", onlyUsers, ProductController.create);
 routes.get("/show/:id", ProductController.show);
 routes.get("/update/:id", onlyUsers, ProductController.update);

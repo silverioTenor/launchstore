@@ -3,9 +3,54 @@ import File from './../models/File';
 import FilesManager from '../models/FilesManager';
 
 import { getImages, getImagesWithoutReplace, removeImages, saveFiles } from '../services/procedures';
-import { formatPrice, status } from '../../lib/utils';
+import { formatPrice, formatProducts, status } from '../../lib/utils';
 
 const ProductController = {
+  async index(req, res) {
+    try {
+      const productDB = new Product();
+      const data = await productDB.getAll();
+
+      if (!data) return res.render("products/index", {
+        message: "Sistema indisponível no momento! Volte mais tarde.",
+        type: "error"
+      });
+
+      const inf = {
+        object: data,
+        func: { formatPrice }
+      };
+
+      const products = await formatProducts(inf);
+      const lastAdded = products.filter((product, index) => index > 3 ? false : true);
+
+      if (req.query.status == 200) {
+        return res.render("products/index", { 
+          products, 
+          lastAdded,
+          message: "Operação feita com sucesso!",
+          type: "success"
+        });
+      } else if (req.query.status == 400) {
+        return res.render("products/index", { 
+          products, 
+          lastAdded,
+          message: "Falha na operação!",
+          type: "error"
+        });
+      } else {
+        return res.render("products/index", { lastAdded });
+      }
+      
+    } catch (error) {
+      console.log(`Unexpected error in HOME: ${error}`);
+
+      return res.render("products/index", {
+        message: "Sistema indisponível no momento!",
+        type: "error"
+      });
+    }
+  },
   create(req, res) {
     return res.render("products/create");
   },

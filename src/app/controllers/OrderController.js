@@ -30,10 +30,10 @@ function mailHTML(seller, product, buyer) {
 
 const OrderController = {
   async post(req, res) {
-    const { id } = req.body;
-    const { userID } = req.session.user;
-
     try {
+      const { id } = req.body;
+      const { userID } = req.session.user;
+
       const productDB = new Product();
       const product = await productDB.getBy({ where: { id } });
 

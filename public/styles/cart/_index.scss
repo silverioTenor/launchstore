@@ -200,3 +200,39 @@
     }
   }
 }
+
+// cart menu
+.cart-icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 50px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $dark-bold-color;
+
+  i {
+    font-size: 30px;
+  }
+
+  #cart-status-info {
+    width: 16px;
+    height: 16px;
+
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    background-color: #ff0000;
+    box-sizing: border-box;
+    border-radius: 50%;
+  }
+}

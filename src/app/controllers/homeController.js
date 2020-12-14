@@ -17,8 +17,8 @@ const HomeController = {
         func: { formatPrice }
       };
 
-      const products = await formatProducts(inf, 11);
-      const lastAdded = products.filter((product, index) => index > 3 ? false : true).reverse();
+      const products = await formatProducts(inf);
+      const lastAdded = products.filter((product, index) => index > 3 ? false : true);
 
       if (req.query.status == 200) {
         return res.render("home/index", { 
@@ -35,7 +35,7 @@ const HomeController = {
           type: "error"
         });
       } else {
-        return res.render("home/index", { products, lastAdded });
+        return res.render("home/index", { lastAdded });
       }
       
     } catch (error) {

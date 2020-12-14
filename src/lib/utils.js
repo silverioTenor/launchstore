@@ -49,7 +49,7 @@ export function formatCep(value) {
   return value;
 }
 
-export async function formatProducts(data, limit) {
+export async function formatProducts(data) {
   try {
     const { object } = data;
 
@@ -65,7 +65,7 @@ export async function formatProducts(data, limit) {
 
       return product;
       
-    }).filter((product, index) => index > limit ? false : true);
+    });
 
     return await Promise.all(productsPromise);
 

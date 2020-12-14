@@ -4,18 +4,15 @@ import { formatProducts } from '../../lib/utils';
 const SearchController = {
   async index(req, res) {
     try {
-      let results, params = {};
+      let params = {};
 
       const { filter, brand } = req.query;
 
-      if (!filter) res.redirect("/");
-
-      params.filter = filter;
+      if (filter) params.filter = filter;
 
       if (brand) params.brand = brand;
 
-      results = await Product.search(params);
-      const data = results.rows;
+      const data = await Product.search(params);
 
       const products = await formatProducts({ object: data }, 15);
 

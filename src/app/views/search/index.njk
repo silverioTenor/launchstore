@@ -6,7 +6,13 @@
   <div class="search-products">
     <aside>
       <div class="header">
-        <h2>{{ search.term }}</h2>
+        {% if search.term %}
+          <h2>{{ search.term }}</h2>
+        {% elseif brands.length == 1 %}
+          <h2>{{ brands[0].name }}</h2>
+        {% else %}
+          <h2>Todos</h2>
+        {% endif %}
         <p>{{ search.total }} {{ 'resultados' if search.total > 1 else 'resultado' }}</p>
       </div>
 
@@ -15,9 +21,15 @@
 
         <ul>
           {% for brand in brands %}
-            <li>
-              <a href="/products/search?filter={{search.term}}&brand={{brand.name}}">{{ brand.name }}</a>
-            </li>
+            {% if search.term %}
+              <li>
+                <a href="/products/search?filter={{search.term}}&brand={{brand.name}}">{{ brand.name }}</a>
+              </li>
+            {% else %}
+              <li>
+                <a href="/products/search?brand={{brand.name}}">{{ brand.name }}</a>
+              </li>
+            {% endif %}
           {% endfor %}
         </ul>
       </nav>

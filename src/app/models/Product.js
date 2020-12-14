@@ -18,35 +18,38 @@ export default class Product extends Base {
     }
   }
 
-  static search(params) {
-    const { filter, brand } = params;
-
-    let sql = "",
-      filterQuery = "WHERE";
-
-    if (brand) {
-      filterQuery = `
-          ${filterQuery}
-          products.brand ILIKE '%${brand}%'
-          OR
-        `;
-    }
-
-    filterQuery = `
-        ${filterQuery}
-        products.model ILIKE '%${filter}%'
-      `;
-
-    sql = `SELECT * FROM products ${filterQuery}`;
-
+  static async search(params) {
     try {
-      return db.query(sql);
+      const { filter, brand } = params;
+
+      let sql = "SELECT * FROM products ",
+        filterQuery = "WHERE ";
+
+      if (filter && brand) {
+        filterQuery += `
+          products.model ILIKE '%${filter}%' AND
+          products.brand ILIKE '%${brand}%'
+        `;
+        sql += `${filterQuery}`;
+
+      } else if (filter && !brand) {
+        filterQuery += `products.model ILIKE '%${filter}%'`;
+        sql += `${filterQuery}`;
+
+      } else if (brand && !filter) {
+        filterQuery += `products.brand ILIKE '%${brand}%'`;
+
+        sql += `${filterQuery}`;
+      }
+
+      const results = await db.query(sql);
+      return results.rows;
 
     } catch (error) {
-      console.error(error);
+      console.log(`Unexpected error in SEARCH: ${error}`);
     }
   }
-  
+
   async getInOrder({ id, column }) {
     try {
       let sql = `SELECT * FROM ${this.table} WHERE ${column} = ${id} ORDER BY updated_at DESC`;

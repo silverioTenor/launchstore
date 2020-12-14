@@ -5,7 +5,11 @@ const routes = Router();
 
 import ProductController from '../app/controllers/ProductController';
 import ProductValidator from '../app/validators/product';
+import SearchController from '../app/controllers/SearchController';
+
 import { onlyUsers } from '../middlewares/session';
+
+routes.get("/search", SearchController.index);
 
 routes.get("/create", onlyUsers, ProductController.create);
 routes.get("/show/:id", ProductController.show);

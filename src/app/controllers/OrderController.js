@@ -7,7 +7,7 @@ import Order from '../models/Order';
 import Cart from '../../lib/Cart';
 import { formatPrice } from '../../lib/utils';
 
-function mailHTML(seller, product, buyer) {
+function mailHTML(seller, product, buyer, item) {
   return {
     to: seller.email,
     from: "no-replay@gmail.com",
@@ -16,7 +16,9 @@ function mailHTML(seller, product, buyer) {
       <h2>Olá, ${seller.name}!</h2>
       <p>Você tem um novo pedido de compra para o seguinte produto:</p>
       <p>Produto: ${product.brand} ${product.model} ${product.color}</p>
-      <p>Preço: ${formatPrice(product.price)}</p>
+      <p>Preço unitário: ${formatPrice(product.price)}</p>
+      <p>Quantidade: ${item.quantity}</p>
+      <p>Preço total: ${item.formattedPrice}</p>
       <br>
       <h4>Dados do comprador</h4>
       <p>Nome: ${buyer.name}</p>
@@ -73,7 +75,7 @@ const OrderController = {
         const seller = await getUser(seller_id);
         const buyer = await getUser(buyer_id);
         
-        await mailer.sendMail(mailHTML(seller, product, buyer));
+        await mailer.sendMail(mailHTML(seller, product, buyer, item));
 
         return order;
       });

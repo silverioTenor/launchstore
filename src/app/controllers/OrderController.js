@@ -2,7 +2,9 @@ import mailer from '../../lib/mailer'
 
 import User from '../models/User';
 import Product from '../models/Product';
+import Order from '../models/Order';
 
+import Cart from '../../lib/Cart';
 import { formatPrice } from '../../lib/utils';
 
 function mailHTML(seller, product, buyer) {
@@ -31,30 +33,61 @@ function mailHTML(seller, product, buyer) {
 const OrderController = {
   async post(req, res) {
     try {
-      const { id } = req.body;
-      const { userID } = req.session.user;
+      // get products from the cart
+      const cart = new Cart(req.session.cart);
 
-      const productDB = new Product();
-      const product = await productDB.getBy({ where: { id } });
+      const buyer_id = req.session.user.userID;
+      const filteredItems = cart.items.filter(item => item.product.user_id != buyer_id);
 
-      if (product.user_id == userID) return res.render("products/show", {
-        message: "Você não pode comprar seu próprio produto",
-        type: "errror"
+      async function getUser(user) {
+        const userDB = new User();
+        const data = await userDB.getBy({ where: { id: user } });
+
+        return data;
+      }
+
+      // Order create
+      const createOrdersPromise = filteredItems.map(async item => {
+        let { product, price: total, quantity } = item;
+        const { price, id: product_id, user_id: seller_id } = product;
+
+        const status = "open";
+        const fields = {
+          seller_id,
+          buyer_id,
+          product_id,
+          price,
+          total,
+          quantity,
+          status
+        }
+
+        const orderDB = new Order();
+        const order = await orderDB.create(fields);
+        
+        // get product
+        const productDB = new Product();
+        product = await productDB.getBy({ where: { id: product_id } });
+        
+        // get seller and buyer
+        const seller = await getUser(seller_id);
+        const buyer = await getUser(buyer_id);
+        
+        await mailer.sendMail(mailHTML(seller, product, buyer));
+
+        return order;
       });
 
-      const userDB = new User();
-      const seller = await userDB.getBy({ where: { id: product.user_id } });
+      await Promise.all(createOrdersPromise);
 
-      const buyer = await userDB.getBy({ where: { id: userID } });
+      delete req.session.cart;
 
-      mailer.sendMail(mailHTML(seller, product, buyer));
-
-      return res.redirect('/shopping-cart/order-success');
+      return res.redirect('/orders/order-success');
 
     } catch (error) {
       console.log(`Unexpected error in POST CONTROLLERS: ${error}`);
 
-      return res.redirect('/shopping-cart/order-failed');
+      return res.redirect('/orders/order-failed');
     }
   },
   success(req, res) {

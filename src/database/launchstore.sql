@@ -22,8 +22,8 @@ CREATE TABLE "users" (
   "address_id" int,
   "reset_token" text,
   "reset_token_expires" text,
-  "created_at" timestamp DEFAULT now(),
-  "updated_at" timestamp DEFAULT now()
+  "created_at" timestamp DEFAULT (now()),
+  "updated_at" timestamp DEFAULT (now())
 );
 
 CREATE TABLE "products" (
@@ -37,8 +37,8 @@ CREATE TABLE "products" (
   "price" int NOT NULL,
   "old_price" int,
   "storage" text NOT NULL,
-  "created_at" timestamp DEFAULT now(),
-  "updated_at" timestamp DEFAULT now()
+  "created_at" timestamp DEFAULT (now()),
+  "updated_at" timestamp DEFAULT (now())
 );
 
 CREATE TABLE "files_manager" (
@@ -51,6 +51,19 @@ CREATE TABLE "files" (
   "id" SERIAL PRIMARY KEY,
   "path" text[] NOT NULL,
   "files_manager_id" int UNIQUE
+);
+
+CREATE TABLE "orders" (
+  "id" SERIAL PRIMARY KEY,
+  "seller_id" int NOT NULL,
+  "buyer_id" int NOT NULL,
+  "product_id" int NOT NULL,
+  "price" int NOT NULL,
+  "quantity" int DEFAULT 0,
+  "total" int NOT NULL,
+  "status" text NOT NULL,
+  "created_at" timestamp DEFAULT (now()),
+  "updated_at" timestamp DEFAULT (now())
 );
 
 -- CONNECT PG SIMPLE TABLE
@@ -78,6 +91,12 @@ ALTER TABLE "files_manager" ADD FOREIGN KEY ("product_id") REFERENCES "products"
 
 ALTER TABLE "files" ADD FOREIGN KEY ("files_manager_id") REFERENCES "files_manager" ("id");
 
+ALTER TABLE "orders" ADD FOREIGN KEY ("seller_id") REFERENCES "users" ("id");
+
+ALTER TABLE "orders" ADD FOREIGN KEY ("buyer_id") REFERENCES "users" ("id");
+
+ALTER TABLE "orders" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
+
 -- PROCEDURE
 
 CREATE FUNCTION trigger_set_timestamp()
@@ -99,6 +118,12 @@ EXECUTE PROCEDURE trigger_set_timestamp();
 -- PRODUCTS
 CREATE TRIGGER trigger_set_timestamp
 BEFORE UPDATE ON products
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+-- ORDERS
+CREATE TRIGGER trigger_set_timestamp
+BEFORE UPDATE ON orders
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
 
@@ -138,3 +163,7 @@ ADD CONSTRAINT files_files_manager_id_fkey
 FOREIGN KEY ("files_manager_id")
 REFERENCES "files_manager" ("id")
 ON DELETE CASCADE;
+
+-- RESTART SEQUENCE IDs
+ALTER SEQUENCE users RESTART WITH 1;
+UPDATE users SET idcolumn=nextval('seq');

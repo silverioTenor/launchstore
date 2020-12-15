@@ -8,11 +8,14 @@ const CartController = {
     try {
       let { cart: oldCart } = req.session;
 
-      // get image
-      for (const c in oldCart.items) {
-        const productID = oldCart.items[c].product.id;
-        const files = await getImages({ id: productID, column: "product_id" });
-        oldCart.items[c].product.path = files[0].path;
+      if (oldCart?.items) {
+        
+        // get image
+        for (const c in oldCart.items) {
+          const productID = oldCart.items[c].product.id;
+          const files = await getImages({ id: productID, column: "product_id" });
+          oldCart.items[c].product.path = files[0].path;
+        }
       }
 
       // format cart

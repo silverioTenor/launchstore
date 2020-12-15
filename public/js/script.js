@@ -367,3 +367,10 @@ const Validate = {
     }
   },
 }
+
+const Link = {
+  redirect(el) {
+    const id = el.getAttribute("id");
+    location.href = `/products/show/${id}`;
+  }
+}

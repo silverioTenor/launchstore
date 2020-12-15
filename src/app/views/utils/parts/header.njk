@@ -44,8 +44,7 @@
                     <i class="material-icons">account_circle</i>
                   {% endif %}
                 </div>
-                <a>Olá,
-                  {{ session.user.name }}</a>
+                <a>Olá, {{ session.user.name }}</a>
               </div>
               <ul class="account-submenu">
                 <li>
@@ -56,6 +55,9 @@
                 </li>
                 <li>
                   <a href="/users/{{ session.user.userID }}/ads">Meus anúncios</a>
+                </li>
+                <li>
+                  <a href="#">Minhas vendas</a>
                 </li>
                 <li class="logout">
                   <form action="/session/logout" method="POST">

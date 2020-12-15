@@ -34,6 +34,16 @@
             </form>
           {% endblock filter %}
 
+          <div class="cart-menu-container">
+            <a href="/shopping-cart" class="cart-icon">
+              <i class="material-icons">shopping_cart</i>
+              
+              {% if session.cart and session.cart.total.quantity > 0 %}
+                <span id="cart-status-info">{{ session.cart.total.quantity }}</span>
+              {% endif %}
+            </a>
+          </div>
+
           {% if session.user %}
             <div class="account-container">
               <div class="account-menu">
@@ -74,14 +84,6 @@
               </a>
             </div>
           {% endif %}
-
-          <a href="/shopping-cart" class="cart-icon">
-            <i class="material-icons">shopping_cart</i>
-            
-            {% if session.cart and session.cart.total.quantity > 0 %}
-              <span id="cart-status-info">{{ session.cart.total.quantity }}</span>
-            {% endif %}
-          </a>
         </div>
 
         <nav>

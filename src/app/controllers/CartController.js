@@ -1,6 +1,6 @@
 import Product from '../models/Product';
 
-import { getImages } from '../services/procedures';
+import { getImages } from '../services/fileService';
 import Cart from '../../lib/Cart';
 
 const CartController = {

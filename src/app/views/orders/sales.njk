@@ -1,0 +1,37 @@
+{% extends '../layout.njk' %}
+
+{% block content %}
+  <section id="sales-container">
+    <h2>Minhas vendas</h2>
+
+    {% if sales.length <= 0 %}
+
+      <section id="sales-empty">
+        <p>Você não realizou vendas até o momento :(</p>
+        <a class="button" href="/products/create">Anuncie agora</a>
+      </section>
+
+    {% else %}
+
+      {% for sale in sales %}
+        <div class="purchase">
+          <div class="order-product_container">
+            <img src="{{ sale.productPath }}" alt="{{ sale.productName }}"/>
+
+            <div class="order-product_description">
+              <strong>{{ sale.productName }}</strong>
+              <span class="purchase-price">{{ sale.formattedPrice }}</span>
+
+              <p>{{ sale.statusCurrent }} em {{ sale.updatedAt }}</p>
+            </div>
+          </div>
+
+          <span>Qtd. {{ sale.quantity }}</span>
+          <span class="purchase-price">{{ sale.formattedTotalPrice }}</span>
+          <span class="{{ sale.status }}">{{ sale.statusCurrent }}</span>
+        </div>
+      {% endfor %}
+
+    {% endif %}
+  </section>
+{% endblock content %}

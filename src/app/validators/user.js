@@ -3,7 +3,7 @@ import { compare } from "bcryptjs";
 import User from "../models/User";
 import Address from './../models/Address';
 
-import { getImages, prepareToUpdate } from '../services/procedures';
+import { getImages, prepareToUpdate } from '../services/fileService';
 
 const Validators = {
   checkAllFields(body) {

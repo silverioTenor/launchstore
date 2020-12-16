@@ -1,9 +1,19 @@
-import { getImages } from '../app/services/procedures';
+import { getImages } from '../app/services/fileService';
 
 export function status(value) {
   if (value == "excelent") return "Excelente";
   else if (value == "very_good") return "Muito Bom";
   else if (value == "good") return "Bom";
+}
+
+export function formatOrderStatus(pos) {
+  const statusOrder = {
+    open: "Aberto",
+    sold: "Vendido",
+    canceled: "Cancelado"
+  }
+
+  return statusOrder[pos];
 }
 
 export function formatPrice(price) {

@@ -5,8 +5,9 @@ import Product from '../models/Product';
 import Order from '../models/Order';
 
 import Cart from '../../lib/Cart';
-import { getImages } from '../services/procedures';
-import { formatPrice, formatDate } from '../../lib/utils';
+import { getOrders } from '../services/orderService';
+import { getImages } from '../services/fileService';
+import { formatPrice, formatCpfCnpj } from '../../lib/utils';
 
 function mailHTML(seller, product, buyer, item) {
   return {
@@ -38,32 +39,7 @@ const OrderController = {
     try {
       const { userID } = req.session.user;
 
-      const orderDB = new Order();
-      let orders = await orderDB.get({ id: userID, column: "buyer_id" });
-
-      const statusOrder = {
-        open: "Aberto",
-        sold: "Vendido",
-        canceled: "Cancelado"
-      }
-
-      orders = orders.map(async order => {
-        const productDB = new Product();
-        const product = await productDB.getBy({ where: { id: order.product_id } });
-        order.productName = `${product.brand} ${product.model} ${product.status} ${product.color}`;
-
-        const files = await getImages({ id: order.product_id, column: "product_id" });
-        order.productPath = files[0].path;
-
-        order.formattedPrice = formatPrice(order.price);
-        order.formattedTotalPrice = formatPrice(order.total);
-        order.statusCurrent = statusOrder[order.status];
-        order.updatedAt = formatDate(order.updated_at).long;
-
-        return order;
-      });
-
-      orders = await Promise.all(orders);
+      const orders = await getOrders({ id: userID, column: "buyer_id" });
 
       return res.render("orders/purchases", { orders });
 
@@ -71,7 +47,18 @@ const OrderController = {
       console.log(`Unexpected error in INDEX CONTROLLER: ${error}`);
     }
   },
-  async sales(req, res) { },
+  async sales(req, res) {
+    try {
+      const { userID } = req.session.user;
+
+      const sales = await getOrders({ id: userID, column: "seller_id" });
+
+      return res.render("orders/sales", { sales });
+
+    } catch (error) {
+      console.log(`Unexpected error in SALES CONTROLLER: ${error}`);
+    }
+  },
   async post(req, res) {
     try {
       // get products from the cart
@@ -129,6 +116,46 @@ const OrderController = {
       console.log(`Unexpected error in POST CONTROLLERS: ${error}`);
 
       return res.redirect('/orders/order-failed');
+    }
+  },
+  async show(req, res) {
+    try {
+      const { id } = req.params;
+
+      let order = await getOrders({ id, column: "id" });
+      order = order[0];
+
+      const userDB = new User();
+      let buyer = await userDB.getBy({ where: { id: order.buyer_id } });
+      let seller = await userDB.getBy({ where: { id: order.seller_id } });
+
+      const productDB = new Product();
+      let product = await productDB.getBy({ where: { id: order.product_id } });
+
+      const files = await getImages({ id: order.product_id, column: "product_id" });
+
+      function formatDataUser(user) {
+        const data = {
+          name: user.name,
+          email: user.email,
+          cpf_cnpj: formatCpfCnpj(user.cpf_cnpj)
+        };
+
+        return data;
+      }
+
+      order.buyer = formatDataUser(buyer);
+      order.seller = formatDataUser(seller);
+
+      order.product = {
+        name: `${product.brand} ${product.model} ${product.storage} ${product.color}`,
+        path: files[0].path
+      };
+
+      return res.render("orders/show", { order });
+
+    } catch (error) {
+      console.log(`Unexpected error in SHOW CONTROLLER: ${error}`);
     }
   },
   success(req, res) {

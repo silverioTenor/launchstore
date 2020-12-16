@@ -9,7 +9,7 @@
 
     <div class="ads-container">
       {% for product in products %}
-        <div id="{{ product.id }}" class="ads" onclick="Link.redirect(this)">
+        <div id="{{ product.id }}" class="ads" onclick="Link.redirect(this, '/products/show/')">
           <img src="{{ product.image }}" alt="{{ product.model }}"/>
 
           <div class="ads-content">

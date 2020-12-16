@@ -1,7 +1,7 @@
 import { compare } from "bcryptjs";
 
 import User from "../models/User";
-import { getImages } from '../services/procedures';
+import { getImages } from '../services/fileService';
 
 const Validators = {
   checkAllFields(body) {

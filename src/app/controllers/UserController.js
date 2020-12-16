@@ -2,7 +2,7 @@ import Address from '../models/Address';
 import User from '../models/User';
 import Product from './../models/Product';
 
-import { getImagesWithoutReplace, removeImages, saveFiles } from './../services/procedures';
+import { getImagesWithoutReplace, removeImages, saveFiles } from './../services/fileService';
 import { formatProducts, formatCpfCnpj, formatCep } from '../../lib/utils';
 
 const UserController = {

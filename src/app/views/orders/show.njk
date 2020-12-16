@@ -1,0 +1,46 @@
+{% extends '../layout.njk' %}
+
+{% block content %}
+  <section id="order-show">
+    <h2>Detalhes do pedido</h2>
+
+    <div class="order-details">
+      <div class="order-user">
+        <h4>Comprador</h4>
+
+        <p>{{ order.buyer.name }}</p>
+        <p>{{ order.buyer.email }}</p>
+        <p>{{ order.buyer.cpf_cnpj }}</p>
+      </div>
+
+      <div class="order-user">
+        <h4>Vendedor</h4>
+
+        <p>{{ order.seller.name }}</p>
+        <p>{{ order.seller.email }}</p>
+        <p>{{ order.seller.cpf_cnpj }}</p>
+      </div>
+
+      <div class="order-status">
+        <span class="{{ order.status }}">{{ order.statusCurrent }}</span>
+        <p>{{ order.statusCurrent }} em {{ order.updatedAt }}</p>
+      </div>
+    </div>
+
+    <div class="order-product-description">
+      <img src="{{ order.product.path }}" alt="{{ order.product.name }}"/>
+
+      <strong>{{ order.product.name }}</strong>
+
+      <div class="price">
+        <p>{{ order.formattedPrice }}</p>
+        <p>x{{ order.quantity }}</p>
+      </div>
+    </div>
+
+    <div class="order-total_price">
+      <span>Total</span>
+      <strong>{{ order.formattedTotalPrice }}</strong>
+    </div>
+  </section>
+{% endblock content %}

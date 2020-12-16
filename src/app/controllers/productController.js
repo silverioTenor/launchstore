@@ -2,7 +2,7 @@ import Product from '../models/Product';
 import File from './../models/File';
 import FilesManager from '../models/FilesManager';
 
-import { getImages, getImagesWithoutReplace, removeImages, saveFiles } from '../services/procedures';
+import { getImages, getImagesWithoutReplace, removeImages, saveFiles } from '../services/fileService';
 import { formatPrice, formatProducts, status } from '../../lib/utils';
 
 const ProductController = {

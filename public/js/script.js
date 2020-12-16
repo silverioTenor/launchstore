@@ -369,8 +369,8 @@ const Validate = {
 }
 
 const Link = {
-  redirect(el) {
+  redirect(el, path) {
     const id = el.getAttribute("id");
-    location.href = `/products/show/${id}`;
+    location.href = `${path}${id}`;
   }
 }

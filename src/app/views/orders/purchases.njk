@@ -4,23 +4,34 @@
   <section id="purchase-container">
     <h2>Meus pedidos</h2>
 
-    {% for order in orders %}
-      <div class="purchase">
-        <div class="order-product_container">
-          <img src="{{ order.productPath }}" alt="{{ order.productName }}"/>
+    {% if orders.length <= 0 %}
 
-          <div class="order-product_description">
-            <strong>{{ order.productName }}</strong>
-            <span class="purchase-price">{{ order.formattedPrice }}</span>
+      <section id="purchases-empty">
+        <p>Você ainda não comprou em nossa loja</p>
+        <a class="button" href="/products/search">Compre agora</a>
+      </section>
 
-            <p>{{ order.statusCurrent }} em {{ order.updatedAt }}</p>
+    {% else %}
+
+      {% for order in orders %}
+        <div id="{{ order.id }}" class="purchase" onclick="Link.redirect(this, '/orders/')">
+          <div class="order-product_container">
+            <img src="{{ order.productPath }}" alt="{{ order.productName }}"/>
+
+            <div class="order-product_description">
+              <strong>{{ order.productName }}</strong>
+              <span class="purchase-price">{{ order.formattedPrice }}</span>
+
+              <p>{{ order.statusCurrent }} em {{ order.updatedAt }}</p>
+            </div>
           </div>
-        </div>
 
-        <span>Qtd. {{ order.quantity }}</span>
-        <span class="purchase-price">{{ order.formattedTotalPrice }}</span>
-        <span class="{{ order.status }}">{{ order.statusCurrent }}</span>
-      </div>
-    {% endfor %}
+          <span>Qtd. {{ order.quantity }}</span>
+          <span class="purchase-price">{{ order.formattedTotalPrice }}</span>
+          <span class="{{ order.status }}">{{ order.statusCurrent }}</span>
+        </div>
+      {% endfor %}
+
+    {% endif %}
   </section>
 {% endblock content %}

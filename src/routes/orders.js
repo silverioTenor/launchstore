@@ -7,6 +7,8 @@ import OrderController from '../app/controllers/OrderController';
 import { onlyUsers as isLogged } from '../middlewares/session';
 
 // Orders
+routes.get("/purchases", OrderController.index);
+routes.get("/sales", OrderController.sales);
 routes.get("/order-success", OrderController.success);
 routes.get("/order-failed", OrderController.failed);
 routes.post("/", isLogged, OrderController.post);

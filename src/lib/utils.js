@@ -73,3 +73,36 @@ export async function formatProducts(data) {
     console.log(`Unexpected error in formatProducts: ${error}`);
   }
 }
+
+export function formatDate(dateTime) {
+  dateTime = Date.parse(dateTime);
+  const data = new Date(dateTime);
+  
+  const date = data.getDate();
+  const month = data.getMonth();
+  const year = data.getFullYear();
+  const seconds = data.getSeconds();
+  const minuts = data.getMinutes();
+  const hours = data.getHours();
+
+  const monthExtensive = [
+    "janeiro",
+    "fevereiro",
+    "março",
+    "abril",
+    "maio",
+    "junho",
+    "julho",
+    "agosto",
+    "setembro",
+    "outubro",
+    "novembro",
+    "dezembro"
+  ];
+
+  return {
+    iso: `${year}-${month}-${date}:${hours}:${minuts}:${seconds}`,
+    ptBR: `${date}/${month}/${year}`,
+    long: `${date} de ${monthExtensive[month]} de ${year}`
+  };
+}

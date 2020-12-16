@@ -6,26 +6,20 @@ import { getImagesWithoutReplace, removeImages, saveFiles } from './../services/
 import { formatProducts, formatCpfCnpj, formatCep } from '../../lib/utils';
 
 const UserController = {
-  async purchases(req, res) {
-    return
-  },
   async ads(req, res) {
-    const { userID } = req.session.user;
+    try {
+      const { userID } = req.session.user;
 
-    const productDB = new Product();
-    let products = await productDB.getInOrder({ id: userID, column: "user_id" });
+      const productDB = new Product();
+      let products = await productDB.getInOrder({ id: userID, column: "user_id" });
 
-    products = await formatProducts({ object: products }, products.length);
-    products = await Promise.all(products);
+      products = await formatProducts({ object: products }, products.length);
+      products = await Promise.all(products);
 
-    if (req.query.status == 200) {
-      return res.render("users/ads", { 
-        products,
-        message: "Pedido feito com sucesso! Aguarde o contato do vendedor.",
-        type: "success"
-      });
-    } else {
       return res.render("users/ads", { products });
+
+    } catch (error) {
+      console.log(`Unexpected error in ADS CONTROLLERS: ${error}`);
     }
   },
   async show(req, res) {
@@ -54,7 +48,7 @@ const UserController = {
       }
 
     } catch (error) {
-      console.error(error);
+      console.log(`Unexpected error in SHOW CONTROLLERS: ${error}`);
 
       return res.render("users/index", {
         message: "Erro inesperado!",

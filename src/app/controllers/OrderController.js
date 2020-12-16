@@ -5,7 +5,8 @@ import Product from '../models/Product';
 import Order from '../models/Order';
 
 import Cart from '../../lib/Cart';
-import { formatPrice } from '../../lib/utils';
+import { getImages } from '../services/procedures';
+import { formatPrice, formatDate } from '../../lib/utils';
 
 function mailHTML(seller, product, buyer, item) {
   return {
@@ -33,6 +34,44 @@ function mailHTML(seller, product, buyer, item) {
 }
 
 const OrderController = {
+  async index(req, res) {
+    try {
+      const { userID } = req.session.user;
+
+      const orderDB = new Order();
+      let orders = await orderDB.get({ id: userID, column: "buyer_id" });
+
+      const statusOrder = {
+        open: "Aberto",
+        sold: "Vendido",
+        canceled: "Cancelado"
+      }
+
+      orders = orders.map(async order => {
+        const productDB = new Product();
+        const product = await productDB.getBy({ where: { id: order.product_id } });
+        order.productName = `${product.brand} ${product.model} ${product.status} ${product.color}`;
+
+        const files = await getImages({ id: order.product_id, column: "product_id" });
+        order.productPath = files[0].path;
+
+        order.formattedPrice = formatPrice(order.price);
+        order.formattedTotalPrice = formatPrice(order.total);
+        order.statusCurrent = statusOrder[order.status];
+        order.updatedAt = formatDate(order.updated_at).long;
+
+        return order;
+      });
+
+      orders = await Promise.all(orders);
+
+      return res.render("orders/purchases", { orders });
+
+    } catch (error) {
+      console.log(`Unexpected error in INDEX CONTROLLER: ${error}`);
+    }
+  },
+  async sales(req, res) { },
   async post(req, res) {
     try {
       // get products from the cart
@@ -66,15 +105,15 @@ const OrderController = {
 
         const orderDB = new Order();
         const order = await orderDB.create(fields);
-        
+
         // get product
         const productDB = new Product();
         product = await productDB.getBy({ where: { id: product_id } });
-        
+
         // get seller and buyer
         const seller = await getUser(seller_id);
         const buyer = await getUser(buyer_id);
-        
+
         await mailer.sendMail(mailHTML(seller, product, buyer, item));
 
         return order;

@@ -1,87 +1,83 @@
 {% extends '../layout.njk' %}
 
 {% block content %}
-  <div id="cart-container">
+  <section id="cart-container">
     {% if cart.items and cart.items.length <= 0 %}
 
-      <session>
-        <div id="cart-empty">
-          <p>Carrinho vazio</p>
-          <a class="button" href="/">Comprar agora</a>
-        </div>
-      </session>
+      <section id="cart-empty">
+        <p>Carrinho vazio</p>
+        <a class="button" href="/">Comprar agora</a>
+      </section>
 
     {% else %}
 
-      <session>
-        <div id="cart">
-          <div class="items-list">
-            <h2>Carrinho</h2>
+      <section id="cart">
+        <div class="items-list">
+          <h2>Carrinho</h2>
 
-            <div class="header">
-              <p>Produto</p>
-              <p>Preço</p>
-              <p>Qtd.</p>
-            </div>
+          <div class="header">
+            <p>Produto</p>
+            <p>Preço</p>
+            <p>Qtd.</p>
+          </div>
 
-            <div class="items">
-              {% for item in cart.items %}
-                <div class="item">
-                  <a href="/products/show/{{ item.product.id }}">
-                    <img src="{{ item.product.path }}" alt="{{ item.product.model }}"/>
-                    <span class="title">
-                      {{ item.product.brand }}
-                      {{ item.product.model }}
-                      {{ item.product.storage }}
-                      {{ item.product.color }}
-                    </span>
-                  </a>
+          <div class="items">
+            {% for item in cart.items %}
+              <div class="item">
+                <a href="/products/show/{{ item.product.id }}">
+                  <img src="{{ item.product.path }}" alt="{{ item.product.model }}"/>
+                  <span class="title">
+                    {{ item.product.brand }}
+                    {{ item.product.model }}
+                    {{ item.product.storage }}
+                    {{ item.product.color }}
+                  </span>
+                </a>
 
-                  <span class="price">{{ item.formattedPrice }}</span>
+                <span class="price">{{ item.formattedPrice }}</span>
 
-                  <div class="quantity-control">
-                    <form method="POST" action="/shopping-cart/remove/{{ item.product.id }}">
-                      <button class="remove">
-                        <i class="material-icons">remove_circle_outline</i>
-                      </button>
-                    </form>
+                <div class="quantity-control">
+                  <form method="POST" action="/shopping-cart/remove/{{ item.product.id }}">
+                    <button class="remove">
+                      <i class="material-icons">remove_circle_outline</i>
+                    </button>
+                  </form>
 
-                    <span class="quantity">{{ item.quantity }}</span>
+                  <span class="quantity">{{ item.quantity }}</span>
 
-                    <form method="POST" action="/shopping-cart/add/{{ item.product.id }}">
-                      <button class="add">
-                        <i class="material-icons">add_circle_outline</i>
-                      </button>
-                    </form>
-                  </div>
-
-                  <form id="trash" method="POST" action="/shopping-cart/delete/{{ item.product.id }}?_method=DELETE">
-                    <button class="delete">
-                      <i class="material-icons">delete</i>
+                  <form method="POST" action="/shopping-cart/add/{{ item.product.id }}">
+                    <button class="add">
+                      <i class="material-icons">add_circle_outline</i>
                     </button>
                   </form>
                 </div>
-              {% endfor %}
-            </div>
-          </div>
 
-          <div class="viewer-payment">
-            <div class="total">
-              <p>Total</p>
-              <span>{{ cart.total.formattedPrice }}</span>
-            </div>
-
-            <div class="actions">
-              <a class="button" href="/">Continuar comprando</a>
-
-              <form method="POST" action="/shopping-cart">
-                <button class="button">Finalizar pedido</button>
-              </form>
-            </div>
+                <form id="trash" method="POST" action="/shopping-cart/delete/{{ item.product.id }}?_method=DELETE">
+                  <button class="delete">
+                    <i class="material-icons">delete</i>
+                  </button>
+                </form>
+              </div>
+            {% endfor %}
           </div>
         </div>
-      </session>
+
+        <div class="viewer-payment">
+          <div class="total">
+            <p>Total</p>
+            <span>{{ cart.total.formattedPrice }}</span>
+          </div>
+
+          <div class="actions">
+            <a class="button" href="/">Continuar comprando</a>
+
+            <form method="POST" action="/shopping-cart">
+              <button class="button">Finalizar pedido</button>
+            </form>
+          </div>
+        </div>
+      </section>
 
     {% endif %}
-  </div>
+  </section>
 {% endblock content %}

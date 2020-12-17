@@ -68,7 +68,10 @@ export async function formatProducts(data) {
 
       const images = await getImages(values);
 
-      product.image = images[0].path;
+      if( images?.length > 0) {
+        product.image = images[0].path;
+      }
+      
       product.priceParcel = formatPrice(product.price / 12);
       product.price = formatPrice(product.price);
       product.old_price = formatPrice(product.old_price);

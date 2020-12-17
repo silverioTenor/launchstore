@@ -9,7 +9,11 @@
     {% for product in products %}
       <a href="/products/show/{{ product.id }}">
         <div class="card">
-          <img src="{{ product.image }}" alt="{{ product.model }}"/>
+          {% if product.image %}
+            <img src="{{ product.image }}" alt="{{ product.model }}"/>
+          {% else %}
+            <img src="/img/common/others/notFound.png" alt="{{ product.model }}"/>
+          {% endif %}
           <div class="content">
             <p>{{ product.brand }}</p>
 

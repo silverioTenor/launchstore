@@ -11,7 +11,7 @@ export async function getOrders(user) {
 
     orders = orders.map(async order => {
       const productDB = new Product();
-      const product = await productDB.getBy({ where: { id: order.product_id } });
+      const product = await productDB.getByProductsWithDeleted({ where: { id: order.product_id } });
       order.productName = `${product.brand} ${product.model} ${product.status} ${product.color}`;
 
       const files = await getImages({ id: order.product_id, column: "product_id" });

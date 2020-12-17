@@ -61,4 +61,24 @@ export default class Product extends Base {
       console.log(`Unexpected error in DB GET: ${error}`);
     }
   }
+
+  async getByProductsWithDeleted(filters) {
+    try {
+      let sql = `SELECT * FROM ${this.table}_with_deleted`;
+
+      Object.keys(filters).map(key => {
+        sql += ` ${key}`;
+
+        Object.keys(filters[key]).map(field => {
+          sql += ` ${field} = '${filters[key][field]}'`;
+        });
+      });
+
+      const results = await db.query(sql);
+      return results.rows[0];
+
+    } catch (error) {
+      console.log(`Unexpected error in DB GETBY: ${error}`);
+    }
+  }
 }

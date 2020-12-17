@@ -20,7 +20,7 @@ export async function getOrders(user) {
       order.formattedPrice = formatPrice(order.price);
       order.formattedTotalPrice = formatPrice(order.total);
       order.statusCurrent = formatOrderStatus(order.status);
-      order.updatedAt = formatDate(order.updated_at).long;
+      order.updatedAt = formatDate(order.updated_at).longDateTime;
 
       return order;
     });

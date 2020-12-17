@@ -53,7 +53,23 @@ const OrderController = {
 
       const sales = await getOrders({ id: userID, column: "seller_id" });
 
-      return res.render("orders/sales", { sales });
+      if (req.query.status == 200) {
+        return res.render("orders/sales", { 
+          sales,
+          message: "Operação feita com sucesso!",
+          type: "success"
+        });
+      }
+      else if (req.query.status == 400) {
+        return res.render("orders/sales", { 
+          sales,
+          message: "Falha na operação!",
+          type: "error"
+        });
+      }
+      else {
+        return res.render("orders/sales", { sales });
+      }
 
     } catch (error) {
       console.log(`Unexpected error in SALES CONTROLLER: ${error}`);
@@ -163,6 +179,21 @@ const OrderController = {
   },
   failed(req, res) {
     return res.render("orders/order-failed");
+  },
+  async updateStatus(req, res) {
+    try {
+      const { val, fields } = req.order;
+
+      const orderDB = new Order();
+      await orderDB.update(val, fields);
+
+      return res.redirect('/orders/sales?status=200');
+
+    } catch (error) {
+      console.log(`Unexpected error in updateStatus CONTROLLER: ${error}`);
+
+      return res.redirect('/orders/sales?status=400');
+    }
   }
 }
 

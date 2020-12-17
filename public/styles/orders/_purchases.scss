@@ -112,22 +112,21 @@
 
     .purchase-price + span {
       padding: 4px 10px;
-      
+
       font-size: 0.7em;
       text-transform: uppercase;
       color: #fff;
       border-radius: 20px;
 
       &.open {
-        background-color:#0066ff;
+        background-color: #0066ff;
       }
       &.sold {
-        background-color:#26a50c;
+        background-color: #26a50c;
       }
       &.canceled {
-        background-color:#ff0000;
+        background-color: #ff0000;
       }
     }
-
   }
 }

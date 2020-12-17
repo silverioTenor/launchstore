@@ -91,8 +91,8 @@ export function formatDate(dateTime) {
   const date = data.getDate();
   const month = data.getMonth();
   const year = data.getFullYear();
-  const seconds = data.getSeconds();
-  const minuts = data.getMinutes();
+  const seconds = `0${data.getSeconds()}`.slice(-2);
+  const minutes = `0${data.getMinutes()}`.slice(-2);
   const hours = data.getHours();
 
   const monthExtensive = [
@@ -111,8 +111,9 @@ export function formatDate(dateTime) {
   ];
 
   return {
-    iso: `${year}-${month}-${date}:${hours}:${minuts}:${seconds}`,
+    iso: `${year}-${month}-${date}:${hours}:${minutes}:${seconds}`,
     ptBR: `${date}/${month}/${year}`,
-    long: `${date} de ${monthExtensive[month]} de ${year}`
+    longDate: `${date} de ${monthExtensive[month]} de ${year}`,
+    longDateTime: `${date} de ${monthExtensive[month]} de ${year} às ${hours}:${minutes}:${seconds}`
   };
 }

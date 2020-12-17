@@ -1,0 +1,62 @@
+.submenu-dropdown {
+  width: 100%;
+  position: absolute;
+  top: 80px;
+
+  list-style: none;
+  font-size: 14px;
+
+  background-color: $border-color;
+  border-radius: 4px;
+
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.4s;
+
+  z-index: 100;
+
+  li {
+    border-bottom: 1px solid rgba($color: $font-dark-color, $alpha: 0.3);
+    border-radius: 4px;
+    transition: background 0.1s;
+
+    &:last-child {
+      border: none;
+    }
+
+    a {
+      width: 100%;
+      height: 100%;
+      padding: 8px 0;
+      display: block;
+      color: $font-color;
+      transition: color 0.1s;
+
+      &:hover {
+        color: $link-color;
+      }
+    }
+
+    &.action-form {
+      display: block;
+
+      form {
+        width: 100%;
+        height: 100%;
+
+        button[type="submit"] {
+          height: initial;
+          line-height: initial;
+          padding: 6px 0;
+          position: initial;
+          font-size: 14px;
+          background-color: transparent;
+        }
+      }
+    }
+
+    &:hover {
+      background-color: $dark-color;
+    }
+  }
+}

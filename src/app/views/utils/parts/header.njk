@@ -56,7 +56,7 @@
                 </div>
                 <a>Olá, {{ session.user.name }}</a>
               </div>
-              <ul class="account-submenu">
+              <ul class="submenu-dropdown">
                 <li>
                   <a href="/users/profile/{{ session.user.userID }}">Minha conta</a>
                 </li>
@@ -69,9 +69,9 @@
                 <li>
                   <a href="/orders/sales">Minhas vendas</a>
                 </li>
-                <li class="logout">
+                <li class="action-form">
                   <form action="/session/logout" method="POST">
-                    <button class="btn-logout" type="submit">Sair</button>
+                    <button type="submit">Sair</button>
                   </form>
                 </li>
               </ul>

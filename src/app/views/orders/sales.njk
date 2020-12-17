@@ -29,6 +29,28 @@
           <span>Qtd. {{ sale.quantity }}</span>
           <span class="purchase-price">{{ sale.formattedTotalPrice }}</span>
           <span class="{{ sale.status }}">{{ sale.statusCurrent }}</span>
+
+          <div class="dropdown-container action">
+            <i class="material-icons">more_vert</i>
+
+            <ul class="submenu-dropdown">
+              <li><a href="/orders/{{ sale.id }}">Detalhes do pedido</a></li>
+              <li><a href="/products/update/{{ sale.product_id }}">Editar pedido</a></li>
+
+              {% if sale.status == "open" %}
+                <li class="action-form">
+                  <form method="POST" action="/orders/sold/{{ sale.id }}?_method=PUT">
+                    <button type="submit">Marcar vendido</button>
+                  </form>
+                </li>
+                <li class="action-form">
+                  <form method="POST" action="/orders/canceled/{{ sale.id }}?_method=PUT">
+                    <button type="submit">Marcar Cancelado</button>
+                  </form>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
         </div>
       {% endfor %}
 

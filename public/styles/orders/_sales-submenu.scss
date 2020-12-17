@@ -1,0 +1,24 @@
+#sales-container {
+  .dropdown-container {
+    position: relative;
+
+    .submenu-dropdown {
+      @extend .submenu-dropdown;
+      width: 180px;
+      right: -90px;
+      top: 30px;
+      text-align: center;
+
+      button[type="submit"] {
+        color: $font-color;
+        cursor: pointer;
+      }
+    }
+
+    &:hover .submenu-dropdown {
+      top: 42px;
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}

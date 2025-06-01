@@ -1,5 +1,5 @@
 import Product from '../models/Product';
-import File from './../models/File';
+import File from '../models/File';
 import FilesManager from '../models/FilesManager';
 
 import { getImages, getImagesWithoutReplace, removeImages, saveFiles } from '../services/fileService';

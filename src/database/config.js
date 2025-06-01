@@ -4,8 +4,8 @@ const db = new Pool({
     user: 'postgres',
     password: 'postgres',
     host: 'localhost',
-    port: 5432,
-    database: 'launchstore'
+    port: 32769,
+    database: 'launchstore_db'
 });
 
 export default db;

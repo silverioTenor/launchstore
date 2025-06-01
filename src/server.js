@@ -1,5 +1,5 @@
 import express from 'express';
-import { urlencoded, static } from 'express';
+import { urlencoded, static as expressStatic } from 'express';
 import nunjucks from 'nunjucks';
 import methodOverride from 'method-override';
 
@@ -19,7 +19,7 @@ server.use((req, res, next) => {
 })
 
 server.use(urlencoded({ extended: true }));
-server.use(static('public'));
+server.use(expressStatic('public'));
 server.use(methodOverride('_method'));
 server.use(routes);
 

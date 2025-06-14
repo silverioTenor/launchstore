@@ -1,10 +1,16 @@
 # Launchstore
 
-Para executar a aplicação, rode o seguinte comando:
+Para executar a aplicação, execute os seguintes passos:
+
+### 1. Subir container do banco de dados
+```
+docker compose up -d
+```
+### 2. Iniciar a aplicação
 ```
 npm start
 ```
 
-Para melhor entendimento da aplicação, acesse o [documento de especificação de requisitos](./requirements.md)
+Para melhor entendimento do sistema, acesse o [documento de especificação de requisitos](./requirements.md)
 
 > A prática leva a perfeição. Nunca desista!

@@ -1,5 +1,7 @@
 # Launchstore
 
+> O projeto roda na versão 14.21.3 do node.js
+
 Para executar a aplicação, execute os seguintes passos:
 
 ### 1. Subir container do banco de dados

@@ -90,27 +90,8 @@ A aplicação permite que usuários realizem cadastro, publiquem produtos, faça
 
 ### 5.1. Diagrama de Casos de Uso
 
-```mermaid
-usecaseDiagram
-  actor Cliente
-  actor Administrador
-  actor Visitante
+![diagrama_casos_de_uso](https://github.com/user-attachments/assets/b9210fc7-2204-4ffc-adad-3be6ce1d2032)
 
-  Cliente --> (Cadastrar-se)
-  Cliente --> (Fazer Login)
-  Cliente --> (Gerenciar Perfil)
-  Cliente --> (Adicionar Produto ao Carrinho)
-  Cliente --> (Finalizar Compra)
-  Cliente --> (Acompanhar Pedido)
-
-  Visitante --> (Navegar pelos Produtos)
-  Visitante --> (Buscar Produtos)
-
-  Administrador --> (Gerenciar Produtos)
-  Administrador --> (Gerenciar Categorias)
-  Administrador --> (Gerenciar Pedidos)
-  Administrador --> (Gerenciar Usuários)
-```
 
 ### 5.2. Diagrama Entidade-Relacionamento (ER)
 

@@ -1,4 +1,3 @@
-
 # 📝 Documento de Especificação de Requisitos — Launchstore
 
 ## 1. Introdução

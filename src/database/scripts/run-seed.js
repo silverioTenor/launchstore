@@ -1,13 +1,13 @@
 import faker from 'faker';
 import { hash } from 'bcryptjs';
 
-import Address from './app/models/Address';
-import User from './app/models/User';
-import Product from './app/models/Product';
-import File from './app/models/File';
-import FilesManager from './app/models/FilesManager';
+import Address from '../../app/models/Address';
+import User from '../../app/models/User';
+import Product from '../../app/models/Product';
+import File from '../../app/models/File';
+import FilesManager from '../../app/models/FilesManager';
 
-export default function seed() {
+function seed() {
   async function createAddress() {
     const addrs = [];
 
@@ -100,3 +100,5 @@ export default function seed() {
 
   init();
 }
+
+seed();

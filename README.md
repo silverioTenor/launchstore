@@ -1,22 +1,29 @@
 # Launchstore
 
-Para executar a aplicação, execute os seguintes passos:
+## Visão Geral
+Esta aplicação consiste no propósito de simular um e-commerce, permitindo ao usuário autenticado realizar compras e também vendas.
+<br>Para melhor entendimento do funcionamento do sistema, acesse o [documento de especificação de requisitos](./requirements.md)
+
+## Execução
+
+Para executar a aplicação, siga os seguintes passos:
 
 ### 1. Subir container do banco de dados
 ```
 docker compose up -d
 ```
 
-### 2. Iniciar a aplicação
+### 2. Criar e popular as tabelas
 ```
-npm start
+npm run start:setup
 ```
-> O projeto roda na versão 14.21.3 do node.js
 
-<br>
+### 3. Iniciar a aplicação
+```
+npm run start:dev
+```
+> O projeto roda na versão 18.19.1 do node.js
 
-Para melhor entendimento do sistema, acesse o [documento de especificação de requisitos](./requirements.md)
-<br>
 <br>
 
 > A prática leva a perfeição. Nunca desista!

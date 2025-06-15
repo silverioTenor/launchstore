@@ -1,8 +1,8 @@
-import Order from '../models/Order';
-import Product from './../models/Product';
+import Order from '../models/Order.js';
+import Product from './../models/Product.js';
 
-import { getImages } from './fileService';
-import { formatOrderStatus, formatDate, formatPrice } from '../../lib/utils';
+import { getImages } from './fileService.js';
+import { formatOrderStatus, formatDate, formatPrice } from '../../lib/utils.js';
 
 export async function getOrders(user) {
   try {

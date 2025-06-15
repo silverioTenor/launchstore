@@ -1,13 +1,13 @@
-import mailer from '../../lib/mailer'
+import mailer from '../../lib/mailer.js'
 
-import User from '../models/User';
-import Product from '../models/Product';
-import Order from '../models/Order';
+import User from '../models/User.js';
+import Product from '../models/Product.js';
+import Order from '../models/Order.js';
 
-import Cart from '../../lib/Cart';
-import { getOrders } from '../services/orderService';
-import { getImages } from '../services/fileService';
-import { formatPrice, formatCpfCnpj } from '../../lib/utils';
+import Cart from '../../lib/Cart.js';
+import { getOrders } from '../services/orderService.js';
+import { getImages } from '../services/fileService.js';
+import { formatPrice, formatCpfCnpj } from '../../lib/utils.js';
 
 function mailHTML(seller, product, buyer, item) {
   return {

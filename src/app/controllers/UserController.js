@@ -1,9 +1,9 @@
-import Address from '../models/Address';
-import User from '../models/User';
-import Product from './../models/Product';
+import Address from '../models/Address.js';
+import User from '../models/User.js';
+import Product from './../models/Product.js';
 
-import { getImagesWithoutReplace, removeImages, saveFiles } from './../services/fileService';
-import { formatProducts, formatCpfCnpj, formatCep } from '../../lib/utils';
+import { getImagesWithoutReplace, removeImages, saveFiles } from './../services/fileService.js';
+import { formatProducts, formatCpfCnpj, formatCep } from '../../lib/utils.js';
 
 const UserController = {
   async ads(req, res) {

@@ -1,9 +1,9 @@
-import Product from '../models/Product';
-import File from '../models/File';
-import FilesManager from '../models/FilesManager';
+import Product from '../models/Product.js';
+import File from '../models/File.js';
+import FilesManager from '../models/FilesManager.js';
 
-import { getImages, getImagesWithoutReplace, removeImages, saveFiles } from '../services/fileService';
-import { formatPrice, formatProducts, status } from '../../lib/utils';
+import { getImages, getImagesWithoutReplace, removeImages, saveFiles } from '../services/fileService.js';
+import { formatPrice, formatProducts, status } from '../../lib/utils.js';
 
 const ProductController = {
   async index(req, res) {

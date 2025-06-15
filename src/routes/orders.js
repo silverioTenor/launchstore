@@ -2,10 +2,10 @@ import { Router } from 'express';
 
 const routes = Router();
 
-import OrderController from '../app/controllers/OrderController';
-import OrderValidator from '../app/validators/order';
+import OrderController from '../app/controllers/OrderController.js';
+import OrderValidator from '../app/validators/order.js';
 
-import { onlyUsers as isLogged } from '../middlewares/session';
+import { onlyUsers as isLogged } from '../middlewares/session.js';
 
 // Orders
 routes.get("/purchases", isLogged, OrderController.index);

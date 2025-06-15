@@ -1,11 +1,11 @@
 import session from 'express-session';
-import pgSession from 'connect-pg-simple';
-import db from './config';
+import connectPg from 'connect-pg-simple';
+import db from './config.js';
 
-pgSession = pgSession(session);
+const Storage = connectPg(session);
 
-export default session({
-  store: new pgSession({ pool: db }),
+const newSession = session({
+  store: new Storage({ pool: db }),
   secret: 'gaki',
   resave: false,
   saveUninitialized: false,
@@ -13,3 +13,5 @@ export default session({
     maxAge: 30 * 24 * 60 * 60 * 1000
   }
 });
+
+export default newSession;

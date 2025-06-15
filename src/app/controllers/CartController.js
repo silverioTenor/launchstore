@@ -1,7 +1,7 @@
-import Product from '../models/Product';
+import Product from '../models/Product.js';
 
-import { getImages } from '../services/fileService';
-import Cart from '../../lib/Cart';
+import { getImages } from '../services/fileService.js';
+import Cart from '../../lib/Cart.js';
 
 const CartController = {
   async index(req, res) {

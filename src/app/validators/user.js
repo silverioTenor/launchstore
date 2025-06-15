@@ -1,9 +1,9 @@
-import { compare } from "bcryptjs";
+import bcryptjs from 'bcryptjs';
 
-import User from "../models/User";
-import Address from './../models/Address';
+import User from "../models/User.js";
+import Address from './../models/Address.js';
 
-import { getImages, prepareToUpdate } from '../services/fileService';
+import { getImages, prepareToUpdate } from '../services/fileService.js';
 
 const Validators = {
   checkAllFields(body) {
@@ -100,7 +100,7 @@ const Validators = {
       }
 
       if (user && user != "" || user != undefined) {
-        passed = await compare(password, user.password);
+        passed = await bcryptjs.compare(password, user.password);
 
         if (!passed || passed == "") {
           return res.render("users/index", {

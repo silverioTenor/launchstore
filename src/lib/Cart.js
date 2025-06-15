@@ -1,4 +1,4 @@
-import { formatPrice } from './utils';
+import { formatPrice } from './utils.js';
 
 export default class Cart {
 

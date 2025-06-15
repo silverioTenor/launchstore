@@ -1,6 +1,6 @@
-import Product from '../models/Product';
+import Product from '../models/Product.js';
 
-import { prepareToUpdate } from './../services/fileService';
+import { prepareToUpdate } from './../services/fileService.js';
 
 const ProductValidator = {
   checkAllFields(body) {

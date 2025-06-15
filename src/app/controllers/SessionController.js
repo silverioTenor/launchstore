@@ -1,8 +1,8 @@
 import crypto from 'crypto';
-import { hash } from 'bcryptjs';
-import mailer from '../../lib/mailer';
+import bcryptjs from 'bcryptjs';
+import mailer from '../../lib/mailer.js';
 
-import User from '../models/User';
+import User from '../models/User.js';
 
 const SessionController = {
   registerForm(req, res) {
@@ -20,7 +20,7 @@ const SessionController = {
     try {
       let { name, email, password, cpf_cnpj } = req.body;
 
-      password = await hash(password, 8);
+      password = await bcryptjs.hash(password, 8);
       cpf_cnpj = cpf_cnpj.replace(/\D/g, "");
 
       const values = { name, email, password, cpf_cnpj };
@@ -122,8 +122,8 @@ const SessionController = {
     const { password, token } = req.body;
 
     try {
-      // Cria um novo hash de senha
-      const newPassword = await hash(password, 8);
+      // Cria um novo bcryptjs.hash de senha
+      const newPassword = await bcryptjs.hash(password, 8);
 
       // Atualiza o usuário
       const values = {

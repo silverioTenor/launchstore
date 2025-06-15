@@ -2,11 +2,11 @@ import { Router } from 'express';
 
 const routes = Router();
 
-import products from './products';
-import session from './session';
-import users from './users';
-import cart from './cart';
-import order from './orders';
+import products from './products.js';
+import session from './session.js';
+import users from './users.js';
+import cart from './cart.js';
+import order from './orders.js';
 
 routes.use('/products', products);
 routes.use('/session', session);

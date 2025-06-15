@@ -1,4 +1,4 @@
-import db from '../../database/config';
+import db from '../../database/config.js';
 
 export default class Base {
 

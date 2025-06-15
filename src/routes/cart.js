@@ -2,10 +2,10 @@ import { Router } from 'express';
 
 const routes = Router();
 
-import CartController from '../app/controllers/CartController';
-import OrderController from '../app/controllers/OrderController';
+import CartController from '../app/controllers/CartController.js';
+import OrderController from '../app/controllers/OrderController.js';
 
-import { onlyUsers as isLogged } from '../middlewares/session';
+import { onlyUsers as isLogged } from '../middlewares/session.js';
 
 routes.get("/", CartController.index);
 routes.post("/add/:id", CartController.addOne);

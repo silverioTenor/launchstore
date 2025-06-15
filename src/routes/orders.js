@@ -10,9 +10,9 @@ import { onlyUsers as isLogged } from '../middlewares/session.js';
 // Orders
 routes.get("/purchases", isLogged, OrderController.index);
 routes.get("/sales", isLogged, OrderController.sales);
-routes.get("/:id", isLogged, OrderController.show);
 routes.get("/order-success", OrderController.success);
 routes.get("/order-failed", OrderController.failed);
+routes.get("/:id", isLogged, OrderController.show);
 
 routes.post("/", isLogged, OrderController.post);
 routes.put("/:action/:id", isLogged, OrderValidator.updateStatus, OrderController.updateStatus);

@@ -1,8 +1,10 @@
 import multer from 'multer';
+import path from 'node:path';
 
 const storage = multer.diskStorage({
   destination: (require, file, cb) => {
-    cb(null,'./public/img/main');
+    // cb(null, path.resolve('public', 'img', 'main'));
+    cb(null, './public/img/main');
   },
   filename: (require, file, cb) => {
     cb(null, `${Date.now().toString()}-${file.originalname}`);

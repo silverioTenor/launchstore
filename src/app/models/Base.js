@@ -10,7 +10,7 @@ export default class Base {
     try {
       const { id, column } = val;
 
-      let sql = `SELECT * FROM ${this.table} WHERE ${column} = ${id} ORDER BY id DESC`;
+      let sql = `SELECT * FROM ${this.table} WHERE ${column} = '${id}' ORDER BY id DESC`;
 
       const results = await db.query(sql);
       return results.rows;
@@ -83,7 +83,7 @@ export default class Base {
         update.push(line);
       });
 
-      const sql = `UPDATE ${this.table} SET ${update.join(',')} WHERE ${column} = ${id}`;
+      const sql = `UPDATE ${this.table} SET ${update.join(',')} WHERE ${column} = '${id}'`;
 
       return await db.query(sql);
 

@@ -99,6 +99,8 @@ const Validators = {
         console.error(`Operation failure. error: ${error}`);
       }
 
+      let { name, email } = req.body;
+
       if (user && user != "" || user != undefined) {
         passed = await bcryptjs.compare(password, user.password);
 
@@ -109,54 +111,55 @@ const Validators = {
             formFull: true
           });
         }
+
+        const allowUpdate = !(user.email == email && user.name == name);
+        
+        delete req.body.cpf_cnpj;
+        
+        req.session.user.name = name.split(" ")[0];
+        
+        req.user = {
+          val: { id, column: "id" },
+          fields: { name, email },
+          allowUpdate,
+        };
       }
-
-      let { name, email, cpf_cnpj } = req.body;
-
-      cpf_cnpj = cpf_cnpj.replace(/\D/g, "");
-
-      req.session.user.name = name.split(" ")[0];
-
-      req.user = {
-        val: { id, column: "id" },
-        fields: { name, email, cpf_cnpj }
-      };
 
       return user;
     }
 
     // Validação do Endereço
-    async function addressValidation(user) {
-      let addr = "";
-      const addrDB = new Address();
+    // async function addressValidation(user) {
+    //   let addr = "";
+    //   const addrDB = new Address();
 
-      try {
-        if (user.address_id) addr = await addrDB.get({ id: user.address_id, column: "id" });
+    //   try {
+    //     if (user.address_id) addr = await addrDB.get({ id: user.address_id, column: "id" });
 
-      } catch (error) {
-        console.error(`Operation failure. error: ${error}`);
-      }
+    //   } catch (error) {
+    //     console.error(`Operation failure. error: ${error}`);
+    //   }
 
-      let { cep, street, complement, district, locale, uf } = req.body;
-      cep = cep.replace(/\D/g, "");
-      const state = locale;
+    //   let { cep, street, complement, district, locale, uf } = req.body;
+    //   cep = cep.replace(/\D/g, "");
+    //   const state = locale;
 
-      try {
-        if (!addr || addr == "" || addr == undefined) {
-          const addrID = await addrDB.create({ cep, street, complement, district, state, uf });
-          req.user.address_id = addrID;
+    //   try {
+    //     if (!addr || addr == "" || addr == undefined) {
+    //       const addrID = await addrDB.create({ cep, street, complement, district, state, uf });
+    //       req.user.address_id = addrID;
 
-        } else {
-          req.addr = {
-            val: { id: addr.id, column: "id" },
-            fields: { cep, street, complement, district, state, uf }
-          };
-        }
+    //     } else {
+    //       req.addr = {
+    //         val: { id: addr.id, column: "id" },
+    //         fields: { cep, street, complement, district, state, uf }
+    //       };
+    //     }
 
-      } catch (error) {
-        console.error(`Operation failure. error: ${error}`);
-      }
-    }
+    //   } catch (error) {
+    //     console.error(`Operation failure. error: ${error}`);
+    //   }
+    // }
 
     try {
       const { userID: id } = req.session.user;
@@ -164,15 +167,17 @@ const Validators = {
 
       const user = await userValidation(id, password);
 
-      await addressValidation(user);
+      // await addressValidation(user);
 
       // Validação da foto
-      const values = { id: Number(req.body.id), column: "user_id" };
-      req.updatedFiles = await prepareToUpdate(req.body, req.files, values);
-
-      // Verifica se tem foto e então atribui ela à sessão
-      if (req.updatedFiles?.values?.[1][0]) {
-        req.session.user.photo = { path: req.updatedFiles.values[1][0].replace("public", "") };
+      if (req?.files?.length > 0) {
+        const values = { id: Number(req.body.id), column: "user_id" };
+        req.updatedFiles = await prepareToUpdate(req.body, req.files, values);
+        
+        // Verifica se tem foto e então atribui ela à sessão
+        if (req.updatedFiles?.values?.[1][0]) {
+          req.session.user.photo = { path: req.updatedFiles.values[1][0].replace("public", "") };
+        }
       }
 
       next();

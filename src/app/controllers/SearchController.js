@@ -1,5 +1,5 @@
-import Product from '../models/Product';
-import { formatProducts } from '../../lib/utils';
+import Product from '../models/Product.js';
+import { formatProducts } from '../../lib/utils.js';
 
 const SearchController = {
   async index(req, res) {

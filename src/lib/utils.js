@@ -1,4 +1,4 @@
-import { getImages } from '../app/services/fileService';
+import { getImages } from '../app/services/fileService.js';
 
 export function status(value) {
   if (value == "excelent") return "Excelente";

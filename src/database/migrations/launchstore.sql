@@ -1,5 +1,5 @@
-DROP DATABASE IF EXISTS launchstore;
-CREATE DATABASE launchstore;
+-- DROP DATABASE IF EXISTS launchstore;
+-- CREATE DATABASE launchstore;
 
 -- TABLES
 
@@ -167,8 +167,8 @@ ON DELETE CASCADE;
 
 -- RESTART SEQUENCE IDs
 
-ALTER SEQUENCE users RESTART WITH 1;
-UPDATE users SET idcolumn=nextval('seq');
+-- ALTER SEQUENCE users RESTART WITH 1;
+-- UPDATE users SET idcolumn=nextval('seq');
 
 -- RULE FOR PRODUCT DELETED
 

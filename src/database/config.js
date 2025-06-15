@@ -1,11 +1,16 @@
-import { Pool } from 'pg';
+import dotenv from 'dotenv';
+import postgres from 'pg';
+
+dotenv.config();
+
+const { Pool } = postgres;
 
 const db = new Pool({
-    user: 'postgres',
-    password: 'postgres',
-    host: 'localhost',
-    port: 32769,
-    database: 'launchstore_db'
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    host: process.env.DB_HOST,
+    port: +process.env.DB_PORT,
+    database: process.env.DB_NAME
 });
 
 export default db;

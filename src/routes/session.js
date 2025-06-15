@@ -2,8 +2,8 @@ import { Router } from 'express';
 
 const routes = Router();
 
-import SessionValidator from '../app/validators/session';
-import SessionController from '../app/controllers/SessionController';
+import SessionValidator from '../app/validators/session.js';
+import SessionController from '../app/controllers/SessionController.js';
 
 // Login/Logout
 routes.get("/login", SessionController.loginForm);

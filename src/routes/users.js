@@ -1,12 +1,12 @@
-import multer from '../middlewares/multer';
+import multer from '../middlewares/multer.js';
 import { Router } from 'express';
 
 const routes = Router();
 
-import UserValidator from '../app/validators/user';
-import UserController from '../app/controllers/UserController';
+import UserValidator from '../app/validators/user.js';
+import UserController from '../app/controllers/UserController.js';
 
-import { onlyUsers as isLogged } from '../middlewares/session';
+import { onlyUsers as isLogged } from '../middlewares/session.js';
 
 // Profile
 routes.get("/profile/:id", isLogged, UserValidator.show, UserController.show);

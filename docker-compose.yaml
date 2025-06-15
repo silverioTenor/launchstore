@@ -9,16 +9,11 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: launchstore_db
     ports:
-      - 5432
-    expose:
-      - 6432
+      - 5432:5432
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./.docker:/var/lib/postgresql/data
     networks:
       - app-network
 
 networks:
   app-network:
-
-volumes:
-  postgres_data:

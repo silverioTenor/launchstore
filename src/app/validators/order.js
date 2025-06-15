@@ -1,4 +1,4 @@
-import Order from './../models/Order';
+import Order from './../models/Order.js';
 
 const OrderValidator = {
   async updateStatus(req, res, next) {

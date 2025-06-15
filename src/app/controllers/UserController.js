@@ -1,9 +1,9 @@
-import Address from '../models/Address';
-import User from '../models/User';
-import Product from './../models/Product';
+import Address from '../models/Address.js';
+import User from '../models/User.js';
+import Product from './../models/Product.js';
 
-import { getImagesWithoutReplace, removeImages, saveFiles } from './../services/fileService';
-import { formatProducts, formatCpfCnpj, formatCep } from '../../lib/utils';
+import { getImagesWithoutReplace, removeImages, saveFiles } from './../services/fileService.js';
+import { formatProducts, formatCpfCnpj, formatCep } from '../../lib/utils.js';
 
 const UserController = {
   async ads(req, res) {
@@ -24,7 +24,8 @@ const UserController = {
   },
   async show(req, res) {
     try {
-      let { user, addr } = req;
+      const user = req.user;
+      const { addr } = req.session;
 
       user.cpf_cnpj = formatCpfCnpj(user.cpf_cnpj);
       if (addr) addr.cep = formatCep(addr.cep);
@@ -60,14 +61,41 @@ const UserController = {
   async update(req, res) {
     const { userID } = req.session.user;
 
+    let foundAddress = null;
+
     try {
       const addrDB = new Address();
-      await addrDB.update(req.addr.val, req.addr.fields);
 
-      const userDB = new User();
-      await userDB.update(req.user.val, req.user.fields);
+      if (req?.body?.cep) {
+        let { cep, street, complement, district, locale, uf } = req.body;
+        const state = locale;
+        cep = req.body.cep.replace(/\D/g, "");
+        
+        foundAddress = await addrDB.get({ id: cep, column: "cep" });
+      
+        if (foundAddress?.length <= 0) {
+          const addrID = await addrDB.create({ cep, street, complement, district, state, uf });
+          req.session.addr = { id: addrID, cep, street, complement, district, state, uf };
 
-      saveFiles(req.updatedFiles, { user_id: userID });
+        } else {
+          req.session.addr = { id: foundAddress[0].id, cep, street, complement, district, state, uf };
+
+          await addrDB.update(
+            { id: cep, column: 'cep' },
+            { cep, street, complement, district, state, uf }
+          );
+        }
+      }
+
+
+      if (req?.user?.allowUpdate) {
+        const userDB = new User();
+        await userDB.update(req.user.val, req.user.fields);
+      }
+
+      if (req?.updatedFiles) {
+        saveFiles(req.updatedFiles, { user_id: userID });
+      }
 
       return res.redirect(`users/profile/${userID}?status=200`);
 

@@ -1,7 +1,7 @@
-import fs from 'fs';
+import fs from 'node:fs';
 
-import FilesManager from "../models/FilesManager";
-import File from '../models/File';
+import FilesManager from "../models/FilesManager.js";
+import File from '../models/File.js';
 
 export async function getImages(values) {
   try {

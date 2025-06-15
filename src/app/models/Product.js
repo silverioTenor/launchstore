@@ -1,5 +1,5 @@
-import db from '../../database/config';
-import Base from './Base';
+import db from '../../database/config.js';
+import Base from './Base.js';
 
 export default class Product extends Base {
 
